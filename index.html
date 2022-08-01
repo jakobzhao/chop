@@ -44,6 +44,7 @@
    <body>
       <nav id="menu"></nav>
       <div id='map'></div>
+      <button id="fit">Click to View CHOP Zone</button>
       <script type="text/javascript">
          mapboxgl.accessToken =
              'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw';
@@ -56,6 +57,13 @@
              center: [-122.319212, 47.616815]// starting center
          });
          
+         document.getElementById('fit').addEventListener('click', () => {
+            map.fitBounds([
+            [-122.314239, 47.614112], // southwestern corner of the bounds
+            [-122.322178, 47.618772] // northeastern corner of the bounds
+            ], {bearing: -90});
+        });
+
          map.on('load', () => {
          // Insert the layer beneath any symbol layer.
          const layers = map.getStyle().layers;
@@ -146,7 +154,7 @@
                     },
                  'paint': {
                      'fill-color': '#0080ff', // blue color fill
-                     'fill-opacity': 0.5
+                     'fill-opacity': 0.5,
                      }
                  },
                     'waterway-label'
@@ -268,13 +276,13 @@
          });
 
          // const drone_img = document.getElementById('Drone Image')
-         map.on('zoom', () => {
-            if (map.getZoom() > 16) {
-                map.setLayoutProperty('Drone Image', 'visibility', 'visible');
-            } else {
-                map.setLayoutProperty('Drone Image', 'visibility', 'none');
-            }
-            });
+         // map.on('zoom', () => {
+            // if (map.getZoom() > 16) {
+                //map.setLayoutProperty('Drone Image', 'visibility', 'visible');
+            //} else {
+                //map.setLayoutProperty('Drone Image', 'visibility', 'none');
+            //}
+            //});
       </script>
    </body>
 </html>

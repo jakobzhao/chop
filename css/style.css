@@ -90,10 +90,27 @@ body {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
   }
+
 #test {
     -moz-hyphens:auto;
     -ms-hyphens:auto;
     -webkit-hyphens:auto;
     hyphens:auto;
     word-wrap:break-word;
+    }
+
+#fit {
+    display: block;
+    position: relative;
+    top: 10px;
+    margin: 0px auto;
+    width: 38%;
+    height: 40px;
+    padding: 0px;
+    border: none;
+    border-radius: 3px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    background: #ee8a65;
     }
