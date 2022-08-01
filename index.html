@@ -43,6 +43,7 @@
              style: 'mapbox://styles/mapbox/satellite-streets-v11',
              zoom: 16, // starting zoom
              pitch: 60,
+             bearing: -90, // bearing in degrees
              center: [-122.319212, 47.616815]// starting center
          });
          
@@ -70,30 +71,30 @@
          // Use an 'interpolate' expression to
          // add a smooth transition effect to
          // the buildings as the user zooms in.
-         'fill-extrusion-height': [
-         'interpolate',
-         ['linear'],
-         ['zoom'],
-         15,
-         0,
-         15.05,
-         ['get', 'height']
-         ],
-         'fill-extrusion-base': [
-         'interpolate',
-         ['linear'],
-         ['zoom'],
-         15,
-         0,
-         15.05,
-         ['get', 'min_height']
-         ],
-         'fill-extrusion-opacity': 0.9
-         }
-         },
-         labelLayerId
-         );
-         });
+            'fill-extrusion-height': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                15,
+                0,
+                15.05,
+                ['get', 'height']
+            ],
+            'fill-extrusion-base': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                15,
+                0,
+                15.05,
+                ['get', 'min_height']
+            ],
+            'fill-extrusion-opacity': 0.9
+            }
+            },
+            labelLayerId
+             );
+            });
 
          
          map.on('load', () => { //simplifying the function statement: arrow with brackets to define a function
@@ -131,22 +132,29 @@
                  'id': 'CHOP Zone',
                  'type': 'fill',
                  'source': 'chop-polygon',
-                 'layout': {},
+                 'layout': {
+                    'visibility': 'none'
+                    },
                  'paint': {
                      'fill-color': '#0080ff', // blue color fill
                      'fill-opacity': 0.5
                      }
-                 });
-         
-         
-             map.addSource('basemap-tile', {
-                 'type': 'raster',
-                 'tiles': [
-                     'assets/street/{z}/{x}/{y}.png'
-                 ],
-                 'tileSize': 256,
-                 'attribution': 'Map tiles designed by Huating Sun</a>'
-             });
+                 },
+                    'waterway-label'
+                 );
+
+            map.addLayer({
+                'id': 'outline',
+                'type': 'line',
+                'source': 'chop-polygon',
+                'layout': {},
+                'paint': {
+                'line-color': '#000',
+                'line-width': 3
+                    }
+                },
+                    'waterway-label'
+                );
          
              map.addSource('drone-tile', {
                  'type': 'raster',
@@ -167,22 +175,15 @@
              });
          
              map.addLayer({
-                 'id': 'Basemap',
-                 'type': 'raster',
-                 'layout': {
-                     'visibility': 'none'
-                 },
-                 'source': 'basemap-tile'
-             });
-         
-             map.addLayer({
                  'id': 'Drone Image',
                  'type': 'raster',
                  'layout': {
                      'visibility': 'none'
                  },
-                 'source': 'drone-tile'
-             });
+                 'source': 'drone-tile',
+             },
+                'waterway-label'
+             );
          
              map.addLayer({
                  'id': 'Graffiti',
@@ -198,12 +199,12 @@
          // After the last frame rendered before the map enters an "idle" state.
          map.on('idle', () => {
              // If these two layers were not added to the map, abort
-             if (!map.getLayer('Basemap', 'Drone Image', 'Graffiti')) {
+             if (!map.getLayer('Drone Image', 'Graffiti', 'CHOP Zone')) {
                  return;
              }
          
              // Enumerate ids of the layers.
-             const toggleableLayerIds = ['Basemap', 'Drone Image', 'Graffiti'];
+             const toggleableLayerIds = ['Drone Image', 'Graffiti', 'CHOP Zone'];
          
              // Set up the corresponding toggle button for each layer.
              for (const id of toggleableLayerIds) {
@@ -256,6 +257,15 @@
                  layers.appendChild(link);
              }
          });
+
+         // const drone_img = document.getElementById('Drone Image')
+         map.on('zoom', () => {
+            if (map.getZoom() > 16) {
+                map.setLayoutProperty('Drone Image', 'visibility', 'visible');
+            } else {
+                map.setLayoutProperty('Drone Image', 'visibility', 'none');
+            }
+            });
       </script>
    </body>
 </html>
