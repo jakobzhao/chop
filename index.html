@@ -10,7 +10,6 @@
       <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
       <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
-      <script src='https://api.mapbox.com/mapbox.js/v3.3.1/mapbox.js'></script>
    </head>
    <script>
       $(document).ready(function(){
@@ -107,37 +106,36 @@
          // The 'building' layer in the Mapbox Streets
          // vector tileset contains building height data
          // from OpenStreetMap.
-         map.addLayer(
-         {
-         'id': 'add-3d-buildings',
-         'source': 'composite',
-         'source-layer': 'building',
-         'filter': ['==', 'extrude', 'true'],
-         'type': 'fill-extrusion',
-         'minzoom': 15,
-         'paint': {
-         'fill-extrusion-color': '#aaa',
+         map.addLayer({
+            'id': 'add-3d-buildings',
+            'source': 'composite',
+            'source-layer': 'building',
+            'filter': ['==', 'extrude', 'true'],
+            'type': 'fill-extrusion',
+            'minzoom': 15,
+            'paint': {
+            'fill-extrusion-color': '#aaa',
          
          // Use an 'interpolate' expression to
          // add a smooth transition effect to
          // the buildings as the user zooms in.
             'fill-extrusion-height': [
                 'interpolate',
-                ['linear'],
-                ['zoom'],
-                15,
-                0,
-                15.05,
+                    ['linear'],
+                    ['zoom'],
+                    15,
+                    0,
+                    15.05,
                 ['get', 'height']
             ],
             'fill-extrusion-base': [
                 'interpolate',
-                ['linear'],
-                ['zoom'],
-                15,
-                0,
-                15.05,
-                ['get', 'min_height']
+                    ['linear'],
+                    ['zoom'],
+                    15,
+                    0,
+                    15.05,
+                    ['get', 'min_height']
             ],
             'fill-extrusion-opacity': 0.9
             }
@@ -145,18 +143,37 @@
             labelLayerId
              );
             
-            map.addSource('landmarks', {
+            map.addSource('chop-landmark', {
                 'type': 'geojson',
-                'data': 'assets/landmark.geojson'
+                'data': 'assets/chop-landmark.geojson'
             });
         
              map.addLayer({
-                'id': 'landmark',
+                'id': 'chop-landmark',
                 'type': 'symbol',
-                'source': 'landmarks',
+                'source': 'chop-landmark',
                 'layout': {
                     'visibility': 'visible'
                 }
+            });
+
+            
+            map.addSource('chop-graffiti', {
+                'type': 'geojson',
+                'data': 'assets/graffiti_digitize.geojson'
+            });
+
+             map.addLayer({
+                'id': 'Graffiti',
+                'type': 'fill',
+                'source': 'chop-graffiti',
+                'layout': {
+                    'visibility': 'none'
+                },
+                'paint': {
+                    'fill-color': '#0080ff', // blue color fill
+                    'fill-opacity': 0.5,
+                    }
             });
             
              map.addSource('chop-polygon', {
@@ -225,15 +242,6 @@
                  'attribution': 'Map tiles designed by Huating Sun'
              });
          
-             map.addSource('graffiti-tile', {
-                 'type': 'raster',
-                 'tiles': [
-                     'assets/graffiti/{z}/{x}/{y}.png'
-                 ],
-                 'tileSize': 256,
-                 'attribution': 'Map tiles designed by Huating Sun'
-             });
-         
              map.addLayer({
                  'id': 'Drone Image',
                  'type': 'raster',
@@ -244,16 +252,8 @@
              },
                 'waterway-label'
              );
-         
-             map.addLayer({
-                 'id': 'Graffiti',
-                 'type': 'raster',
-                 'layout': {
-                     'visibility': 'none'
-                 },
-                 'source': 'graffiti-tile'
-             });       
-            });
+
+        });
 
          // After the last frame rendered before the map enters an "idle" state.
          map.on('idle', () => {
