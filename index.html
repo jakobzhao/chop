@@ -147,13 +147,17 @@
                 'type': 'geojson',
                 'data': 'assets/chop-landmark.geojson'
             });
+
         
              map.addLayer({
                 'id': 'chop-landmark',
                 'type': 'symbol',
                 'source': 'chop-landmark',
                 'layout': {
-                    'visibility': 'visible'
+                    'visibility': 'visible',
+                    "icon-image": '{icon}',
+                    'icon-color': '{color}',
+                    'icon-allow-overlap': true
                 }
             });
 
@@ -362,8 +366,6 @@
                 map.on('mouseleave', 'Graffiti', () => {
                     map.getCanvas().style.cursor = '';
                 });
-    
-
 
          // const drone_img = document.getElementById('Drone Image')
          // map.on('zoom', () => {
