@@ -97,10 +97,6 @@
                 'fill-extrusion-opacity': 0.5
                 }
                 });
-                });
-
-        
-         map.on('load', () => {
 
          // Insert the layer beneath any symbol layer.
          const layers = map.getStyle().layers;
@@ -148,10 +144,6 @@
             },
             labelLayerId
              );
-            });
-
-         
-         map.on('load', () => { //simplifying the function statement: arrow with brackets to define a function
             
             map.addSource('landmarks', {
                 'type': 'geojson',
@@ -163,6 +155,7 @@
                 'type': 'symbol',
                 'source': 'landmarks',
                 'layout': {
+                    'visibility': 'visible'
                 }
             });
             
@@ -259,9 +252,8 @@
                      'visibility': 'none'
                  },
                  'source': 'graffiti-tile'
-             });         
-         });
-         
+             });       
+            });
 
          // After the last frame rendered before the map enters an "idle" state.
          map.on('idle', () => {
