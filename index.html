@@ -340,7 +340,29 @@
             // Change it back to a pointer when it leaves.
             map.on('mouseleave', 'places', () => {
                 map.getCanvas().style.cursor = '';
-            });
+            });          
+
+                map.on("click", "Graffiti", (event) => {
+                    new mapboxgl.Popup()
+                      .setLngLat(event.lngLat)
+                      .setHTML(
+                        `<strong>Message:</strong> ${event.features[0].properties.Message}
+                        <hr>
+                        <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}`
+                      )
+                      .addTo(map);
+                  });
+
+                // Change the cursor to a pointer when the mouse is over the places layer.
+                map.on('mouseenter', 'Graffiti', () => {
+                    map.getCanvas().style.cursor = 'pointer';
+                });
+                 
+                // Change it back to a pointer when it leaves.
+                map.on('mouseleave', 'Graffiti', () => {
+                    map.getCanvas().style.cursor = '';
+                });
+    
 
 
          // const drone_img = document.getElementById('Drone Image')
