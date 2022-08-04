@@ -11,6 +11,42 @@
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
       <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
    </head>
+   
+<style>
+    .restaurant {
+        background-image: url('/assets/restaurant.png');
+        background-size: cover;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .store {
+        background-image: url('/assets/supermarket.png');
+        background-size: cover;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .police {
+        background-image: url('/assets/police.png');
+        background-size: cover;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .mapboxgl-popup {
+        max-width: 200px;
+      }
+      
+      .mapboxgl-popup-content {
+        text-align: center;
+        font-family: 'Open Sans', sans-serif;
+      }
+</style>
+
    <script>
       $(document).ready(function(){
       	$("#myModal").modal('show');
@@ -48,7 +84,7 @@
       <script type="text/javascript">
          mapboxgl.accessToken =
              'pk.eyJ1IjoiamFrb2J6aGFvIiwiYSI6ImNpcms2YWsyMzAwMmtmbG5icTFxZ3ZkdncifQ.P9MBej1xacybKcDN_jehvw';
-         let map = new mapboxgl.Map({
+         var map = new mapboxgl.Map({
              container: 'map', // container ID
              style: 'mapbox://styles/mapbox/satellite-streets-v11',
              zoom: 16, // starting zoom
@@ -63,6 +99,7 @@
             [-122.322178, 47.618772] // northeastern corner of the bounds
             ], {bearing: -90});
         });
+
 
         map.on('load', () => {
 
@@ -154,10 +191,7 @@
                 'type': 'symbol',
                 'source': 'chop-landmark',
                 'layout': {
-                    'visibility': 'visible',
-                    "icon-image": '{icon}',
-                    'icon-color': '{color}',
-                    'icon-allow-overlap': true
+
                 }
             });
 
@@ -259,6 +293,207 @@
 
         });
 
+        const stores = {
+            "type": "FeatureCollection",
+            "features": [
+              {
+                "type": "Feature",
+                "properties": {
+                  "icon": "shop-15",
+                  "color": "#188816",
+                  "title": "Northwest Liquor & Wine",
+                  "description": "1605 12th Ave, Seattle, WA 98122"
+                },
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    -122.31708079576491,
+                    47.61547912635008
+                  ]
+                }
+              },
+              {
+                "type": "Feature",
+                "properties": {
+                  "icon": "shop-15",
+                  "color": "#188816",
+                  "title": "Blick Art Materials",
+                  "description": "1600 Broadway, Seattle, WA 98122"
+                },
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    -122.32057705521582,
+                    47.61542804793038
+                  ]
+                }
+              },
+              {
+                "type": "Feature",
+                "properties": {
+                  "icon": "shop-15",
+                  "color": "#188816",
+                  "title": "Mud Bay",
+                  "description": "1514 Broadway, Seattle, WA 98122"
+                },
+                "geometry": {
+                  "type": "Point",
+                  "coordinates": [
+                    -122.32055962085725,
+                    47.614555638899276
+                  ]
+                }
+              }
+            ]
+          }
+        
+
+          for (const feature of stores.features) {
+            // create a HTML element for each feature
+            const el = document.createElement('div');
+            el.className = 'store';
+          
+            // make a marker for each feature and add to the map
+            new mapboxgl.Marker(el)
+            .setLngLat(feature.geometry.coordinates)
+            .setPopup(
+                new mapboxgl.Popup({offset: 25})
+                    .setHTML(
+                        `<h2>${feature.properties.title}</h2>
+                        <p>${feature.properties.description}</p>`
+                    )
+            )
+            .addTo(map);
+          }
+
+          const restaurants = {
+            "type": "FeatureCollection",
+            "features": [
+              {
+            "type": "Feature",
+            "properties": {
+              "icon": "restaurant-15",
+              "color": "#ff0000",
+              "title": "Ramen Danbo",
+              "description": "1222 E Pine St, Seattle, WA 98122"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -122.3160944133997,
+                47.615422849681345
+              ]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "icon": "restaurant-15",
+              "color": "#ff0000",
+              "title": "Sam's Tavern",
+              "description": "1024 E Pike St, Seattle, WA 98122"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -122.31833070516585,
+                47.61425232644285
+              ]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "icon": "restaurant-15",
+              "color": "#ff0000",
+              "title": "Oddfellows Café + Bar",
+              "description": "1525 10th Ave, Seattle, WA 98122"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -122.31964766979218,
+                47.61494212241605
+              ]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {
+              "icon": "restaurant-15",
+              "color": "#ff0000",
+              "title": "Atulea",
+              "description": "1715 12th Ave #100, Seattle, WA 98122"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -122.31716461479665,
+                47.61690839782646
+              ]
+            }
+          }
+          ]
+        }
+
+        for (const feature of restaurants.features) {
+            // create a HTML element for each feature
+            const el = document.createElement('div');
+            el.className = 'restaurant';
+          
+            new mapboxgl.Marker(el)
+            .setLngLat(feature.geometry.coordinates)
+            .setPopup(
+                new mapboxgl.Popup({offset: 25})
+                    .setHTML(
+                        `<h3>${feature.properties.title}</h3>
+                        <p>${feature.properties.description}</p>`
+                    )
+            )
+            .addTo(map);
+          }
+
+        const police_station = {
+            "type": "FeatureCollection",
+            "features": [
+            {
+            "type": "Feature",
+            "properties": {
+              "icon": "police-15",
+              "color": "#004cff",
+              "title": "City of Seattle Police Department",
+              "description": "1519 12th Ave, Seattle, WA 98122"
+            },
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -122.31725715100764,
+                47.614924945431525
+              ]
+            }
+          }
+          ]
+        }
+
+          for (const feature of police_station.features) {
+            // create a HTML element for each feature
+            const el = document.createElement('div');
+            el.className = 'police';
+          
+            // make a marker for each feature and add to the map
+            new mapboxgl.Marker(el)
+            .setLngLat(feature.geometry.coordinates)
+            .setPopup(
+                new mapboxgl.Popup({offset: 25})
+                    .setHTML(
+                        `<h3>${feature.properties.title}</h3>
+                        <p>${feature.properties.description}</p>`
+                    )
+            )
+            .addTo(map);
+          }
+
+
          // After the last frame rendered before the map enters an "idle" state.
          map.on('idle', () => {
              // If these two layers were not added to the map, abort
@@ -320,31 +555,6 @@
                  layers.appendChild(link);
              }
          });
-
-         map.on('click', 'landmark', (e) => {
-            // Copy coordinates array.
-            const title = e.features[0].properties.title;
-            const description = e.features[0].properties.description;
-             
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-             
-            new mapboxgl.Popup()
-                .setHTML(title)
-                .setHTML(description)
-                .addTo(map);
-            });
-             
-            // Change the cursor to a pointer when the mouse is over the places layer.
-            map.on('mouseenter', 'places', () => {
-                map.getCanvas().style.cursor = 'pointer';
-            });
-             
-            // Change it back to a pointer when it leaves.
-            map.on('mouseleave', 'places', () => {
-                map.getCanvas().style.cursor = '';
-            });          
 
                 map.on("click", "Graffiti", (event) => {
                     new mapboxgl.Popup()
