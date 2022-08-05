@@ -73,8 +73,12 @@
     <div id="info" class="d-flex flex-column">
         <h4>Seattle</h4>
         <p id="test">Places Affected by CHOP Zone</p>
-        <div style="text-align: left;"><img src="/assets/restaurant.png" style = "width:25px; height:30px";></div>
-        <p> Text Text Text Text Text Text Text Text Text Text Text</p>
+        <div class="right-text">
+            <p>Restaurant</p>
+        </div>
+        <div class="left-picture">
+            <img src="/assets/restaurant.png" style = "width:25px; height:30px";>
+        </div>
     </div>
    </main>
 
@@ -113,7 +117,7 @@
             * In `addLayer` you will use expressions to set the new
             * layer's paint properties based on these values.
             */
-            'data': 'assets/map.geojson'
+            'data': 'assets/speech_area.geojson'
             });
 
             map.addLayer({

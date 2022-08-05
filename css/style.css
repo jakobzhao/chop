@@ -91,6 +91,16 @@ body {
     border-radius: 5px;
   }
 
+.right-text{
+    width:50%;
+    float:right;
+    display: inline;
+}
+.left-picture{
+    float:left;
+    width:50%;
+}
+
 #test {
     -moz-hyphens:auto;
     -ms-hyphens:auto;
