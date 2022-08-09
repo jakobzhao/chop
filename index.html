@@ -14,7 +14,7 @@
    
 <style>
     .restaurant {
-        background-image: url('/assets/restaurant.png');
+        background-image: url('/assets/restaurant.svg');
         background-size: cover;
         width: 25px;
         height: 25px;
@@ -22,7 +22,7 @@
         cursor: pointer;
       }
       .store {
-        background-image: url('/assets/supermarket.png');
+        background-image: url('/assets/shop.svg');
         background-size: cover;
         width: 25px;
         height: 25px;
@@ -30,7 +30,7 @@
         cursor: pointer;
       }
       .police {
-        background-image: url('/assets/police.png');
+        background-image: url('/assets/police.svg');
         background-size: cover;
         width: 25px;
         height: 25px;
@@ -93,10 +93,57 @@
              container: 'map', // container ID
              style: 'mapbox://styles/mapbox/satellite-streets-v11',
              zoom: 16, // starting zoom
-             pitch: 60,
+             pitch: 75,
              bearing: -90, // bearing in degrees
              center: [-122.319212, 47.616815]// starting center
          });
+
+         let isRotating = true;
+
+         function rotateCamera(timestamp) {
+           // clamp the rotation between 0 -360 degrees
+           // Divide timestamp by 100 to slow rotation to ~10 degrees / sec
+           map.rotateTo((timestamp / 100) % 360, { duration: 0 });
+           // Request the next frame of the animation.
+           if (isRotating !== false) {
+             requestAnimationFrame(rotateCamera);
+           }
+         }
+         
+         class CustomControl {
+             onAdd(map) {
+                 this._map = map;
+                 this._container = document.createElement('button');
+                 this._container.className = 'mapboxgl-ctrl';
+                 this._container.textContent = 'start rotate';
+                 this._container.onclick = () => {
+                   if (this.isRotating) {
+                     isRotating = false;
+                     rotateCamera(false);
+                     this._container.textContent = 'start rotate';
+                   }
+                   else {
+                     isRotating = true;
+                     rotateCamera(0);
+                     this._container.textContent = 'stop rotate';
+                   }
+                   this.isRotating = ! this.isRotating;
+                 }
+                 return this._container;
+             }
+         
+             onRemove() {
+                 this._container.parentNode.removeChild(this._container);
+                 this._map = undefined;
+             }
+         }
+         
+         map.addControl(new mapboxgl.NavigationControl({
+           showCompass: true,
+           visualizePitch: true
+         }));
+         
+         map.addControl(new CustomControl());
          
          document.getElementById('fit').addEventListener('click', () => {
             map.fitBounds([
@@ -104,7 +151,6 @@
             [-122.322178, 47.618772] // northeastern corner of the bounds
             ], {bearing: -90});
         });
-
 
         map.on('load', () => {
 
@@ -144,6 +190,7 @@
          const labelLayerId = layers.find(
          (layer) => layer.type === 'symbol' && layer.layout['text-field']
          ).id;
+         
          
          // The 'building' layer in the Mapbox Streets
          // vector tileset contains building height data
@@ -221,32 +268,7 @@
             
              map.addSource('chop-polygon', {
                  'type': 'geojson',
-                 'data': {
-                     'type': 'Feature',
-                     'geometry': {
-                     'type': 'Polygon',
-                     // These coordinates outline Maine.
-                     "coordinates": [
-                     [
-                       [-122.32006072998045, 47.61887821523188],
-                       [-122.32003927230835, 47.61760539080741],
-                       [-122.32087612152098, 47.617634318979356],
-                       [-122.32085466384888, 47.6164193219776],
-                       [-122.32003927230835, 47.61643378639368],
-                       [-122.32006072998045, 47.61549359102625],
-                       [-122.32089757919312, 47.615435732297605],
-                       [-122.32087612152098, 47.614076033744695],
-                       [-122.3156189918518, 47.61411942892555],
-                       [-122.3156189918518, 47.616535037194176],
-                       [-122.31679916381835, 47.61650610841403],
-                       [-122.31679916381835, 47.61818395120519],
-                       [-122.31780767440794, 47.61815502333736],
-                       [-122.31782913208008, 47.61887821523188],
-                       [-122.32006072998045, 47.61887821523188]
-                       ]
-                     ]
-                 }
-             }
+                 'data': 'assets/chop.geojson'
          });
              map.addLayer({
                  'id': 'CHOP Zone',
