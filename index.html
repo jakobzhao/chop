@@ -387,7 +387,8 @@
                 new mapboxgl.Popup({offset: 25})
                     .setHTML(
                         `<h2>${feature.properties.title}</h2>
-                        <p>${feature.properties.description}</p>`
+                        <p>${feature.properties.description}</p>
+                        <button type='button' onclick=alert('Success')>Comment</button>`
                     )
             )
             .addTo(map);
