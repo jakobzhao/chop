@@ -7,7 +7,8 @@
       <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
       <link rel="stylesheet" href="css/style.css">
       <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-      <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
       <script src="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js"></script>
    </head>
@@ -127,7 +128,12 @@
 
    <body>
     <div class="form-popup" id="myForm">
-      <form action="/action_page.php" class="form-container">
+      <form method='POST'
+      name="comment-form" 
+      action="https://script.google.com/macros/s/AKfycbyy2exN7039SLEH8kO10Dw2G3rOHwXBWiOOXrKPqGBjGmVrVjHIx-Rna2cMXTDv81q-wQ/exec"
+      class="form-container">
+
+        <div if="form_alerts"></div>
         <h2>Comment</h2>
     
         <label for="name"><b>Name</b></label>
@@ -141,15 +147,16 @@
       </form>
     </div>
     
-    <script>
-    function openForm() {
-      document.getElementById("myForm").style.display = "block";
-    }
-    
-    function closeForm() {
-      document.getElementById("myForm").style.display = "none";
-    }
-    </script>
+      <script>
+        function openForm() {
+          document.getElementById("myForm").style.display = "block";
+        }
+        
+        function closeForm() {
+          document.getElementById("myForm").style.display = "none";
+        }
+        </script>
+
    </body>
 
    <body>
