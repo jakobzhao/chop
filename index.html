@@ -194,6 +194,8 @@
              onAdd(map) {
                  this._map = map;
                  this._container = document.createElement('button');
+                 this._container.style.backgroundColor = 'black';
+                 this._container.style.color = 'white';
                  this._container.className = 'mapboxgl-ctrl';
                  this._container.textContent = 'start rotate';
                  this._container.onclick = () => {
@@ -564,7 +566,7 @@
          
              // Enumerate ids of the layers.
              const toggleableLayerIds = ['Drone Image', 'Graffiti', 'CHOP Zone'];
-         
+
              // Set up the corresponding toggle button for each layer.
              for (const id of toggleableLayerIds) {
                  // Skip layers that already have a button set up.
