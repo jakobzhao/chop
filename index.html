@@ -129,6 +129,7 @@
    <body>
     <div class="form-popup" id="myForm">
       <form method='POST'
+      id = "comment_form"
       name="comment-form" 
       action="https://script.google.com/macros/s/AKfycbyy2exN7039SLEH8kO10Dw2G3rOHwXBWiOOXrKPqGBjGmVrVjHIx-Rna2cMXTDv81q-wQ/exec"
       class="form-container">
@@ -146,7 +147,7 @@
         <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
       </form>
     </div>
-    
+
       <script>
         function openForm() {
           document.getElementById("myForm").style.display = "block";
@@ -452,8 +453,6 @@
               }
             ]
           }
-
-        
 
           for (const feature of stores.features) {
             // create a HTML element for each feature
