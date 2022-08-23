@@ -56,6 +56,7 @@ body {
     padding: 0;
     padding: 10px;
     text-decoration: none;
+    border-radius: 15px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
     text-align: center;
 }
@@ -72,12 +73,12 @@ body {
 }
 
 #menu a.active {
-    background-color: #3887be;
+    background-color: #000000;
     color: #ffffff;
 }
 
 #menu a.active:hover {
-    background: #3074a4;
+    background: #000000;
 }
 
 #info {
