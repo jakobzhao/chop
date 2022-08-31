@@ -140,33 +140,39 @@
    <body>
     <div class="form-popup" id="myForm">
       <form method='POST'
-      id = "comment_form"
-      name="comment-form" 
-      action="https://script.google.com/macros/s/AKfycbx2vpKkDhdwmiqA01-C3Z0MNM0XF6VV12RLEGXWBuO8n8wKqN2N4IOHUGk3ZyTer9zWyQ/exec"
-      onsumbit = "handleFormSubmit(this)"
+      id = "comment-form"
+      action="https://sheetdb.io/api/v1/coogkakrw27a5"
       class="form-container">
 
         <div if="form_alerts"></div>
         <h2>Comment</h2>
     
         <label for="name"><b>Name</b></label>
-        <input type="text" placeholder="Enter Name" name="name" required>
+        <input type="text" placeholder="Enter Name" name="data[name]" required>
     
         <label for="comment"><b>Comment</b></label>
-        <input type="text" placeholder="Enter Comment" name="comment" required>
+        <input type="text" placeholder="Enter Comment" name="data[comment]" required>
 
-        <a href="https://www.youtube.com/c/CodeWithCurt">
-          <button type="submit" class="btn">Submit</button>
-        </a>
-        
+        <button type="submit" class="btn">Submit</button> 
         <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
       </form>
     </div>
 
       <script>
-        function handleFormSubmit(formObject) {
-          google.script.run.addData(formObject);
-        }
+        var form = document.getElementById('comment-form');
+        form.addEventListener("submit", e => {
+          e.preventDefault();
+          fetch(form.action, {
+              method : "POST",
+              body: new FormData(document.getElementById("comment-form")),
+          }).then(
+              alert('Success!')
+          ).then((html) => {
+            // you can put any JS code here
+            window.location.href = "http://www.w3schools.com";
+
+          });
+        });
 
         function openForm() {
           document.getElementById("myForm").style.display = "block";
