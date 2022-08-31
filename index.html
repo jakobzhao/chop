@@ -115,14 +115,25 @@
 
    <main>
     <div id="info" class="d-flex flex-column">
-        <h4>Seattle</h4>
-        <p id="test">Places Affected by CHOP Zone</p>
-        <div class="right-text">
-            <p>Restaurant</p>
+      <div class="v4_75">
+        <div class="v1_20"></div>
+        <span class="v1_23">Resturants Affected by CHOP</span>
+        <span class="v1_24">Stores Affected by CHOP</span>
+        <span class="v1_25">Buildings in CHOP Zone</span>
+        <div class="v1_5">
+           <div class="v1_6"></div>
         </div>
-        <div class="left-picture">
-            <img src="/assets/restaurant.png" style = "width:25px; height:30px";>
+        <div class="v1_9">
+           <div class="v1_10"></div>
         </div>
+        <div class="v1_13"></div>
+        <span class="v1_17">Capitol Hill Organized Protest</span>
+        <div class="v1_18"></div>
+        <span class="v1_19">The Capitol Hill Occupied Protest or the Capitol Hill Organized Protest, originally Free Capitol Hill and later the Capitol Hill Autonomous Zone, was an occupation protest and self-declared autonomous zone in the Capitol Hill neighborhood of Seattle, Washington.</span>
+        <div class="v1_21"></div>
+        <span class="v1_22">Police Station in CHOP Zone</span>
+        <span class="v1_26">Political/Community Center & Speech Area</span>
+     </div>
     </div>
    </main>
 
@@ -131,7 +142,8 @@
       <form method='POST'
       id = "comment_form"
       name="comment-form" 
-      action="https://script.google.com/macros/s/AKfycbyy2exN7039SLEH8kO10Dw2G3rOHwXBWiOOXrKPqGBjGmVrVjHIx-Rna2cMXTDv81q-wQ/exec"
+      action="https://script.google.com/macros/s/AKfycbx2vpKkDhdwmiqA01-C3Z0MNM0XF6VV12RLEGXWBuO8n8wKqN2N4IOHUGk3ZyTer9zWyQ/exec"
+      onsumbit = "handleFormSubmit(this)"
       class="form-container">
 
         <div if="form_alerts"></div>
@@ -142,13 +154,20 @@
     
         <label for="comment"><b>Comment</b></label>
         <input type="text" placeholder="Enter Comment" name="comment" required>
-    
-        <button type="submit" class="btn">Submit</button>
+
+        <a href="https://www.youtube.com/c/CodeWithCurt">
+          <button type="submit" class="btn">Submit</button>
+        </a>
+        
         <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
       </form>
     </div>
 
       <script>
+        function handleFormSubmit(formObject) {
+          google.script.run.addData(formObject);
+        }
+
         function openForm() {
           document.getElementById("myForm").style.display = "block";
         }
