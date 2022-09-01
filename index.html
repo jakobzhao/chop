@@ -151,8 +151,8 @@
         <input type="text" placeholder="Enter Name" name="data[name]" required>
     
         <label for="comment"><b>Comment</b></label>
-        <input type="text" placeholder="Enter Comment" name="data[comment]" required>
-
+        <textarea placeholder="Message..." rows="5" name="data[comment]" required></textarea>
+        
         <button type="submit" class="btn">Submit</button> 
         <button type="button" class="btn cancel" onclick="closeForm()">Cancel</button>
       </form>
@@ -200,8 +200,6 @@
              bearing: -90, // bearing in degrees
              center: [-122.319212, 47.616815]// starting center
          });
-
-         
 
          let isRotating = true;
 
@@ -307,13 +305,30 @@
                 }
             });
 
-            
-            map.addSource('chop-graffiti', {
+              map.addSource('chop-graffiti', {
                 'type': 'geojson',
                 'data': 'assets/graffiti_digitize.geojson'
             });
+             
+              map.addLayer({
+                'id': 'poi-labels',
+                'type': 'symbol',
+                'source': 'chop-graffiti',
+                'layout': {
+                  'text-field': ['get', 'Message'],
+                  'text-variable-anchor': ['left'],
+                  'text-radial-offset': 0.5,
+                  'text-justify': 'right',
+                  'text-writing-mode': ['vertical'],
+                },
+                'paint': {
+                  'text-color': "#444",
+                  'text-halo-color': "#fff",
+                  'text-halo-width': 2
+                },
+              });
 
-             map.addLayer({
+              map.addLayer({
                 'id': 'Graffiti',
                 'type': 'fill',
                 'source': 'chop-graffiti',
@@ -323,7 +338,7 @@
                 'paint': {
                     'fill-color': '#0080ff', // blue color fill
                     'fill-opacity': 0.5,
-                    }
+                }
             });
             
              map.addSource('chop-polygon', {
