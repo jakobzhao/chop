@@ -144,195 +144,274 @@ body {
     width: auto;
     z-index: 0;
     }
-    .v4_75 {
-        width: 373px;
-        height: 435px;
-        background: url("../images/v4_75.png");
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-        opacity: 1;
-        position: relative;
-        top: 0px;
-        left: 0px;
-        overflow: hidden;
-      }
-      .v4_74 {
-        width: 361px;
-        height: 435px;
-        background: rgba(255,254,254,1);
-        opacity: 1;
-        position: relative;
-        top: 0px;
-        left: 0px;
-        border: 0.7118320465087891px solid rgba(0,0,0,1);
-        border-radius: 15px;
-        box-shadow: 0px 2.8473281860351562px 2px rgba(0, 0, 0, 0.25);
-        overflow: hidden;
-      }
-      .v1_20 {
-        width: 32px;
-        height: 32px;
-        background: rgba(0,255,209,1);
-        opacity: 1;
-        position: absolute;
-        top: 326px;
-        left: 34px;
-        overflow: hidden;
-      }
-      .v1_23 {
-        width: 202px;
-        color: rgba(0,0,0,1);
-        position: absolute;
-        top: 238px;
-        left: 130px;
-        font-family: Inter;
-        font-weight: Regular;
-        font-size: 14px;
-        opacity: 1;
-        text-align: left;
-      }
-      .v1_24 {
-        width: 202px;
-        color: rgba(0,0,0,1);
-        position: absolute;
-        top: 282px;
-        left: 158px;
-        font-family: Inter;
-        font-weight: Regular;
-        font-size: 14px;
-        opacity: 1;
-        text-align: left;
-      }
-      .v1_25 {
-        width: 202px;
-        color: rgba(0,0,0,1);
-        position: absolute;
-        top: 328px;
-        left: 170px;
-        font-family: Inter;
-        font-weight: Regular;
-        font-size: 14px;
-        opacity: 1;
-        text-align: left;
-      }
-      .v1_5 {
-        width: 35px;
-        height: 35px;
-        background: rgba(255,255,255,1);
-        opacity: 1;
-        position: absolute;
-        top: 178px;
-        left: 33px;
-        overflow: hidden;
-      }
-      .v1_6 {
-        width: 35px;
-        height: 35px;
-        background: url("../assets/police.svg");
-        background-size: 35px;
-        opacity: 1;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-      }
-      .v1_9 {
-        width: 35px;
-        height: 35px;
-        background: rgba(255,255,255,1);
-        opacity: 1;
-        position: absolute;
-        top: 231px;
-        left: 32px;
-        overflow: hidden;
-      }
-      .v1_10 {
-        width: 35px;
-        height: 35px;
-        background: url("../assets/restaurant.svg");
-        background-size: 35px;
-        opacity: 1;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-      }
-      .v1_13 {
-        width: 35px;
-        height: 35px;
-        background: rgba(255,255,255,1);
-        opacity: 1;
-        background-image: url("../assets/shop.svg");
-        background-size: 35px;
-        position: absolute;
-        top: 273px;
-        left: 31px;
-        overflow: hidden;
-      }
-      .v1_17 {
-        width: 301px;
-        color: rgba(0,0,0,1);
-        position: absolute;
-        top: 9px;
-        left: 41px;
-        font-family: Inter;
-        font-weight: Regular;
-        font-size: 21px;
-        opacity: 1;
-        text-align: left;
-      }
-      .v1_18 {
-        width: 64px;
-        height: 64px;
-        background: rgba(215,173,173,1);
-        opacity: 1;
-        position: absolute;
-        top: 65px;
-        left: 21px;
-        border-radius: 50%;
-      }
-      .v1_19 {
-        width: 235px;
-        color: rgba(0,0,0,1);
-        position: absolute;
-        top: 41px;
-        left: 105px;
-        font-family: Inter;
-        font-weight: Regular;
-        font-size: 12px;
-        opacity: 1;
-        text-align: left;
-      }
-      .v1_21 {
-        width: 32px;
-        height: 32px;
-        background: rgba(250,240,2,1);
-        opacity: 1;
-        position: absolute;
-        top: 375px;
-        left: 35px;
-        overflow: hidden;
-      }
-      .v1_22 {
-        width: 202px;
-        color: rgba(0,0,0,1);
-        position: absolute;
-        top: 189px;
-        left: 138px;
-        font-family: Inter;
-        font-weight: Regular;
-        font-size: 14px;
-        opacity: 1;
-        text-align: left;
-      }
-      .v1_26 {
-        width: 202px;
-        color: rgba(0,0,0,1);
-        position: absolute;
-        top: 377px;
-        left: 131px;
-        font-family: Inter;
-        font-weight: Regular;
-        font-size: 14px;
-        opacity: 1;
-        text-align: left;
-      }
+
+  .v4_75 {
+      width: 373px;
+      height: 435px;
+      background: url("../images/v4_75.png");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      opacity: 1;
+      position: relative;
+      top: 0px;
+      left: 0px;
+      overflow: hidden;
+  }
+  .v4_74 {
+      width: 361px;
+      height: 435px;
+      background: rgba(255, 254, 254, 1);
+      opacity: 1;
+      position: relative;
+      top: 0px;
+      left: 0px;
+      border: 0.7118320465087891px solid rgba(0, 0, 0, 1);
+      box-shadow: 0px 2.8473281860351562px 2px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+  }
+  .v1_20 {
+      width: 32px;
+      height: 32px;
+      background: rgba(0, 255, 209, 1);
+      opacity: 1;
+      position: absolute;
+      top: 312px;
+      left: 37px;
+      overflow: hidden;
+  }
+  .v1_23 {
+      width: 202px;
+      color: rgba(0, 0, 0, 1);
+      position: absolute;
+      top: 223px;
+      left: 132px;
+      font-family: Inter;
+      font-weight: Regular;
+      font-size: 14px;
+      opacity: 1;
+      text-align: left;
+  }
+  .v1_24 {
+      width: 202px;
+      color: rgba(0, 0, 0, 1);
+      position: absolute;
+      top: 270px;
+      left: 161px;
+      font-family: Inter;
+      font-weight: Regular;
+      font-size: 14px;
+      opacity: 1;
+      text-align: left;
+  }
+  .v1_25 {
+      width: 202px;
+      color: rgba(0, 0, 0, 1);
+      position: absolute;
+      top: 318px;
+      left: 170px;
+      font-family: Inter;
+      font-weight: Regular;
+      font-size: 14px;
+      opacity: 1;
+      text-align: left;
+  }
+  .v1_5 {
+      width: 35px;
+      height: 35px;
+      background: rgba(255, 255, 255, 1);
+      opacity: 1;
+      position: absolute;
+      top: 165px;
+      left: 33px;
+      overflow: hidden;
+  }
+  .v1_6 {
+    width: 35px;
+    height: 35px;
+    background: url("../assets/police.svg");
+    background-size: 35px;
+    opacity: 1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  .v1_7 {
+      width: 17px;
+      height: 20px;
+      background: rgba(0, 0, 0, 1);
+      opacity: 1;
+      position: absolute;
+      top: 7px;
+      left: 8px;
+      border: 2.8473281860351562px solid rgba(0, 0, 0, 1);
+  }
+  .v1_8 {
+      width: 17px;
+      height: 20px;
+      background: rgba(84, 135, 255, 1);
+      opacity: 1;
+      position: absolute;
+      top: 7px;
+      left: 8px;
+  }
+  .v1_9 {
+      width: 35px;
+      height: 35px;
+      background: rgba(255, 255, 255, 1);
+      opacity: 1;
+      position: absolute;
+      top: 216px;
+      left: 33px;
+      overflow: hidden;
+  }
+  .v1_10 {
+    width: 35px;
+    height: 35px;
+    background: url("../assets/restaurant.svg");
+    background-size: 35px;
+    opacity: 1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+  }
+  .v1_11 {
+      width: 13px;
+      height: 21px;
+      background: rgba(0, 0, 0, 1);
+      opacity: 1;
+      position: absolute;
+      top: 7px;
+      left: 11px;
+      border: 2.8473281860351562px solid rgba(0, 0, 0, 1);
+  }
+  .v1_12 {
+      width: 13px;
+      height: 21px;
+      background: rgba(250, 27, 27, 1);
+      opacity: 1;
+      position: absolute;
+      top: 7px;
+      left: 11px;
+  }
+  .v1_13 {
+      width: 35px;
+      height: 35px;
+      background: rgba(255, 255, 255, 1);
+      opacity: 1;
+      background-image: url("../assets/shop.svg");
+      background-size: 35px;
+      position: absolute;
+      top: 261px;
+      left: 34px;
+      overflow: hidden;
+  }
+  .v1_15 {
+      width: 19px;
+      height: 18px;
+      background: rgba(0, 0, 0, 1);
+      opacity: 1;
+      position: absolute;
+      top: 9px;
+      left: 8px;
+      border: 2.8473281860351562px solid rgba(0, 0, 0, 1);
+  }
+  .v1_16 {
+      width: 19px;
+      height: 18px;
+      background: rgba(25, 153, 23, 1);
+      opacity: 1;
+      position: absolute;
+      top: 9px;
+      left: 8px;
+  }
+  .v1_17 {
+      width: 301px;
+      color: rgba(0, 0, 0, 1);
+      position: absolute;
+      top: 10px;
+      left: 19px;
+      font-family: Inter;
+      font-weight: Regular;
+      font-size: 21px;
+      opacity: 1;
+      text-align: left;
+  }
+  .v1_18 {
+      width: 64px;
+      height: 64px;
+      background: rgba(215, 173, 173, 1);
+      opacity: 1;
+      position: absolute;
+      top: 62px;
+      left: 11px;
+      border-radius: 50%;
+  }
+  .v1_19 {
+      width: 235px;
+      color: rgba(0, 0, 0, 1);
+      position: absolute;
+      top: 41px;
+      left: 91px;
+      font-family: Inter;
+      font-weight: Regular;
+      font-size: 12px;
+      opacity: 1;
+      text-align: left;
+  }
+  .v1_21 {
+      width: 32px;
+      height: 32px;
+      background: rgba(250, 240, 2, 1);
+      opacity: 1;
+      position: absolute;
+      top: 363px;
+      left: 36px;
+      overflow: hidden;
+  }
+  .v1_22 {
+      width: 202px;
+      color: rgba(0, 0, 0, 1);
+      position: absolute;
+      top: 173px;
+      left: 139px;
+      font-family: Inter;
+      font-weight: Regular;
+      font-size: 14px;
+      opacity: 1;
+      text-align: left;
+  }
+  .v19_5 {
+      width: 20px;
+      height: 20px;
+      opacity: 1;
+      background-image: url("../assets/about.svg");
+      background-size: 20px;
+      cursor:pointer;
+      position: absolute;
+      top: 409px;
+      left: 296px;
+  }
+  .v19_3 {
+      width: 20px;
+      height: 19px;
+      opacity: 1;
+      background-image: url("../assets/github.svg");
+      background-size: 20px;
+      cursor:pointer;
+      position: absolute;
+      top: 409px;
+      left: 325px;
+  }
+  .v1_26 {
+      width: 202px;
+      color: rgba(0, 0, 0, 1);
+      position: absolute;
+      top: 361px;
+      left: 131px;
+      font-family: Inter;
+      font-weight: Regular;
+      font-size: 14px;
+      opacity: 1;
+      text-align: left;
+  }
