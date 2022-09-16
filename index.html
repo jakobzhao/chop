@@ -373,6 +373,14 @@
                     'waterway-label'
                  );
 
+              map.on('click', 'CHOP Zone', (e) => {
+                  new mapboxgl.Popup()
+                  .setLngLat(e.lngLat)
+                  .setHTML(e.features[0].properties.name)
+                  .setHTML(`<button class="open-button" onclick="openForm()">Comment</button>`)
+                  .addTo(map);
+                  });
+
             map.addLayer({
                 'id': 'outline',
                 'type': 'line',
