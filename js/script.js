@@ -3,10 +3,17 @@ mapboxgl.accessToken =
 var map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/paulsun8b8/cl6lfeqjx004b15npcok6rosl',
-    zoom: 16, // starting zoom
+    zoom: 17, // starting zoom
     pitch: 75,
-    bearing: -90, // bearing in degrees
+    bearing: 230, // bearing in degrees
     center: [-122.319212, 47.616815] // starting center
+});
+map.fitBounds([
+    [-122.315539, 47.616112], // southwestern corner of the bounds
+    [-122.321178, 47.616872] // northeastern corner of the bounds
+], {
+    bearing: 230,
+    pitch: 75
 });
 
 // Allow map camera to rotate
