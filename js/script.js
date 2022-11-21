@@ -73,8 +73,83 @@ document.getElementById('fit').addEventListener('click', () => {
         bearing: -90
     });
 });
+
+// Add Hovering Effect on Buildings
+map.on('style.load', function() {
+
+    if (map.getSource('composite')) {
+      map.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'type': 'fill-extrusion',
+        'minzoom': 14,
+        'paint': {
+          'fill-extrusion-color': [
+            'case',
+            ['boolean', ['feature-state', 'hover'], false],
+            '#ff0000',
+            '#ddd'
+          ],
+          'fill-extrusion-height': ["number", ["get", "height"], 5],
+          'fill-extrusion-base': ["number", ["get", "min_height"], 0],
+          'fill-extrusion-opacity': 0.3
+        }
+      }, 'road-label');
+    }
+
+    let fHover;
+
+    map.on('mousemove', function(e) {
+      var features = map.queryRenderedFeatures(e.point, {
+        layers: ['3d-buildings']
+      });
+      if (features[0]) {
+        mouseout();
+        mouseover(features[0]);
+      } else {
+        mouseout();
+      }
+
+    });
+
+    map.on('mouseout', function(e) {
+      mouseout();
+    });
+
+    function mouseout() {
+      if (!fHover) return;
+      map.getCanvasContainer().style.cursor = 'default';
+      map.setFeatureState({
+        source: fHover.source,
+        sourceLayer: fHover.sourceLayer,
+        id: fHover.id
+      }, {
+        hover: false
+      });
+
+    }
+
+    function mouseover(feature) {
+      fHover = feature;
+      map.getCanvasContainer().style.cursor = 'pointer';
+
+      map.setFeatureState({
+        source: fHover.source,
+        sourceLayer: fHover.sourceLayer,
+        id: fHover.id
+      }, {
+        hover: true
+      });
+    }
+
+
+  });
+
+
 // Load geospatial datasets and display
 map.on('load', () => {
+
     map.addSource('speech-area', {
         'type': 'geojson',
         /*
