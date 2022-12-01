@@ -74,6 +74,29 @@ document.getElementById('fit').addEventListener('click', () => {
     });
 });
 
+var form = document.getElementById('comment-form');
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  fetch(form.action, {
+      method : "POST",
+      body: new FormData(document.getElementById("comment-form")),
+  }).then(
+      alert('Success!')
+  ).then((html) => {
+    // you can put any JS code here
+    window.location.href = "http://www.w3schools.com";
+
+  });
+});
+
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+
 // Add Hovering Effect on Buildings
 map.on('style.load', function() {
 
@@ -117,6 +140,15 @@ map.on('style.load', function() {
       mouseout();
     });
 
+    map.on('click', function(e) {
+        var latitude = e.latlng.lat;
+        var longitude = e.latlng.lng;
+        document.getElementById("longtitude").value = JSON.stringify(longitude);
+        $('#longtitude').trigger('change');
+        document.getElementById("latitude").value = JSON.stringify(latitude);
+        $('#latitude').trigger('change');
+    });
+
     function mouseout() {
       if (!fHover) return;
       map.getCanvasContainer().style.cursor = 'default';
@@ -147,6 +179,7 @@ map.on('style.load', function() {
   });
 
 
+  
 // Load geospatial datasets and display
 map.on('load', () => {
 
@@ -236,6 +269,7 @@ map.on('load', () => {
             'fill-opacity': 0.5,
         }
     }, 'waterway-label');
+
     // Allow the comment form to pop out once the user click anywhere on CHOP
     map.on('click', 'CHOP Zone', (e) => {
         new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.name).setHTML(`
