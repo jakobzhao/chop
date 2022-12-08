@@ -141,8 +141,8 @@ map.on('style.load', function() {
     });
 
     map.on('click', function(e) {
-        var latitude = e.latlng.lat;
-        var longitude = e.latlng.lng;
+        var latitude = e.lngLat.lat;
+        var longitude = e.lngLat.lng;
         document.getElementById("longtitude").value = JSON.stringify(longitude);
         $('#longtitude').trigger('change');
         document.getElementById("latitude").value = JSON.stringify(latitude);
