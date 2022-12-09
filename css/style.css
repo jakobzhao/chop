@@ -186,9 +186,9 @@ main,
     line-height: normal;
     max-width: 100%;
     overflow: visible;
-    padding: 2px 24px;
+    padding: 2px 25px;
     position: relative;
-    top: 20px;
+    top: 1px;
     margin: 0px auto;
     text-align: center;
     width: auto;
@@ -227,7 +227,7 @@ main,
       opacity: 1;
       position: absolute;
       top: 312px;
-      left: 37px;
+      left: 50px;
       overflow: hidden;
   }
   .v1_23 {
@@ -235,7 +235,7 @@ main,
       color: rgba(0, 0, 0, 1);
       position: absolute;
       top: 223px;
-      left: 132px;
+      left: 150px;
       font-family: Inter;
       font-weight: Regular;
       font-size: 14px;
@@ -247,7 +247,7 @@ main,
       color: rgba(0, 0, 0, 1);
       position: absolute;
       top: 270px;
-      left: 161px;
+      left: 150px;
       font-family: Inter;
       font-weight: Regular;
       font-size: 14px;
@@ -259,7 +259,7 @@ main,
       color: rgba(0, 0, 0, 1);
       position: absolute;
       top: 318px;
-      left: 170px;
+      left: 150px;
       font-family: Inter;
       font-weight: Regular;
       font-size: 14px;
@@ -273,7 +273,7 @@ main,
       opacity: 1;
       position: absolute;
       top: 165px;
-      left: 33px;
+      left: 50px;
       overflow: hidden;
   }
   .v1_6 {
@@ -312,7 +312,7 @@ main,
       opacity: 1;
       position: absolute;
       top: 216px;
-      left: 33px;
+      left: 50px;
       overflow: hidden;
   }
   .v1_10 {
@@ -353,7 +353,7 @@ main,
       background-size: 35px;
       position: absolute;
       top: 261px;
-      left: 34px;
+      left: 50px;
       overflow: hidden;
   }
   .v1_15 {
@@ -388,21 +388,21 @@ main,
       text-align: left;
   }
   .v1_18 {
-      width: 64px;
-      height: 64px;
-      background: rgba(215, 173, 173, 1);
+      width: 100px;
+      height: 90px;
       opacity: 1;
+      background-image: url("../assets/CHOP_icon.png");
+      background-size: 100px;
       position: absolute;
-      top: 62px;
-      left: 11px;
-      border-radius: 50%;
+      top: 50px;
+      left: 20px;
   }
   .v1_19 {
       width: 235px;
       color: rgba(0, 0, 0, 1);
       position: absolute;
       top: 41px;
-      left: 91px;
+      left: 130px;
       font-family: Inter;
       font-weight: Regular;
       font-size: 12px;
@@ -416,7 +416,7 @@ main,
       opacity: 1;
       position: absolute;
       top: 363px;
-      left: 36px;
+      left: 50px;
       overflow: hidden;
   }
   .v1_22 {
@@ -424,7 +424,7 @@ main,
       color: rgba(0, 0, 0, 1);
       position: absolute;
       top: 173px;
-      left: 139px;
+      left: 150px;
       font-family: Inter;
       font-weight: Regular;
       font-size: 14px;
@@ -458,7 +458,7 @@ main,
       color: rgba(0, 0, 0, 1);
       position: absolute;
       top: 361px;
-      left: 131px;
+      left: 150px;
       font-family: Inter;
       font-weight: Regular;
       font-size: 14px;
