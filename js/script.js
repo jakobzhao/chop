@@ -270,11 +270,24 @@ map.on('load', () => {
         }
     }, 'waterway-label');
 
+    map.addLayer({
+        'id': 'CHOP Zone Transparent',
+        'type': 'fill',
+        'source': 'chop-polygon',
+        'layout': {
+        },
+        'paint': {
+            'fill-color': '#0080ff', // blue color fill
+            'fill-opacity': 0.0,
+        }
+    }, 'waterway-label');
+    
     // Allow the comment form to pop out once the user click anywhere on CHOP
-    map.on('click', 'CHOP Zone', (e) => {
-        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.name).setHTML(`
+    map.on('click', 'CHOP Zone Transparent', (e) => {
+        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`
                                       <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
     });
+
     map.addLayer({
         'id': 'outline',
         'type': 'line',
@@ -519,7 +532,8 @@ map.on("click", "Graffiti", (event) => {
                                       <strong>Message:</strong> ${event.features[0].properties.Message}
                       
                                       <hr>
-                                          <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}`).addTo(map);
+                                          <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}
+                                          <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
 });
 // Change the cursor to a pointer when the mouse is over the places layer.
 map.on('mouseenter', 'Graffiti', () => {
