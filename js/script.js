@@ -73,116 +73,8 @@ document.getElementById('fit').addEventListener('click', () => {
         bearing: -90
     });
 });
-
-var form = document.getElementById('comment-form');
-form.addEventListener("submit", e => {
-  e.preventDefault();
-  fetch(form.action, {
-      method : "POST",
-      body: new FormData(document.getElementById("comment-form")),
-  }).then(
-      alert('Success!')
-  ).then((html) => {
-    // you can put any JS code here
-    window.location.href = "http://www.w3schools.com";
-
-  });
-});
-
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
-}
-
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
-}
-
-// Add Hovering Effect on Buildings
-map.on('style.load', function() {
-
-    if (map.getSource('composite')) {
-      map.addLayer({
-        'id': '3d-buildings',
-        'source': 'composite',
-        'source-layer': 'building',
-        'type': 'fill-extrusion',
-        'minzoom': 14,
-        'paint': {
-          'fill-extrusion-color': [
-            'case',
-            ['boolean', ['feature-state', 'hover'], false],
-            '#ff0000',
-            '#ddd'
-          ],
-          'fill-extrusion-height': ["number", ["get", "height"], 5],
-          'fill-extrusion-base': ["number", ["get", "min_height"], 0],
-          'fill-extrusion-opacity': 0.3
-        }
-      }, 'road-label');
-    }
-
-    let fHover;
-
-    map.on('mousemove', function(e) {
-      var features = map.queryRenderedFeatures(e.point, {
-        layers: ['3d-buildings']
-      });
-      if (features[0]) {
-        mouseout();
-        mouseover(features[0]);
-      } else {
-        mouseout();
-      }
-
-    });
-
-    map.on('mouseout', function(e) {
-      mouseout();
-    });
-
-    map.on('click', function(e) {
-        var latitude = e.lngLat.lat;
-        var longitude = e.lngLat.lng;
-        document.getElementById("longtitude").value = JSON.stringify(longitude);
-        $('#longtitude').trigger('change');
-        document.getElementById("latitude").value = JSON.stringify(latitude);
-        $('#latitude').trigger('change');
-    });
-
-    function mouseout() {
-      if (!fHover) return;
-      map.getCanvasContainer().style.cursor = 'default';
-      map.setFeatureState({
-        source: fHover.source,
-        sourceLayer: fHover.sourceLayer,
-        id: fHover.id
-      }, {
-        hover: false
-      });
-
-    }
-
-    function mouseover(feature) {
-      fHover = feature;
-      map.getCanvasContainer().style.cursor = 'pointer';
-
-      map.setFeatureState({
-        source: fHover.source,
-        sourceLayer: fHover.sourceLayer,
-        id: fHover.id
-      }, {
-        hover: true
-      });
-    }
-
-
-  });
-
-
-  
 // Load geospatial datasets and display
 map.on('load', () => {
-
     map.addSource('speech-area', {
         'type': 'geojson',
         /*
@@ -269,25 +161,11 @@ map.on('load', () => {
             'fill-opacity': 0.5,
         }
     }, 'waterway-label');
-
-    map.addLayer({
-        'id': 'CHOP Zone Transparent',
-        'type': 'fill',
-        'source': 'chop-polygon',
-        'layout': {
-        },
-        'paint': {
-            'fill-color': '#0080ff', // blue color fill
-            'fill-opacity': 0.0,
-        }
-    }, 'waterway-label');
-    
     // Allow the comment form to pop out once the user click anywhere on CHOP
-    map.on('click', 'CHOP Zone Transparent', (e) => {
-        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`
+    map.on('click', 'CHOP Zone', (e) => {
+        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.name).setHTML(`
                                       <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
     });
-
     map.addLayer({
         'id': 'outline',
         'type': 'line',
@@ -532,8 +410,7 @@ map.on("click", "Graffiti", (event) => {
                                       <strong>Message:</strong> ${event.features[0].properties.Message}
                       
                                       <hr>
-                                          <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}
-                                          <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
+                                          <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}`).addTo(map);
 });
 // Change the cursor to a pointer when the mouse is over the places layer.
 map.on('mouseenter', 'Graffiti', () => {

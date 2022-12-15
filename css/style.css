@@ -11,19 +11,32 @@ main,
     flex-flow: column;
 }
 
+.welcome-content {
+    font-size:small
+  }
+  
+.welcome-content > img {
+  
+   float:right;
+    width: 200px;
+    margin:5px
+  }
+
 
 #info {
-    position: fixed;
     z-index: 100;
-    bottom: 1em;
-    width: 24em;
-    font-size: 1em;
+    position: fixed;
     left: 1em;
-    /* padding: 6px 8px; */
+    bottom: 1em;
+    width: 30em;
+    padding: 1em 1em;
+    font-size: 1em;
     background: rgba(255, 254, 254, .9);
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
     border-radius: 0.2em;
   }
+
+
 
 /* #features {
     top: 0;
