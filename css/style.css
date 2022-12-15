@@ -37,6 +37,13 @@ main,
   }
 
 
+  #layer-controls{
+    font-size: smaller;
+    /* position:relative; */
+    /* display: inline-block; */
+  }
+
+
 
 /* #features {
     top: 0;

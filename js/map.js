@@ -84,6 +84,21 @@ function rotateCamera(timestamp) {
 map.on('load', () => {
 
 
+
+    map.addSource('drone-tile', {
+        'type': 'raster',
+        'tiles': ['assets/drone_img/{z}/{x}/{y}.png'],
+        'tileSize': 256,
+        'attribution': 'Map tiles designed by Huating Sun'
+    });
+    map.addLayer({
+        'id': 'aerial',
+        'type': 'raster',
+        'source': 'drone-tile'
+    }, 'tunnel-street-minor-low');
+
+
+
     map.addSource('speech-area', {
         'type': 'geojson',
         /*
@@ -122,9 +137,12 @@ map.on('load', () => {
         'source': 'chop-landmark',
         'layout': {}
     });
+
+
+
     map.addSource('chop-graffiti', {
         'type': 'geojson',
-        'data': 'assets/graffiti_digitize.geojson'
+        'data': 'assets/graffiti.geojson'
     });
     // Add graffiti labels
     map.addLayer({
@@ -193,20 +211,7 @@ map.on('load', () => {
     }, 'waterway-label');
 
     
-    map.addSource('drone-tile', {
-        'type': 'raster',
-        'tiles': ['assets/drone_img/{z}/{x}/{y}.png'],
-        'tileSize': 256,
-        'attribution': 'Map tiles designed by Huating Sun'
-    });
-    map.addLayer({
-        'id': 'aerial',
-        'type': 'raster',
-        'layout': {
-            'visibility': 'none'
-        },
-        'source': 'drone-tile',
-    }, 'waterway-label');
+
 
 
 
