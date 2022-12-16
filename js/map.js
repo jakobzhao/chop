@@ -12,6 +12,8 @@ let map = new mapboxgl.Map({
     minZoom: 12,
     bearing: 230, // bearing in degrees
     antialias: true,
+    logoPosition: 'bottom-right',
+    attributionControl: false,
     // center: [-122.319212, 47.616815], // starting center
     bounds: [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038],
     maxBounds: [-123.9180845532934, 47.04828654073975,  -121.14008445949332,48.71935997846136]

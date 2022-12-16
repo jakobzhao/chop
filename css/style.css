@@ -9,6 +9,7 @@ main,
   background: #fff;
   display: flex;
   flex-flow: column;
+  /* overflow-y: hidden; */
 }
 
 .welcome-content {
@@ -57,6 +58,36 @@ input {
   padding-bottom: .75em;
 }
 
+/* attribution panel */
+#attribution {
+  position: absolute;
+  width: 20em;
+  bottom: 0em;
+  left: 0em;
+  text-shadow: 2px 2px 4px gray;
+  transition: left 1s;
+  color: white;
+}
+
+#logos {
+  position: relative;
+  width: 16em;
+  bottom: -4em;
+}
+
+#acknowledge {
+  /* display:flex; */
+  position: relative;
+  text-align: left;
+  font-size: 9pt;
+  left: 6em;
+  bottom: 0em;
+  
+}
+
+#acknowledge > a {
+  color: rgb(165, 166, 204);
+}
 
 #police-legend{
   display: inline-block;
