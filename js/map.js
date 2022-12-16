@@ -123,10 +123,6 @@ map.on('load', () => {
     });
 
 
-
-
-
-
     // // Insert the layer beneath any symbol layer.
     const layers = map.getStyle().layers;
     const labelLayerId = layers.find(
@@ -237,7 +233,7 @@ map.on('load', () => {
             'fill-extrusion-color': '#0080ff',
 
             // Get `fill-extrusion-height` from the source `height` property.
-            'fill-extrusion-height': 2,
+            'fill-extrusion-height': 5,
 
             // Get `fill-extrusion-base` from the source `base_height` property.
             'fill-extrusion-base': 0,
@@ -368,7 +364,7 @@ map.on('load', () => {
     //     (layer) => layer.type === 'symbol' && layer.layout['text-field']
     // ).id;
 
-    hiddenLayers = ["transit-label", 'poi-label']
+    hiddenLayers = ["transit-label", 'road-label']
 
     hiddenLayers.forEach((layer) => {
         map.setLayoutProperty(
