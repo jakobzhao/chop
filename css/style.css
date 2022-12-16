@@ -48,6 +48,20 @@ main,
   border-radius: 0.2em;
 }
 
+#featureInfo {
+  z-index: 100;
+  position: fixed;
+  right: 3.5em;
+  top: .6em;
+  width: 10em;
+  height: 5.4em;
+  padding: 1em 1em;
+  font-size: 1em;
+  background: rgba(255, 254, 254, .9);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  border-radius: 0.2em;
+}
+
 
 input {
   cursor: pointer;
@@ -57,6 +71,10 @@ input {
   font-size: smaller;
   padding-bottom: .75em;
 }
+.mapboxgl-popup {
+  max-width: 400px;
+  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  }
 
 /* attribution panel */
 #attribution {
