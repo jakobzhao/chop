@@ -99,7 +99,10 @@ map.on('load', () => {
     map.addLayer({
         'id': 'aerial',
         'type': 'raster',
-        'source': 'drone-tile'
+        'source': 'drone-tile',
+        'layout': {
+            visibility: "visible",
+          }
     }, 'road-path');
 
 
@@ -185,7 +188,10 @@ map.on('load', () => {
             'fill-extrusion-height': 30,
             'fill-extrusion-base': 0,
             'fill-extrusion-opacity': 0.6
-        }
+        },
+        'layout': {
+            visibility: "visible",
+          }
     }, 'road-label');
 
     //============== boundary area ========================
@@ -213,7 +219,10 @@ map.on('load', () => {
 
             // Make extrusions slightly opaque to see through indoor walls.
             'fill-extrusion-opacity': 0.5
-        }
+        },
+        'layout': {
+            visibility: "visible",
+          }
     }, 'road-label');
 
     //============== core area ========================
@@ -230,7 +239,7 @@ map.on('load', () => {
     });
 
     map.addLayer({
-        'id': 'core',
+        'id': 'speech',
         'type': 'fill-extrusion',
         'source': 'speech-area',
         'paint': {
@@ -242,14 +251,17 @@ map.on('load', () => {
             'fill-extrusion-base': ['get', 'base_height'],
             // Make extrusions slightly opaque to see through indoor walls.
             'fill-extrusion-opacity': 0.5
-        }
+        },
+        'layout': {
+            visibility: "visible",
+          }
     }, 'road-label');
 
 
 
-    map.addSource('chop-graffiti', {
+    map.addSource('chop-graffito', {
         'type': 'geojson',
-        'data': 'assets/graffiti.geojson'
+        'data': 'assets/graffito.geojson'
     });
 
 
@@ -273,9 +285,9 @@ map.on('load', () => {
     // });
 
     map.addLayer({
-        'id': 'graffiti',
+        'id': 'graffito',
         'type': 'fill-extrusion',
-        'source': 'chop-graffiti',
+        'source': 'chop-graffito',
         'layout': {
             'visibility': 'none'
         },
@@ -300,37 +312,23 @@ map.on('load', () => {
     });
 
 
+//    const toggleableLayerIds = ['aerial',  'boundary', 'speech', '3d-police'];
+
+//     toggleableLayerIds.forEach((layerId) => {
+//         document.getElementById(layerId).setAttribute('checked', true);
+//     });
 
 
 
-
-
-
-    // Add police station data
-    const police_station = {
-        "type": "Feature",
-        "properties": {
-            "icon": "police-15",
-            "color": "#004cff",
-            "title": "City of Seattle Police Department",
-            "description": "1519 12th Ave, Seattle, WA 98122"
-        },
-        "geometry": {
-            "type": "Point",
-            "coordinates": [-122.31725715100764,
-                47.614924945431525
-            ]
-        }
-    };
     // create a HTML element for each feature
-    const el = document.createElement('div');
-    el.className = 'police';
-    // make a marker for each feature and add to the map
-    new mapboxgl.Marker(el).setLngLat(police_station.geometry.coordinates).setPopup(new mapboxgl.Popup({
-        offset: 25
-    }).setHTML(`<h2>${police_station.properties.title}</h2>
-                <p>${police_station.properties.description}</p>
-                <button class="open-button" onclick="openForm()">Comment</button>`)).addTo(map);
+    // const el = document.createElement('div');
+    // el.className = 'police';
+    // // make a marker for each feature and add to the map
+    // new mapboxgl.Marker(el).setLngLat(police_station.geometry.coordinates).setPopup(new mapboxgl.Popup({
+    //     offset: 25
+    // }).setHTML(`<h2>${police_station.properties.title}</h2>
+    //             <p>${police_station.properties.description}</p>
+    //             <button class="open-button" onclick="openForm()">Comment</button>`)).addTo(map);
 
 
 
@@ -343,12 +341,17 @@ map.on('load', () => {
 
 
     // When click on Graffiti, it will display the information of the graffiti
-    map.on("click", "Graffiti", (event) => {
+    map.on("click", "graffito", (event) => {
         new mapboxgl.Popup().setLngLat(event.lngLat).setHTML(`
                                       <strong>Message:</strong> ${event.features[0].properties.Message}
                                       <hr>
                                       <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}`).addTo(map);
     });
+
+
+ 
+
+
 
 
 
@@ -359,10 +362,62 @@ map.on('load', () => {
 
 
     // Change the cursor to a pointer when the mouse is over the places layer.
-    map.on('mouseenter', 'Graffiti', () => {
+    map.on('mouseenter', 'graffito', () => {
         map.getCanvas().style.cursor = 'pointer';
     });
     // Change it back to a pointer when it leaves.
-    map.on('mouseleave', 'Graffiti', () => {
+    map.on('mouseleave', 'graffito', () => {
         map.getCanvas().style.cursor = '';
     });
+
+
+
+    // Enumerate ids of the layers.
+    const toggleableLayerIds = ['aerial', 'graffito', 'boundary', 'speech', '3d-police'];
+    // Set up the corresponding toggle button for each layer.
+    for (const id of toggleableLayerIds) {
+        // Skip layers that already have a button set up.
+        // if (document.getElementById(id)) {
+        //     console.log(id);
+        //     continue;
+        // }
+        
+        // Show or hide layer when the toggle is clicked.
+        console.log(id);
+        document.getElementById(id).addEventListener("change", function(e){
+            const clickedLayer = id;
+            // preventDefault() tells the user agent that if the event does not get explicitly handled, 
+            // its default action should not be taken as it normally would be.
+            e.preventDefault();
+            // The stopPropagation() method prevents further propagation of the current event in the capturing 
+            // and bubbling phases. It does not, however, prevent any default behaviors from occurring; 
+            // for instance, clicks on links are still processed. If you want to stop those behaviors, 
+            // see the preventDefault() method.
+            e.stopPropagation();
+            const visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+            // Toggle layer visibility by changing the layout object's visibility property.
+            // if it is currently visible, after the clicking, it will be turned off.
+
+                if (visibility === 'visible') {
+                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                    // this.setAttribute('checked', false);
+    
+                } else { 
+                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                    // this.setAttribute('checked', true);
+                
+                }
+           
+
+
+        });
+
+        // document.getElementById(id).addEventListener("mouseenter", function(e){
+        //    document.body.style.cursor = 'pointer';
+        // });
+
+        // document.getElementById(id).addEventListener("mouseleave", function(e){
+        //     document.body.style.cursor = '';
+        // });
+    
+    }

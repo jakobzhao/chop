@@ -51,10 +51,9 @@ main,
 
   .layer-controls > div {
     font-size: smaller;
-    padding-top:0em !important;
-    padding-bottom:0em !important;
+    padding-top:0em !important; 
+   padding-bottom:0.5em !important;
   }
-
 
 
   /* .form-check   {
