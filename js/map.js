@@ -312,14 +312,6 @@ map.on('load', () => {
     });
 
 
-//    const toggleableLayerIds = ['aerial',  'boundary', 'speech', '3d-police'];
-
-//     toggleableLayerIds.forEach((layerId) => {
-//         document.getElementById(layerId).setAttribute('checked', true);
-//     });
-
-
-
     // create a HTML element for each feature
     // const el = document.createElement('div');
     // el.className = 'police';
@@ -347,11 +339,6 @@ map.on('load', () => {
                                       <hr>
                                       <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}`).addTo(map);
     });
-
-
- 
-
-
 
 
 
@@ -412,12 +399,12 @@ map.on('load', () => {
 
         });
 
-        // document.getElementById(id).addEventListener("mouseenter", function(e){
-        //    document.body.style.cursor = 'pointer';
-        // });
+        document.getElementById(id).addEventListener("mouseenter", function(e){
+           document.body.style.cursor = 'pointer';
+        });
 
-        // document.getElementById(id).addEventListener("mouseleave", function(e){
-        //     document.body.style.cursor = '';
-        // });
+        document.getElementById(id).addEventListener("mouseleave", function(e){
+            document.body.style.cursor = '';
+        });
     
     }

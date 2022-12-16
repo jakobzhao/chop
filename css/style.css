@@ -2,157 +2,152 @@ html,
 body,
 main,
 #map {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background: #fff;
-    display: flex;
-    flex-flow: column;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  display: flex;
+  flex-flow: column;
 }
 
 .welcome-content {
-    font-size:small
-  }
-  
-.welcome-content > img {
-  
-   float:right;
-    width: 200px;
-    margin:5px
-  }
+  font-size: small
+}
 
-  #loader {
-    position: fixed;
-    width: 100%;
-  
-    height: 100vh;
-    top: 0;
-    bottom: 0;
-    z-index: 9999;
-    background: url("../img/loading.gif") 50% 50% no-repeat white;
-    opacity: 1;
-  }
-  
+.welcome-content>img {
+
+  float: right;
+  width: 200px;
+  margin: 5px
+}
+
+#loader {
+  position: fixed;
+  width: 100%;
+
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: url("../img/loading.gif") 50% 50% no-repeat white;
+  opacity: 1;
+}
+
 #info {
-    z-index: 100;
-    position: fixed;
-    left: 1em;
-    top: 1em;
-    width: 30em;
-    padding: 1em 1em;
-    font-size: 1em;
-    background: rgba(255, 254, 254, .9);
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
-    border-radius: 0.2em;
-  }
+  z-index: 100;
+  position: fixed;
+  left: 1em;
+  top: 1em;
+  width: 33em;
+  padding: 1em 1em;
+  font-size: 1em;
+  background: rgba(255, 254, 254, .9);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  border-radius: 0.2em;
+}
+
+
+input {
+  cursor: pointer;
+}
+
+.layer-controls>div {
+  font-size: smaller;
+  padding-bottom: .75em;
+}
+
+#police-legend{
+  display: inline-block;
+  border-radius: 20%;
+  width: 15px;
+  height: 10px;
+  margin-right: 5px;
+  background-color: red;
+}
+
+#speech-legend{
+  display: inline-block;
+  border-radius: 20%;
+  width: 15px;
+  height: 10px;
+  margin-right: 5px;
+  background-color: orange;
+}
+
+#boundary-legend{
+  display: inline-block;
+  border-radius: 20%;
+  width: 15px;
+  height: 10px;
+  margin-right: 5px;
+  background-color: blue;
+}
+
+#graffito-legend{
+  display: inline-block;
+  border-radius: 20%;
+  width: 15px;
+  height: 10px;
+  margin-right: 5px;
+  background-color: yellow;
+}
 
 
 
-  .layer-controls > div {
-    font-size: smaller;
-    padding-top:0em !important; 
-   padding-bottom:0.5em !important;
-  }
 
+.mapboxgl-popup {
+  max-width: 200px;
+}
 
-  /* .form-check   {
-    padding: 1em;
-    margin: 0;
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}
 
-  }
+.form-popup {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
 
-  .active  {
-    border: 0;
+.form-container {
+  max-width: 300px;
+  padding: 10px;
+  background-color: white;
+}
 
-  } */
+.form-container input[type=text],
+.form-container input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
 
-/* #features {
-    top: 0;
-    height: 100px;
-    margin-top: 20px;
-    width: 300px;
-} */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
 
-.restaurant {
-    background-image: url('../assets/restaurant.svg');
-    background-size: cover;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
+.form-container .cancel {
+  background-color: red;
+}
 
-  .store {
-    background-image: url('../assets/shop.svg');
-    background-size: cover;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  .police {
-    background-image: url('../assets/police.svg');
-    background-size: cover;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  .mapboxgl-popup {
-    max-width: 200px;
-  }
-
-  .mapboxgl-popup-content {
-    text-align: center;
-    font-family: 'Open Sans', sans-serif;
-  }
-
-  .form-popup {
-    display: none;
-    position: fixed;
-    bottom: 0;
-    right: 15px;
-    border: 3px solid #f1f1f1;
-    z-index: 9;
-  }
-
-  .form-container {
-    max-width: 300px;
-    padding: 10px;
-    background-color: white;
-  }
-
-  .form-container input[type=text],
-  .form-container input[type=password] {
-    width: 100%;
-    padding: 15px;
-    margin: 5px 0 22px 0;
-    border: none;
-    background: #f1f1f1;
-  }
-
-  .form-container .btn {
-    background-color: #04AA6D;
-    color: white;
-    padding: 16px 20px;
-    border: none;
-    cursor: pointer;
-    width: 100%;
-    margin-bottom: 10px;
-    opacity: 0.8;
-  }
-
-  .form-container .cancel {
-    background-color: red;
-  }
-
-  .form-container .btn:hover,
-  .open-button:hover {
-    opacity: 1;
-  }
+.form-container .btn:hover,
+.open-button:hover {
+  opacity: 1;
+}
 
 
 
@@ -161,31 +156,31 @@ main,
 
 
 #fit {
-    align-items: center;
-    appearance: none;
-    background-color: #fff;
-    border-radius: 24px;
-    border-style: none;
-    box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px,rgba(0, 0, 0, .14) 0 6px 10px 0,rgba(0, 0, 0, .12) 0 1px 18px 0;
-    box-sizing: border-box;
-    color: #3c4043;
-    cursor: pointer;
-    display: block;
-    fill: currentcolor;
-    font-family: "Google Sans",Roboto,Arial,sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    height: 48px;
-    justify-content: center;
-    letter-spacing: .25px;
-    line-height: normal;
-    max-width: 100%;
-    overflow: visible;
-    padding: 2px 25px;
-    position: relative;
-    top: 1px;
-    margin: 0px auto;
-    text-align: center;
-    width: auto;
-    z-index: 0;
-    }
+  align-items: center;
+  appearance: none;
+  background-color: #fff;
+  border-radius: 24px;
+  border-style: none;
+  box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0;
+  box-sizing: border-box;
+  color: #3c4043;
+  cursor: pointer;
+  display: block;
+  fill: currentcolor;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  justify-content: center;
+  letter-spacing: .25px;
+  line-height: normal;
+  max-width: 100%;
+  overflow: visible;
+  padding: 2px 25px;
+  position: relative;
+  top: 1px;
+  margin: 0px auto;
+  text-align: center;
+  width: auto;
+  z-index: 0;
+}
