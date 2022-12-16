@@ -363,40 +363,19 @@ map.on('load', () => {
     const toggleableLayerIds = ['aerial', 'graffito', 'boundary', 'speech', '3d-police'];
     // Set up the corresponding toggle button for each layer.
     for (const id of toggleableLayerIds) {
-        // Skip layers that already have a button set up.
-        // if (document.getElementById(id)) {
-        //     console.log(id);
-        //     continue;
-        // }
         
         // Show or hide layer when the toggle is clicked.
         console.log(id);
         document.getElementById(id).addEventListener("change", function(e){
             const clickedLayer = id;
-            // preventDefault() tells the user agent that if the event does not get explicitly handled, 
-            // its default action should not be taken as it normally would be.
             e.preventDefault();
-            // The stopPropagation() method prevents further propagation of the current event in the capturing 
-            // and bubbling phases. It does not, however, prevent any default behaviors from occurring; 
-            // for instance, clicks on links are still processed. If you want to stop those behaviors, 
-            // see the preventDefault() method.
             e.stopPropagation();
             const visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-            // Toggle layer visibility by changing the layout object's visibility property.
-            // if it is currently visible, after the clicking, it will be turned off.
-
                 if (visibility === 'visible') {
                     map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                    // this.setAttribute('checked', false);
-    
                 } else { 
                     map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-                    // this.setAttribute('checked', true);
-                
                 }
-           
-
-
         });
 
         document.getElementById(id).addEventListener("mouseenter", function(e){
@@ -408,3 +387,13 @@ map.on('load', () => {
         });
     
     }
+
+
+
+    document.getElementById(id).addEventListener("mouseenter", function(e){
+        document.body.style.cursor = 'pointer';
+     });
+
+     document.getElementById(id).addEventListener("mouseleave", function(e){
+         document.body.style.cursor = '';
+     });
