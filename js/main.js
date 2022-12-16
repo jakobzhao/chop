@@ -35,14 +35,6 @@
             localStorage.setItem('popState', 'notShown');
         })
 
-        //loader
-        // hide the loader.
-        $('#loader').fadeOut("slow");
-        //welcome panel
-
-
-
-
 
         
         // Enumerate ids of the layers.

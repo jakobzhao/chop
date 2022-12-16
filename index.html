@@ -2,65 +2,138 @@
 <html lang="en">
 
 <head>
-  <title>CHOP</title>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Map of Capitol Hill Organized Protest(CHOP)</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
-  <link href="https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
 
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-  <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
-  <script src="js/script.js" defer></script>
+    <script src="js/main.js" defer></script>
 </head>
 
 <body>
-  <main>
-    <div id="info" class="d-flex flex-column">
-      <div class="v4_75">
-        <div class="v1_20"></div>
-        <span class="v1_23">Restaurant</span>
-        <span class="v1_24">Store</span>
-        <span class="v1_25">Building</span>
-        <div class="v1_5">
-          <div class="v1_6"></div>
-        </div>
-        <div class="v1_9">
-          <div class="v1_10"></div>
-        </div>
-        <div class="v1_13"></div>
-        <span class="v1_17">Capitol Hill Organized Protest</span>
-        <div class="v1_18"></div>
-        <span class="v1_19"> The Capitol Hill Occupied Protest or the Capitol Hill Organized Protest, originally Free
-          Capitol Hill and later the Capitol Hill Autonomous Zone, was an occupation protest and self-declared
-          autonomous zone in the Capitol Hill neighborhood of Seattle, Washington. </span>
-        <div class="v1_21"></div>
-        <span class="v1_22">Police Station in CHOP Zone</span>
-        <div class="v19_5">
-          <a title="About Window">
-            <img src="assets/about.svg" alt="" width="850" data-toggle="modal" data-target="#myModal" />
-          </a>
-        </div>
-        <div class="v19_3">
-          <a href="https://github.com/jakobzhao/chop" target="_blank" title="GitHub Source">
-            <img src="assets/github.svg" alt="" width="850">
-          </a>
-        </div>
-        <span class="v1_26">Political/Community Center & Speech Area</span>
-      </div>
-    
+    <main>
+        <!-- LOADER -->
+        <div id="loader"></div>
+        <!-- Welcome Panel -->
+        <div id="disclaimer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Welcome！</h5>
+                    </div>
+                    <div class="modal-body welcome-content">
+                        <img src="img/logo.png"></img>
+                        Welcome to the map of capital hill organization Protest. On this map, you can:
+                        <ul>
+                            <li> View an interactive map of historical LGBTQ+ venues in a small but growing number of US
+                                localities over time;;
+                            </li>
+                            <li> Contribute to this database of LGBTQ+ venues with your local knowledge or experiences;
+                                and</li>
+                            <li> Download the data for your future projects.</li>
+                        </ul>
+                        If you are visiting this website for the first time or want to know how to use this platform,
+                        please <a target="_self" href="about.html">click here</a> or refer to the about button on the
+                        top right for more
+                        detailed instruction.
 
-      <div id="menu"></div>
-      <button id="fit">Click to View CHOP Zone</button>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-switch" id="nextTimeSwitcher">
+                            <input class="form-check-input" type="checkbox">
+                        </div>
+                        <label id="nextTimeLabel">Don't show this info again.</label>
 
+                        <button id="disclaimer-close" type="button" class="btn btn-primary"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="info" class="d-flex flex-column">
+            <h3>Capitol Hill Organized Protest </h3>
+            <h6><i>(under development)</i></h6>
+            <p>
+                The Capitol Hill Occupied Protest or the Capitol Hill Organized Protest, originally Free
+                Capitol Hill and later the Capitol Hill Autonomous Zone, was an occupation protest and self-declared
+                autonomous zone in the Capitol Hill neighborhood of Seattle, Washington. </p>
+            <div class="layer-controls d-flex flex-sm-row">
+                <div class="form-check form-check-inline p-4">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Police Dept.</label>
+                  </div>
+                  <div class="form-check form-check-inline p-4">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Speech Area</label>
+                  </div>
+                  <div class="form-check form-check-inline p-4">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+                    <label class="form-check-label" for="inlineCheckbox2">CHOP Boundary</label>
+                  </div>
 
+                <!-- <div >
+                    <input class="form-check-input" type="checkbox" id="aerial" value="aerial" checked>
+                    <label class="form-check-label" >Drone Photo</label>
+                </div>
+                <div >
+                    <input class=" form-check-input" type="checkbox" id="graffiti" value="graffiti" checked>
+                    <label class="form-check-label" >Graffiti Highlighters</label>
+                </div>
+                <div >
+                    <input class=" form-check-input" type="checkbox" id="core" value="core"  >
+                    <label class="form-check-label"">Police Department</label>
+                </div>
+                <div >
+                    <input class=" form-check-input" type="checkbox" id="core" value="core"  >
+                    <label class="form-check-label"">Landmarks</label>
+                </div>
+                <div >
+                    <input class=" form-check-input" type="checkbox" id="boundary" value="boundary" >
+                    <label class="form-check-label" ">CHP Boundary</label>
+                </div>
+                <div >
+                    <input class=" form-check-input" type="checkbox" id="core" value="core"  >
+                    <label class="form-check-label"">Speech Area</label>
+                </div> -->
+            </div>
 
-    </div>
-    <div id='map'></div>
-  </main>
+            <div class="layer-controls d-flex flex-row">
+                <div class="form-check form-check-inline p-4">
+                    <input class="form-check-input" type="checkbox" id="aerial" value="aerial" checked>
+                    <i></i><label class="form-check-label" for="aerial">Drone Photo</label>
+                  </div>
+                  <div class="form-check form-check-inline p-4">
+                    <input class="form-check-input" type="checkbox" id="graffiti" value="graffiti">
+                    <label class="form-check-label" for="graffiti">Graffito Highlighter</label>
+                  </div>
+            </div>
+
+      
+            <p>
+                <a title="About Window">
+                    <img src="assets/about.svg" alt="" width="25" data-toggle="modal" data-target="#myModal" />
+                </a>
+
+                <a href="https://github.com/jakobzhao/chop" target="_blank" title="GitHub Source">
+                    <img src="assets/github.svg" alt="" width="25">
+                </a>
+            </p>
+            <div id="menu"></div>
+            <!-- <button id="fit">Click to View CHOP Zone</button> -->
+        </div>
+
+        <div id="map"></div>
+    </main>
+    <script src="js/map.js" defer></script>
 </body>
 
 </html>

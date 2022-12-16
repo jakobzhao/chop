@@ -9,10 +9,12 @@ let map = new mapboxgl.Map({
     // style: 'mapbox://styles/mapbox/satellite-v9',
     // zoom: 17, // starting zoom
     pitch: 75,
+    minZoom: 12,
     bearing: 230, // bearing in degrees
     antialias: true,
     // center: [-122.319212, 47.616815], // starting center
-    bounds: [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038]
+    bounds: [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038],
+    maxBounds: [-123.9180845532934, 47.04828654073975,  -121.14008445949332,48.71935997846136]
 });
 
 map.addControl(new mapboxgl.NavigationControl({
@@ -106,8 +108,6 @@ map.on('load', () => {
 
     //=============outside mask =========================
 
-
-
     map.addSource('mask', {
         'type': 'geojson',
         'data': 'assets/outsidemask.geojson'
@@ -118,7 +118,7 @@ map.on('load', () => {
         'source': 'mask',
         'paint': {
             'fill-color': 'black',
-            'fill-opacity': 0.8,
+            'fill-opacity': 0.7,
         }
     });
 
@@ -129,45 +129,7 @@ map.on('load', () => {
         (layer) => layer.type === 'symbol' && layer.layout['text-field']
     ).id;
 
-    // The 'building' layer in the Mapbox Streets
-    // vector tileset contains building height data
-    // from OpenStreetMap.
-    // map.addLayer({
-    //         'id': 'add-3d-buildings',
-    //         'source': 'composite',
-    //         'source-layer': 'building',
-    //         'filter': ['==', 'extrude', 'true'],
-    //         'type': 'fill-extrusion',
-    //         'minzoom': 15,
-    //         'paint': {
-    //             'fill-extrusion-color': '#111',
 
-    //             // Use an 'interpolate' expression to
-    //             // add a smooth transition effect to
-    //             // the buildings as the user zooms in.
-    //             'fill-extrusion-height': [
-    //                 'interpolate',
-    //                 ['linear'],
-    //                 ['zoom'],
-    //                 15,
-    //                 0,
-    //                 15.05,
-    //                 ['get', 'height']
-    //             ],
-    //             'fill-extrusion-base': [
-    //                 'interpolate',
-    //                 ['linear'],
-    //                 ['zoom'],
-    //                 15,
-    //                 0,
-    //                 15.05,
-    //                 ['get', 'min_height']
-    //             ],
-    //             'fill-extrusion-opacity': 0.6
-    //         }
-    //     },
-    //     labelLayerId
-    // );
 
 
 
@@ -190,7 +152,18 @@ map.on('load', () => {
             // Use an 'interpolate' expression to
             // add a smooth transition effect to
             // the buildings as the user zooms in.
-            'fill-extrusion-height': ['get', 'eheight'],
+            // 'fill-extrusion-height': ['get', 'eheight'],
+
+            'fill-extrusion-height': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                15,
+                0,
+                15.05,
+                ['get', 'eheight']
+                ],
+
             'fill-extrusion-base': 0,
             'fill-extrusion-opacity': 0.8
         }
@@ -225,9 +198,9 @@ map.on('load', () => {
         'id': 'boundary',
         'type': 'fill-extrusion',
         'source': 'chop-polygon',
-        'layout': {
-            'visibility': 'none'
-        },
+        // 'layout': {
+        //     'visibility': 'none'
+        // },
         'paint': {
             // Get the `fill-extrusion-color` from the source `color` property.
             'fill-extrusion-color': '#0080ff',
@@ -280,11 +253,6 @@ map.on('load', () => {
     });
 
 
-
-
-
-
-
     // Add graffiti labels
     // map.addLayer({
     //     'id': 'poi-labels',
@@ -312,57 +280,14 @@ map.on('load', () => {
             'visibility': 'none'
         },
         'paint': {
-            // Get the `fill-extrusion-color` from the source `color` property.
-            //  'fill-extrusion-color':" ['get', 'Color']",
             'fill-extrusion-color': 'yellow',
-
-            // Get `fill-extrusion-height` from the source `height` property.
             'fill-extrusion-height': 0.4,
-
-            // Get `fill-extrusion-base` from the source `base_height` property.
             'fill-extrusion-base': 0,
-
-            // Make extrusions slightly opaque to see through indoor walls.
             'fill-extrusion-opacity': 0.3
         }
-    });
+    }, 'road-label');
 
 
-    //==============landmarks========================
-    map.addSource('chop-landmark', {
-        'type': 'geojson',
-        'data': 'assets/chop-landmark.geojson'
-    });
-    map.addLayer({
-        'id': 'chop-landmark',
-        'type': 'symbol',
-        'source': 'chop-landmark',
-        'layout': {}
-    });
-
-
-
-    // Allow the comment form to pop out once the user click anywhere on CHOP
-    map.on('click', 'CHOP Zone', (e) => {
-        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.name).setHTML(`
-                                      <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
-    });
-    // map.addLayer({
-    //     'id': 'outline',
-    //     'type': 'line',
-    //     'source': 'chop-polygon',
-    //     'layout': {},
-    //     'paint': {
-    //         'line-color': '#000',
-    //         'line-width': 3
-    //     }
-    // }, 'waterway-label');
-
-
-    // const layers = map.getStyle().layers;
-    // const labelLayerId = layers.find(
-    //     (layer) => layer.type === 'symbol' && layer.layout['text-field']
-    // ).id;
 
     hiddenLayers = ["transit-label", 'road-label']
 
@@ -376,200 +301,68 @@ map.on('load', () => {
 
 
 
-});
-
-
-// // Add data of shops affected by CHOP
-// const stores = {
-//     "type": "FeatureCollection",
-//     "features": [{
-//         "type": "Feature",
-//         "properties": {
-//             "icon": "shop-15",
-//             "color": "#188816",
-//             "title": "Northwest Liquor & Wine",
-//             "description": "1605 12th Ave, Seattle, WA 98122"
-//         },
-//         "geometry": {
-//             "type": "Point",
-//             "coordinates": [-122.31708079576491,
-//                 47.61547912635008
-//             ]
-//         }
-//     }, {
-//         "type": "Feature",
-//         "properties": {
-//             "icon": "shop-15",
-//             "color": "#188816",
-//             "title": "Blick Art Materials",
-//             "description": "1600 Broadway, Seattle, WA 98122"
-//         },
-//         "geometry": {
-//             "type": "Point",
-//             "coordinates": [-122.32057705521582,
-//                 47.61542804793038
-//             ]
-//         }
-//     }, {
-//         "type": "Feature",
-//         "properties": {
-//             "icon": "shop-15",
-//             "color": "#188816",
-//             "title": "Mud Bay",
-//             "description": "1514 Broadway, Seattle, WA 98122"
-//         },
-//         "geometry": {
-//             "type": "Point",
-//             "coordinates": [-122.32055962085725,
-//                 47.614555638899276
-//             ]
-//         }
-//     }]
-// }
-// // Allow user to comment and comment once click on icons
-// for (const feature of stores.features) {
-//     // create a HTML element for each feature
-//     const el = document.createElement('div');
-//     el.className = 'store';
-//     // make a marker for each feature and add to the map
-//     new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).setPopup(new mapboxgl.Popup({
-//         offset: 25
-//     }).setHTML(`
-//                                       <h2>${feature.properties.title}</h2>
-//                                       <p>${feature.properties.description}</p>
-//                                       <button class="open-button" onclick="openForm()">Comment</button>`)).addTo(map);
-// }
-// // Add restaurants data 
-// const restaurants = {
-//     "type": "FeatureCollection",
-//     "features": [{
-//         "type": "Feature",
-//         "properties": {
-//             "icon": "restaurant-15",
-//             "color": "#ff0000",
-//             "title": "Ramen Danbo",
-//             "description": "1222 E Pine St, Seattle, WA 98122"
-//         },
-//         "geometry": {
-//             "type": "Point",
-//             "coordinates": [-122.3160944133997,
-//                 47.615422849681345
-//             ]
-//         }
-//     }, {
-//         "type": "Feature",
-//         "properties": {
-//             "icon": "restaurant-15",
-//             "color": "#ff0000",
-//             "title": "Sam's Tavern",
-//             "description": "1024 E Pike St, Seattle, WA 98122"
-//         },
-//         "geometry": {
-//             "type": "Point",
-//             "coordinates": [-122.31833070516585,
-//                 47.61425232644285
-//             ]
-//         }
-//     }, {
-//         "type": "Feature",
-//         "properties": {
-//             "icon": "restaurant-15",
-//             "color": "#ff0000",
-//             "title": "Oddfellows Café + Bar",
-//             "description": "1525 10th Ave, Seattle, WA 98122"
-//         },
-//         "geometry": {
-//             "type": "Point",
-//             "coordinates": [-122.31964766979218,
-//                 47.61494212241605
-//             ]
-//         }
-//     }, {
-//         "type": "Feature",
-//         "properties": {
-//             "icon": "restaurant-15",
-//             "color": "#ff0000",
-//             "title": "Atulea",
-//             "description": "1715 12th Ave #100, Seattle, WA 98122"
-//         },
-//         "geometry": {
-//             "type": "Point",
-//             "coordinates": [-122.31716461479665,
-//                 47.61690839782646
-//             ]
-//         }
-//     }]
-// }
-
-// // User can click on icons to comment or view information
-// for (const feature of restaurants.features) {
-//     // create a HTML element for each feature
-//     const el = document.createElement('div');
-//     el.className = 'restaurant';
-//     new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).setPopup(new mapboxgl.Popup({
-//         offset: 25
-//     }).setHTML(`
-//                                       <h2>${feature.properties.title}</h2>
-//                                       <p>${feature.properties.description}</p>
-//                                       <button class="open-button" onclick="openForm()">Comment</button>`)).addTo(map);
-// }
-// // Add police station data
-// const police_station = {
-//     "type": "FeatureCollection",
-//     "features": [{
-//         "type": "Feature",
-//         "properties": {
-//             "icon": "police-15",
-//             "color": "#004cff",
-//             "title": "City of Seattle Police Department",
-//             "description": "1519 12th Ave, Seattle, WA 98122"
-//         },
-//         "geometry": {
-//             "type": "Point",
-//             "coordinates": [-122.31725715100764,
-//                 47.614924945431525
-//             ]
-//         }
-//     }]
-// }
-// // User can click on icon to comment and view information
-// for (const feature of police_station.features) {
-//     // create a HTML element for each feature
-//     const el = document.createElement('div');
-//     el.className = 'police';
-//     // make a marker for each feature and add to the map
-//     new mapboxgl.Marker(el).setLngLat(feature.geometry.coordinates).setPopup(new mapboxgl.Popup({
-//         offset: 25
-//     }).setHTML(`
-//                                       <h2>${feature.properties.title}</h2>
-//                                       <p>${feature.properties.description}</p>
-//                                       <button class="open-button" onclick="openForm()">Comment</button>`)).addTo(map);
-// }
-
-
-
-
-// After the last frame rendered before the map enters an "idle" state.
 
 
 
 
 
+    // Add police station data
+    const police_station = {
+        "type": "Feature",
+        "properties": {
+            "icon": "police-15",
+            "color": "#004cff",
+            "title": "City of Seattle Police Department",
+            "description": "1519 12th Ave, Seattle, WA 98122"
+        },
+        "geometry": {
+            "type": "Point",
+            "coordinates": [-122.31725715100764,
+                47.614924945431525
+            ]
+        }
+    };
+    // create a HTML element for each feature
+    const el = document.createElement('div');
+    el.className = 'police';
+    // make a marker for each feature and add to the map
+    new mapboxgl.Marker(el).setLngLat(police_station.geometry.coordinates).setPopup(new mapboxgl.Popup({
+        offset: 25
+    }).setHTML(`<h2>${police_station.properties.title}</h2>
+                <p>${police_station.properties.description}</p>
+                <button class="open-button" onclick="openForm()">Comment</button>`)).addTo(map);
 
 
-// When click on Graffiti, it will display the information of the graffiti
-map.on("click", "Graffiti", (event) => {
-    new mapboxgl.Popup().setLngLat(event.lngLat).setHTML(`
+
+    // Allow the comment form to pop out once the user click anywhere on CHOP
+    map.on('click', 'CHOP Zone', (e) => {
+        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.name).setHTML(`
+                                      <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
+    });
+
+
+
+    // When click on Graffiti, it will display the information of the graffiti
+    map.on("click", "Graffiti", (event) => {
+        new mapboxgl.Popup().setLngLat(event.lngLat).setHTML(`
                                       <strong>Message:</strong> ${event.features[0].properties.Message}
-                      
                                       <hr>
-                                          <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}`).addTo(map);
+                                      <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}`).addTo(map);
+    });
+
+
+
+    $('#loader').fadeOut("slow");
+
 });
-// Change the cursor to a pointer when the mouse is over the places layer.
-map.on('mouseenter', 'Graffiti', () => {
-    map.getCanvas().style.cursor = 'pointer';
-});
-// Change it back to a pointer when it leaves.
-map.on('mouseleave', 'Graffiti', () => {
-    map.getCanvas().style.cursor = '';
-});
+
+
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    map.on('mouseenter', 'Graffiti', () => {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'Graffiti', () => {
+        map.getCanvas().style.cursor = '';
+    });
