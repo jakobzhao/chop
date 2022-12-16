@@ -2,26 +2,47 @@ mapboxgl.accessToken =
     'pk.eyJ1IjoicGF1bHN1bjhiOCIsImEiOiJjbDJ1MGs4NGEwNDVsM2RxcXQ2anFzcnV5In0.p0vwA6m487mqnwtYhoiMbw';
 let map = new mapboxgl.Map({
     container: 'map', // container ID
+    style: 'mapbox://styles/mapbox/satellite-streets-v12',
     // style: 'mapbox://styles/paulsun8b8/cl6lfeqjx004b15npcok6rosl',
     // style: 'mapbox://styles/mapbox/light-v11',
     // style: 'mapbox://styles/mapbox/streets-v12',
-    style: 'mapbox://styles/mapbox/satellite-streets-v12',
     // style: 'mapbox://styles/mapbox/satellite-v9',
     // zoom: 17, // starting zoom
-    pitch: 75,
+    // center: [-122.319212, 47.616815], // starting center
+    bounds: [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038],
+    maxBounds: [-123.9180845532934, 47.04828654073975, -121.14008445949332, 48.71935997846136],
     minZoom: 12,
-    bearing: 230, // bearing in degrees
+    maxZoom: 20,
+    pitch: 72,
+    // bearing: 230, // bearing in degrees
     antialias: true,
     logoPosition: 'bottom-right',
     attributionControl: false,
-    // center: [-122.319212, 47.616815], // starting center
-    bounds: [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038],
-    maxBounds: [-123.9180845532934, 47.04828654073975,  -121.14008445949332,48.71935997846136]
 });
 
+// Create a popup, but don't add it to the map yet.
+const popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+});
+
+//Return the original position of the map.
+document.getElementById('title').addEventListener('mouseenter', () => {
+    document.getElementById('title').style.cursor = 'pointer';
+});
+document.getElementById('title').addEventListener('mouseleave', () => {
+    document.getElementById('title').style.cursor = '';
+});
+document.getElementById('title').addEventListener('click', () => {
+    map.fitBounds([-122.320894, 47.614103, -122.31558990189957, 47.61882983122038], {
+        pitch: 72,
+    });
+});
+
+
 map.addControl(new mapboxgl.NavigationControl({
-    showCompass: true,
-    visualizePitch: true
+    showCompass: true
+    // visualizePitch: true
 }));
 
 // Allow map camera to rotate
@@ -75,14 +96,6 @@ function rotateCamera(timestamp) {
 // Add the bounding box
 
 
-// document.getElementById('fit').addEventListener('click', () => {
-//     map.fitBounds([
-//         [-122.314239, 47.614112], // southwestern corner of the bounds
-//         [-122.322178, 47.618772] // northeastern corner of the bounds
-//     ], {
-//         bearing: -90
-//     });
-// });
 
 
 
@@ -104,14 +117,10 @@ map.on('load', () => {
         'source': 'drone-tile',
         'layout': {
             visibility: "visible",
-          }
+        }
     }, 'road-path');
 
-
-
-
-
-    //=============outside mask =========================
+    //=============outside mask=========================
 
     map.addSource('mask', {
         'type': 'geojson',
@@ -127,77 +136,45 @@ map.on('load', () => {
         }
     });
 
-
-    // // Insert the layer beneath any symbol layer.
-    const layers = map.getStyle().layers;
-    const labelLayerId = layers.find(
-        (layer) => layer.type === 'symbol' && layer.layout['text-field']
-    ).id;
-
-
-
-
-
-
-    map.addSource('chop-buildings', {
+    //=============Buildings=========================
+    map.addSource('buildings', {
         'type': 'geojson',
         'data': 'assets/buildings.geojson'
     });
-
-
     map.addLayer({
         'id': '3d-buildings',
-        'source': 'chop-buildings',
+        'source': 'buildings',
         'filter': ['!=', 'type', 'police'],
         'type': 'fill-extrusion',
         'minzoom': 15,
         'paint': {
             'fill-extrusion-color': '#aaa',
-
-            // Use an 'interpolate' expression to
-            // add a smooth transition effect to
-            // the buildings as the user zooms in.
-            // 'fill-extrusion-height': ['get', 'eheight'],
-
-            'fill-extrusion-height': [
-                'interpolate',
-                ['linear'],
-                ['zoom'],
-                15,
-                0,
-                15.05,
-                ['get', 'eheight']
-                ],
-
+            'fill-extrusion-height': ['get', 'eheight'],
             'fill-extrusion-base': 0,
             'fill-extrusion-opacity': 0.8
         }
     }, 'road-label');
 
-
+    //=============Police=========================
     map.addLayer({
         'id': '3d-police',
-        'source': 'chop-buildings',
+        'source': 'buildings',
         'filter': ['==', 'type', 'police'],
         'type': 'fill-extrusion',
         'minzoom': 15,
         'paint': {
             'fill-extrusion-color': 'red',
-
-            // Use an 'interpolate' expression to
-            // add a smooth transition effect to
-            // the buildings as the user zooms in.
             'fill-extrusion-height': 30,
             'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': 0.6
+            'fill-extrusion-opacity': 0.5
         },
         'layout': {
             visibility: "visible",
-          }
+        }
     }, 'road-label');
 
-    //============== boundary area ========================
-    map.addSource('chop-polygon', {
+    //==============Boundary========================
+    map.addSource('chop-boundary', {
         'type': 'geojson',
         'data': 'assets/chop-boundary-polygon.geojson'
     });
@@ -205,38 +182,21 @@ map.on('load', () => {
     map.addLayer({
         'id': 'boundary',
         'type': 'fill-extrusion',
-        'source': 'chop-polygon',
-        // 'layout': {
-        //     'visibility': 'none'
-        // },
+        'source': 'chop-boundary',
         'paint': {
-            // Get the `fill-extrusion-color` from the source `color` property.
             'fill-extrusion-color': '#0080ff',
-
-            // Get `fill-extrusion-height` from the source `height` property.
             'fill-extrusion-height': 5,
-
-            // Get `fill-extrusion-base` from the source `base_height` property.
             'fill-extrusion-base': 0,
-
-            // Make extrusions slightly opaque to see through indoor walls.
             'fill-extrusion-opacity': 0.5
         },
         'layout': {
             visibility: "visible",
-          }
+        }
     }, 'road-label');
 
-    //============== core area ========================
+    //==============Speech Area========================
     map.addSource('speech-area', {
         'type': 'geojson',
-        /*
-         * Each feature in this GeoJSON file contains values for
-         * `properties.height`, `properties.base_height`,
-         * and `properties.color`.
-         * In `addLayer` you will use expressions to set the new
-         * layer's paint properties based on these values.
-         */
         'data': 'assets/speech_area.geojson'
     });
 
@@ -245,46 +205,45 @@ map.on('load', () => {
         'type': 'fill-extrusion',
         'source': 'speech-area',
         'paint': {
-            // Get the `fill-extrusion-color` from the source `color` property.
             'fill-extrusion-color': ['get', 'color'],
-            // Get `fill-extrusion-height` from the source `height` property.
-            'fill-extrusion-height': ['get', 'height'],
-            // Get `fill-extrusion-base` from the source `base_height` property.
-            'fill-extrusion-base': ['get', 'base_height'],
-            // Make extrusions slightly opaque to see through indoor walls.
+            'fill-extrusion-height': 5,
+            'fill-extrusion-base': 0,
             'fill-extrusion-opacity': 0.5
         },
         'layout': {
             visibility: "visible",
-          }
+        }
     }, 'road-label');
 
 
-
+    //==============graffito========================
     map.addSource('chop-graffito', {
         'type': 'geojson',
         'data': 'assets/graffito.geojson'
     });
 
 
-    // Add graffiti labels
-    // map.addLayer({
-    //     'id': 'poi-labels',
-    //     'type': 'symbol',
-    //     // 'source': 'chop-graffiti',
-    //     'layout': {
-    //         'text-field': ['get', 'Message'],
-    //         'text-variable-anchor': ['left'],
-    //         // 'text-radial-offset': 0.5,
-    //         'text-justify': 'right',
-    //         'text-writing-mode': ['vertical'],
-    //     },
-    //     'paint': {
-    //         'text-color': "#444",
-    //         'text-halo-color': "#fff",
-    //         'text-halo-width': 2
-    //     },
-    // });
+    //Add graffiti labels
+    map.addLayer({
+        'id': 'graffito-label',
+        'type': 'symbol',
+        'source': 'chop-graffito',
+        'layout': {
+            'text-field': ['get', 'Message'],
+            'text-variable-anchor': ['left'],
+            // 'text-radial-offset': 0.5,
+            'text-justify': 'right',
+            'text-writing-mode': ['vertical'],
+        },
+        'paint': {
+            'text-color': "#444",
+            'text-halo-color': "#fff",
+            'text-halo-width': 2
+        },
+        'layout': {
+            visibility: "visible",
+        }
+    }, 'road-label');
 
     map.addLayer({
         'id': 'graffito',
@@ -303,7 +262,7 @@ map.on('load', () => {
 
 
 
-    hiddenLayers = ["transit-label", 'road-label']
+    hiddenLayers = ["transit-label", 'road-label', 'road-secondary-tertiary-case', 'road-street-case', 'road-street', 'road-primary-case', 'road-secondary-tertiary', 'road-minor-case']
 
     hiddenLayers.forEach((layer) => {
         map.setLayoutProperty(
@@ -327,10 +286,10 @@ map.on('load', () => {
 
 
     // Allow the comment form to pop out once the user click anywhere on CHOP
-    map.on('click', 'CHOP Zone', (e) => {
-        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.name).setHTML(`
-                                      <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
-    });
+    // map.on('click', 'CHOP Zone', (e) => {
+    //     new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.name).setHTML(`
+    //                                   <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
+    // });
 
 
 
@@ -346,56 +305,193 @@ map.on('load', () => {
 
     $('#loader').fadeOut("slow");
 
+
+    map.addSource('selected', {
+        type: 'geojson',
+        data: {
+            "type": "FeatureCollection",
+            "features": []
+        }
+    });
+
+    map.addLayer({
+        "id": "highlight",
+        'type': 'fill-extrusion',
+        'source': 'selected',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'fill-extrusion-color': '#8cff32',
+            'fill-extrusion-height': 30,
+            'fill-extrusion-base': 0,
+            'fill-extrusion-opacity': 0.8
+        }
+    }, 'road-label');
+
+
 });
 
 
 
-    // Change the cursor to a pointer when the mouse is over the places layer.
-    map.on('mouseenter', 'graffito', () => {
-        map.getCanvas().style.cursor = 'pointer';
-    });
-    // Change it back to a pointer when it leaves.
-    map.on('mouseleave', 'graffito', () => {
-        map.getCanvas().style.cursor = '';
-    });
+
+
+// Change the cursor to a pointer when the mouse is over the places layer.
+map.on('mouseenter', 'graffito', () => {
+    map.getCanvas().style.cursor = 'pointer';
+});
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'graffito', () => {
+    map.getCanvas().style.cursor = '';
+});
 
 
 
-    // Enumerate ids of the layers.
-    const toggleableLayerIds = ['aerial', 'graffito', 'boundary', 'speech', '3d-police'];
-    // Set up the corresponding toggle button for each layer.
-    for (const id of toggleableLayerIds) {
-        
-        // Show or hide layer when the toggle is clicked.
-        console.log(id);
-        document.getElementById(id).addEventListener("change", function(e){
-            const clickedLayer = id;
-            e.preventDefault();
-            e.stopPropagation();
-            const visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-                if (visibility === 'visible') {
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                } else { 
-                    map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-                }
-        });
 
-        document.getElementById(id).addEventListener("mouseenter", function(e){
-           document.body.style.cursor = 'pointer';
-        });
 
-        document.getElementById(id).addEventListener("mouseleave", function(e){
-            document.body.style.cursor = '';
-        });
-    
+
+// Speech Area
+map.on('mouseenter', 'speech', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == 'speech') {
+    map.setPaintProperty('speech', 'fill-extrusion-color', '#8cff32');
+    map.setPaintProperty('speech', 'fill-extrusion-opacity', 0.8);
     }
+});
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'speech', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    // if (topHoveredLayerId == 'speech') {
+    map.setPaintProperty('speech', 'fill-extrusion-color', ['get', 'color']);
+    map.setPaintProperty('speech', 'fill-extrusion-opacity', 0.5);
+    popup.remove();
+    // }
+});
+
+
+map.on('click', 'speech', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == 'speech') {
+        map.setPaintProperty('speech', 'fill-extrusion-color', '#8cff32');
+    map.setPaintProperty('speech', 'fill-extrusion-opacity', 0.8);
+    let description = "Speech Area";
+    popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
+    }
+});
+
+
+// Boundary
+map.on('mouseenter', 'boundary', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    // if (topHoveredLayerId == 'boundary') {
+    map.setPaintProperty('boundary', 'fill-extrusion-color', '#8cff32');
+    map.setPaintProperty('boundary', 'fill-extrusion-opacity', 0.8);
+    // }
+});
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'boundary', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    // if (topHoveredLayerId == 'boundary') {
+    map.setPaintProperty('boundary', 'fill-extrusion-color', '#0080ff');
+    map.setPaintProperty('boundary', 'fill-extrusion-opacity', 0.5);
+    popup.remove();
+    // }
+});
+
+
+map.on('click', 'boundary', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == 'boundary') {
+        map.setPaintProperty('boundary', 'fill-extrusion-color', '#8cff32');
+    map.setPaintProperty('boundary', 'fill-extrusion-opacity', 0.8);
+    let description = "The Boundary of CHOP";
+    popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
+    }
+});
+
+
+// Police Dept.
+
+map.on('mouseenter', '3d-police', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == '3d-police') {
+        map.setPaintProperty('3d-police', 'fill-extrusion-color', '#8cff32');
+        map.setPaintProperty('3d-police', 'fill-extrusion-opacity', 0.8);
+    }
+});
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', '3d-police', (e) => {
+
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    // if (topHoveredLayerId == '3d-police') {
+    map.setPaintProperty('3d-police', 'fill-extrusion-color', 'red');
+    map.setPaintProperty('3d-police', 'fill-extrusion-opacity', 0.5);
+    popup.remove();
+    // }
+});
+map.on('click', '3d-police', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == '3d-police') {
+        map.setPaintProperty('3d-police', 'fill-extrusion-color', '#8cff32');
+        map.setPaintProperty('3d-police', 'fill-extrusion-opacity', 0.8);
+    let description = "Seattle City's Department of Police";
+    popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
+    }
+});
 
 
 
-    document.getElementById(id).addEventListener("mouseenter", function(e){
+// Enumerate ids of the layers.
+const toggleableLayerIds = ['aerial', 'graffito', 'boundary', 'speech', '3d-police'];
+// Set up the corresponding toggle button for each layer.
+for (const id of toggleableLayerIds) {
+
+    // Show or hide layer when the toggle is clicked.
+    document.getElementById(id).addEventListener("change", function (e) {
+        const clickedLayer = id;
+        e.preventDefault();
+        e.stopPropagation();
+        const visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+        if (visibility === 'visible') {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        } else {
+            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+    });
+
+    document.getElementById(id).addEventListener("mouseenter", function (e) {
         document.body.style.cursor = 'pointer';
-     });
+    });
 
-     document.getElementById(id).addEventListener("mouseleave", function(e){
-         document.body.style.cursor = '';
-     });
+    document.getElementById(id).addEventListener("mouseleave", function (e) {
+        document.body.style.cursor = '';
+    });
+
+}
