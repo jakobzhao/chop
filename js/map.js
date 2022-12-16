@@ -2,11 +2,14 @@ mapboxgl.accessToken =
     'pk.eyJ1IjoicGF1bHN1bjhiOCIsImEiOiJjbDJ1MGs4NGEwNDVsM2RxcXQ2anFzcnV5In0.p0vwA6m487mqnwtYhoiMbw';
 let map = new mapboxgl.Map({
     container: 'map', // container ID
-    style: 'mapbox://styles/paulsun8b8/cl6lfeqjx004b15npcok6rosl',
+    // style: 'mapbox://styles/paulsun8b8/cl6lfeqjx004b15npcok6rosl',
+    // style: 'mapbox://styles/mapbox/light-v11',
+    style: 'mapbox://styles/mapbox/satellite-streets-v12',
     zoom: 17, // starting zoom
-    pitch: 75,
-    bearing: 230, // bearing in degrees
-    center: [-122.319212, 47.616815] // starting center
+    // pitch: 75,
+    // bearing: 230, // bearing in degrees
+    antialias: true,
+    center: [-122.319212, 47.616815], // starting center
     // bounds: [
     //     [-122.315539, 47.616112], // southwestern corner of the bounds
     //     [-122.321178, 47.616872] // northeastern corner of the bounds
@@ -80,25 +83,114 @@ function rotateCamera(timestamp) {
 
 
 
+
+
 // Load geospatial datasets and display
 map.on('load', () => {
 
-
-
+    //==============drone photo========================
     map.addSource('drone-tile', {
         'type': 'raster',
         'tiles': ['assets/drone_img/{z}/{x}/{y}.png'],
-        'tileSize': 256,
-        'attribution': 'Map tiles designed by Huating Sun'
+        'tileSize': 256
     });
     map.addLayer({
         'id': 'aerial',
         'type': 'raster',
         'source': 'drone-tile'
-    }, 'tunnel-street-minor-low');
+    },'waterway-label');
 
 
 
+    // map.addSource('mapbox-dem', {
+    //     'type': 'raster-dem',
+    //     'url': 'mapbox://mapbox.mapbox-terrain-dem-v1',
+    //     'tileSize': 512,
+    //     'maxzoom': 14
+    //     });
+    //     // add the DEM source as a terrain layer with exaggerated height
+    //     map.setTerrain({ 'source': 'mapbox-dem', 'exaggeration': 1.5 });
+
+
+    // // Insert the layer beneath any symbol layer.
+    // const layers = map.getStyle().layers;
+    // const labelLayerId = layers.find(
+    //     (layer) => layer.type === 'symbol' && layer.layout['text-field']
+    // ).id;
+
+    // // The 'building' layer in the Mapbox Streets
+    // // vector tileset contains building height data
+    // // from OpenStreetMap.
+    // map.addLayer({
+    //         'id': 'add-3d-buildings',
+    //         'source': 'composite',
+    //         'source-layer': 'building',
+    //         'filter': ['==', 'extrude', 'true'],
+    //         'type': 'fill-extrusion',
+    //         'minzoom': 15,
+    //         'paint': {
+    //             'fill-extrusion-color': '#111',
+
+    //             // Use an 'interpolate' expression to
+    //             // add a smooth transition effect to
+    //             // the buildings as the user zooms in.
+    //             'fill-extrusion-height': [
+    //                 'interpolate',
+    //                 ['linear'],
+    //                 ['zoom'],
+    //                 15,
+    //                 0,
+    //                 15.05,
+    //                 ['get', 'height']
+    //             ],
+    //             'fill-extrusion-base': [
+    //                 'interpolate',
+    //                 ['linear'],
+    //                 ['zoom'],
+    //                 15,
+    //                 0,
+    //                 15.05,
+    //                 ['get', 'min_height']
+    //             ],
+    //             'fill-extrusion-opacity': 0.6
+    //         }
+    //     },
+    //     labelLayerId
+    // );
+
+
+
+
+
+    //============== boundary area ========================
+    map.addSource('chop-polygon', {
+        'type': 'geojson',
+        'data': 'assets/chop-boundary-polygon.geojson'
+    });
+
+    map.addLayer({
+        'id': 'boundary',
+        'type': 'fill-extrusion',
+        'source': 'chop-polygon',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            // Get the `fill-extrusion-color` from the source `color` property.
+            'fill-extrusion-color': '#0080ff',
+
+            // Get `fill-extrusion-height` from the source `height` property.
+            'fill-extrusion-height': 5,
+
+            // Get `fill-extrusion-base` from the source `base_height` property.
+            'fill-extrusion-base': 0,
+
+            // Make extrusions slightly opaque to see through indoor walls.
+            'fill-extrusion-opacity': 0.5
+        }
+    }, 'waterway-label');
+
+    //============== core area ========================
     map.addSource('speech-area', {
         'type': 'geojson',
         /*
@@ -125,8 +217,50 @@ map.on('load', () => {
             // Make extrusions slightly opaque to see through indoor walls.
             'fill-extrusion-opacity': 0.5
         }
+    }, 'waterway-label');
+
+
+
+    map.addSource('chop-graffiti', {
+        'type': 'geojson',
+        'data': 'assets/graffiti.geojson'
+    });
+    // Add graffiti labels
+    map.addLayer({
+        'id': 'poi-labels',
+        'type': 'symbol',
+        // 'source': 'chop-graffiti',
+        'layout': {
+            'text-field': ['get', 'Message'],
+            'text-variable-anchor': ['left'],
+            // 'text-radial-offset': 0.5,
+            'text-justify': 'right',
+            'text-writing-mode': ['vertical'],
+        },
+        'paint': {
+            'text-color': "#444",
+            'text-halo-color': "#fff",
+            'text-halo-width': 2
+        },
     });
 
+    map.addLayer({
+        'id': 'graffiti',
+        'type': 'fill',
+        'source': 'chop-graffiti',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'fill-color': 'rgba(0, 254, 0, 0.8)', //transparent
+            // 'fill-sort-key':  ['-', ['get', 'area']],
+            'fill-opacity': 0.2,
+            'fill-outline-color': 'red'
+        }
+    });
+
+
+    //==============landmarks========================
     map.addSource('chop-landmark', {
         'type': 'geojson',
         'data': 'assets/chop-landmark.geojson'
@@ -140,80 +274,21 @@ map.on('load', () => {
 
 
 
-    map.addSource('chop-graffiti', {
-        'type': 'geojson',
-        'data': 'assets/graffiti.geojson'
-    });
-    // Add graffiti labels
-    map.addLayer({
-        'id': 'poi-labels',
-        'type': 'symbol',
-        'source': 'chop-graffiti',
-        'layout': {
-            'text-field': ['get', 'Message'],
-            'text-variable-anchor': ['left'],
-            'text-radial-offset': 0.5,
-            'text-justify': 'right',
-            'text-writing-mode': ['vertical'],
-        },
-        'paint': {
-            'text-color': "#444",
-            'text-halo-color': "#fff",
-            'text-halo-width': 2
-        },
-    });
-    map.addLayer({
-        'id': 'graffiti',
-        'type': 'fill',
-        'source': 'chop-graffiti',
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': {
-            'fill-color': '#0080ff', // blue color fill
-            'fill-opacity': 0.5,
-        }
-    });
-
-    map.addSource('chop-polygon', {
-        'type': 'geojson',
-        'data': 'assets/chop.geojson'
-    });
-
-    map.addLayer({
-        'id': 'boundary',
-        'type': 'fill',
-        'source': 'chop-polygon',
-        'layout': {
-            'visibility': 'none'
-        },
-        'paint': {
-            'fill-color': '#0080ff', // blue color fill
-            'fill-opacity': 0.5,
-        }
-    }, 'waterway-label');
-
-
     // Allow the comment form to pop out once the user click anywhere on CHOP
     map.on('click', 'CHOP Zone', (e) => {
         new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.name).setHTML(`
                                       <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
     });
-    map.addLayer({
-        'id': 'outline',
-        'type': 'line',
-        'source': 'chop-polygon',
-        'layout': {},
-        'paint': {
-            'line-color': '#000',
-            'line-width': 3
-        }
-    }, 'waterway-label');
-
-    
-
-
-
+    // map.addLayer({
+    //     'id': 'outline',
+    //     'type': 'line',
+    //     'source': 'chop-polygon',
+    //     'layout': {},
+    //     'paint': {
+    //         'line-color': '#000',
+    //         'line-width': 3
+    //     }
+    // }, 'waterway-label');
 
 
 
