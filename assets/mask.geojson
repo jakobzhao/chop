@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "chop-boundary-polygon",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "MultiPolygon", "coordinates": [ [ [ [ -124.334319173808254, 48.725654538273595 ], [ -124.368803280027635, 46.63009352819676 ], [ -119.55670300305097, 46.580557241735193 ], [ -119.697774346675715, 48.725654538273595 ], [ -124.334319173808254, 48.725654538273595 ] ] ] ] } }
+]
+}

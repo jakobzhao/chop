@@ -6,13 +6,12 @@ let map = new mapboxgl.Map({
     // style: 'mapbox://styles/mapbox/light-v11',
     // style: 'mapbox://styles/mapbox/streets-v12',
     style: 'mapbox://styles/mapbox/satellite-streets-v12',
-    // style: 'mapbox://styles/mapbox/satellite-v9',
     // zoom: 17, // starting zoom
     pitch: 75,
     bearing: 230, // bearing in degrees
     antialias: true,
     // center: [-122.319212, 47.616815], // starting center
-    bounds: [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038]
+    bounds: [-122.320894, 47.614103,  -122.31558990189957,47.61882983122038]
 });
 
 map.addControl(new mapboxgl.NavigationControl({
@@ -91,39 +90,14 @@ map.on('load', () => {
     map.addSource('drone-tile', {
         'type': 'raster',
         'tiles': ['assets/drone_img/{z}/{x}/{y}.png'],
-        'bounds': [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038],
+        'bounds': [-122.320894, 47.614103,  -122.31558990189957,47.61882983122038],
         'tileSize': 256
     });
     map.addLayer({
         'id': 'aerial',
         'type': 'raster',
         'source': 'drone-tile'
-    }, 'road-path');
-
-
-
-
-
-    //=============outside mask =========================
-
-
-
-    map.addSource('mask', {
-        'type': 'geojson',
-        'data': 'assets/outsidemask.geojson'
-    });
-    map.addLayer({
-        'id': 'outsidemask',
-        'type': 'fill',
-        'source': 'mask',
-        'paint': {
-            'fill-color': 'black',
-            'fill-opacity': 0.8,
-        }
-    });
-
-
-
+    },'waterway-label');
 
 
 
@@ -182,23 +156,24 @@ map.on('load', () => {
     });
 
 
-    map.addLayer({
-        'id': '3d-buildings',
-        'source': 'chop-buildings',
-        'filter': ['!=', 'type', 'police'],
-        'type': 'fill-extrusion',
-        'minzoom': 15,
-        'paint': {
-            'fill-extrusion-color': '#aaa',
+       map.addLayer({
+            'id': '3d-buildings',
+            'source': 'chop-buildings',
+            'filter': ['!=', 'type', 'police'],
+            'type': 'fill-extrusion',
+            'minzoom': 15,
+            'paint': {
+                'fill-extrusion-color': '#111',
 
-            // Use an 'interpolate' expression to
-            // add a smooth transition effect to
-            // the buildings as the user zooms in.
-            'fill-extrusion-height': ['get', 'eheight'],
-            'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': 0.8
-        }
-    }, 'road-label');
+                // Use an 'interpolate' expression to
+                // add a smooth transition effect to
+                // the buildings as the user zooms in.
+                'fill-extrusion-height':  ['get', 'eheight'],
+                'fill-extrusion-base':0,
+                'fill-extrusion-opacity': 0.6
+            }
+        },'waterway-label'
+    );
 
 
     map.addLayer({
@@ -213,11 +188,12 @@ map.on('load', () => {
             // Use an 'interpolate' expression to
             // add a smooth transition effect to
             // the buildings as the user zooms in.
-            'fill-extrusion-height': 30,
-            'fill-extrusion-base': 0,
+            'fill-extrusion-height':  30,
+            'fill-extrusion-base':0,
             'fill-extrusion-opacity': 0.6
         }
-    }, 'road-label');
+    },'waterway-label'
+);
 
     //============== boundary area ========================
     map.addSource('chop-polygon', {
@@ -245,7 +221,7 @@ map.on('load', () => {
             // Make extrusions slightly opaque to see through indoor walls.
             'fill-extrusion-opacity': 0.5
         }
-    }, 'road-label');
+    }, 'waterway-label');
 
     //============== core area ========================
     map.addSource('speech-area', {
@@ -274,7 +250,7 @@ map.on('load', () => {
             // Make extrusions slightly opaque to see through indoor walls.
             'fill-extrusion-opacity': 0.5
         }
-    }, 'road-label');
+    }, 'waterway-label');
 
 
 
@@ -316,18 +292,18 @@ map.on('load', () => {
             'visibility': 'none'
         },
         'paint': {
-            // Get the `fill-extrusion-color` from the source `color` property.
-            //  'fill-extrusion-color':" ['get', 'Color']",
-            'fill-extrusion-color': 'yellow',
+                 // Get the `fill-extrusion-color` from the source `color` property.
+                //  'fill-extrusion-color':" ['get', 'Color']",
+                'fill-extrusion-color': 'yellow',
 
-            // Get `fill-extrusion-height` from the source `height` property.
-            'fill-extrusion-height': 0.4,
-
-            // Get `fill-extrusion-base` from the source `base_height` property.
-            'fill-extrusion-base': 0,
-
-            // Make extrusions slightly opaque to see through indoor walls.
-            'fill-extrusion-opacity': 0.3
+                 // Get `fill-extrusion-height` from the source `height` property.
+                 'fill-extrusion-height': 0.4,
+     
+                 // Get `fill-extrusion-base` from the source `base_height` property.
+                 'fill-extrusion-base': 0,
+     
+                 // Make extrusions slightly opaque to see through indoor walls.
+                 'fill-extrusion-opacity': 0.3
         }
     });
 
@@ -363,20 +339,8 @@ map.on('load', () => {
     // }, 'waterway-label');
 
 
-    // const layers = map.getStyle().layers;
-    // const labelLayerId = layers.find(
-    //     (layer) => layer.type === 'symbol' && layer.layout['text-field']
-    // ).id;
 
-    hiddenLayers = ["transit-label", 'poi-label']
 
-    hiddenLayers.forEach((layer) => {
-        map.setLayoutProperty(
-            layer,
-            'visibility',
-            'none'
-        );
-    });
 
 
 
