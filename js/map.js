@@ -288,7 +288,7 @@ map.on('load', () => {
             // 'icon-text-fit-padding':10,
         },
         'paint': {
-            'text-color': "white",
+            'text-color': "#FFFF8F",
             'text-halo-color': "#0C090A",
             'text-halo-blur': 1,
             'text-halo-width': 2,
