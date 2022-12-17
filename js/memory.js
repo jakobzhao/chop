@@ -55,6 +55,7 @@ map.on('click', 'memory', (e) => {
             hover: true
         });
         document.getElementById("hexagonInfo").innerHTML = "Hexagon ID: " + e.features[0].properties.id;
+        hid = e.features[0].properties.id;
     }
 });
 
@@ -64,7 +65,6 @@ map.on('click', 'memory', (e) => {
 document.getElementById('review-submit').removeEventListener('click', submitNewReview);
 document.getElementById('review-submit').addEventListener('click', submitNewReview);
 // get all comments of the location
-const hid = null;
 // let reviewData = await getReviews(hid);
 //constructReviews(reviewData);
 
@@ -87,12 +87,11 @@ const hid = null;
 // helper function to submit new review
 function submitNewReview(e) {
 
-    let reviewer = document.getElementById('reviewername').innerHTML;
-    let email = document.getElementById('email').innerHTML;
-    let content = document.getElementById('reviewcontent').innerHTML;
+    let reviewer = document.getElementById('reviewername').value;
+    let email = document.getElementById('email').value;
+    let content = document.getElementById('reviewcontent').value;
     // add new review
     addNewReview(e, hid, reviewer, email, content);
-    }
 };
 
 
@@ -100,13 +99,15 @@ function submitNewReview(e) {
 // addNewReview
 // Insert data into database and adds a new review to the corresponding VID
 async function addNewReview(e, hid, reviewer, email, content) {
-    event.preventDefault();
+    e.preventDefault();
     // obtain data from user input form
     let newReview = new URLSearchParams();
-    newReview.append('hid', hid);
+    newReview.append('hid', hid.toString());
     newReview.append('reviewer', reviewer);
     newReview.append('email', email);
     newReview.append('content', content);
+
+    console.log(newReview);
 
     let settings = {
         method: 'POST',
@@ -114,7 +115,8 @@ async function addNewReview(e, hid, reviewer, email, content) {
     }
 
     try {
-        await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
+        // await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
+        await fetch('http://localhost:3000/api/add-comment', settings);
         confirmationReview();
         // getReviews(id);
     } catch (err) {
@@ -128,9 +130,9 @@ async function addNewReview(e, hid, reviewer, email, content) {
 // Display user reaction screen when review is confirmed and is submitted into database
 function confirmationReview() {
     // hide and remove comment textarea
-    document.getElementById('reviewer').value = '';
+    document.getElementById('reviewername').value = '';
     document.getElementById('email').value = '';
-    document.getElementById('content').value = '';
+    document.getElementById('reviewcontent').value = '';
 
     // display user reaction confirmation screen
     let reviewCheck = document.getElementById('reviews-confirmation');

@@ -28,6 +28,7 @@ const popup = new mapboxgl.Popup({
 
 let hoveredStateId = null;
 let hoveredStateId2 = null;
+let hid = null;
 
 
 //Return the original position of the map.
