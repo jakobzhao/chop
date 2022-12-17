@@ -26,8 +26,6 @@ const popup = new mapboxgl.Popup({
     closeOnClick: false
 });
 
-let hoveredStateId = null;
-
 //Return the original position of the map.
 document.getElementById('title').addEventListener('mouseenter', () => {
     document.getElementById('title').style.cursor = 'pointer';
@@ -157,40 +155,24 @@ map.on('load', () => {
         }
     }, 'road-label');
 
-    //=============grid=========================
-    map.addSource('grid', {
-        'type': 'geojson',
-        'generateId': true,
-        'data': 'assets/grid.geojson'
-    });
-    map.addLayer({
-        'id': 'grid-clusters',
-        'source': 'grid',
-        'type': 'fill',
-        'minzoom': 15,
-        'paint': {
-            'fill-color': 'purple',
-            'fill-opacity': [
-                'case',
-                ['boolean', ['feature-state', 'hover'], false],
-                0.5,
-                0
-            ]
-        }
-    }, '3d-buildings');
-
-    // map.addLayer({
-    //     'id': '3d-grid-highlight',
-    //     'source': 'grid',
-    //     'type': 'fill-extrusion',
-    //     'minzoom': 15,
-    //     'paint': {
-    //         'fill-extrusion-color': 'purple',
-    //         'fill-extrusion-height': 0.5,
-    //         'fill-extrusion-base': 0,
-    //         'fill-extrusion-opacity': 0.5,
-    //     }
-    // }, '3d-buildings');
+        //=============grid=========================
+        map.addSource('grid', {
+            'type': 'geojson',
+            'data': 'assets/grid.geojson'
+        });
+        map.addLayer({
+            'id': '3d-grid',
+            'source': 'grid',
+            // 'filter': ['!=', 'type', 'police'],
+            'type': 'fill-extrusion',
+            'minzoom': 15,
+            'paint': {
+                'fill-extrusion-color': 'rgba(0, 0, 0, 0)',
+                'fill-extrusion-height': 0.5,
+                'fill-extrusion-base': 0,
+                'fill-extrusion-opacity': 0
+            }
+        }, 'road-label');
 
     //=============Police=========================
     map.addLayer({
@@ -340,11 +322,31 @@ map.on('load', () => {
 
 
 
-
-
     $('#loader').fadeOut("slow");
 
 
+    map.addSource('selected', {
+        type: 'geojson',
+        data: {
+            "type": "FeatureCollection",
+            "features": []
+        }
+    });
+
+    map.addLayer({
+        "id": "highlight",
+        'type': 'fill-extrusion',
+        'source': 'selected',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'fill-extrusion-color': '#8cff32',
+            'fill-extrusion-height': 30,
+            'fill-extrusion-base': 0,
+            'fill-extrusion-opacity': 0.8
+        }
+    }, 'road-label');
 
 
 });
@@ -366,161 +368,235 @@ map.on('mouseleave', 'graffito', () => {
 
 
 
+// // Grid
+// map.on('mouseenter', '3d-grid', (e) => {
+//     map.getCanvas().style.cursor = 'pointer';
+//     e.preventDefault();
+//     let hoveredFeatures = map.queryRenderedFeatures(e.point);
+//     let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+//     if (topHoveredLayerId == '3d-grid') {
+//     map.setPaintProperty('3d-grid', 'fill-extrusion-color', '#8cff32');
+//     map.setPaintProperty('3d-grid', 'fill-extrusion-opacity', 0.8);
+//     }
+// });
+// // Change it back to a pointer when it leaves.
+// map.on('mouseleave', '3d-grid', (e) => {
+//     map.getCanvas().style.cursor = '3d-grid';
+//     e.preventDefault();
+//     // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+//     // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+//     // if (topHoveredLayerId == 'speech') {
+//     map.setPaintProperty('3d-grid', 'fill-extrusion-color', 'rgba(0, 0, 0, 0)');
+//     map.setPaintProperty('3d-grid', 'fill-extrusion-opacity', 0);
+//     popup.remove();
+//     // }
+// });
+
+
+// map.on('click', '3d-grid', (e) => {
+//     map.getCanvas().style.cursor = 'pointer';
+//     e.preventDefault();
+//     let hoveredFeatures = map.queryRenderedFeatures(e.point);
+//     let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+//     if (topHoveredLayerId == '3d-grid') {
+//         map.setPaintProperty('3d-grid', 'fill-extrusion-color', '#8cff32');
+//     map.setPaintProperty('3d-grid', 'fill-extrusion-opacity', 0.8);
+//     // let description = "Speech Area";
+//     // popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
+
+//     new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`
+//     <strong>Message:</strong> ${e.features[0].properties.id}
+//     <hr>
+//     <strong>Color of Graffiti:</strong> ${e.features[0].properties.Color}`).addTo(map);
+
+//     }
+// });
 
 
 
 const highlightedLayerIds = ["speech", 'boundary', '3d-police']
 
-highlightedLayerIds.forEach((layerId) => {
+highlightedLayersIds.forEach((layerId) => {
 
 
     map.on('mouseenter', layerId, (e) => {
         map.getCanvas().style.cursor = 'pointer';
         e.preventDefault();
         let hoveredFeatures = map.queryRenderedFeatures(e.point);
-        let topHoveredLayerIds = {};
+        let topHoveredLayerIds = [];
         for (let i = 0; i < hoveredFeatures.length; i++) {
             highlightedLayerIds.forEach((highlightedLayerId) => {
                 if (hoveredFeatures[i].layer.id == highlightedLayerId) {
-                    topHoveredLayerIds[highlightedLayerId] = Object.keys(topHoveredLayerIds).length;
-                }
+                    topHoveredLayerIds[highlightedLayerId] = i;    
+                } 
             });
         }
 
-        if (topHoveredLayerIds[layerId] == 0) {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', '#8cff32');
-            map.setPaintProperty(layerId, 'fill-extrusion-opacity', 0.8);
 
+
+
+
+        let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+        if (topHoveredLayerId == layerId) {
+        map.setPaintProperty(layerId, 'fill-extrusion-color', '#8cff32');
+        map.setPaintProperty(layerId, 'fill-extrusion-opacity', 0.8);
         }
-
     });
-    // // Change it back to a pointer when it leaves.
+    // Change it back to a pointer when it leaves.
     map.on('mouseleave', layerId, (e) => {
         map.getCanvas().style.cursor = 'pointer';
         e.preventDefault();
+        // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+        // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+        // if (topHoveredLayerId == 'speech') {
+        map.setPaintProperty(layerId, 'fill-extrusion-color', ['get', 'color']);
         map.setPaintProperty(layerId, 'fill-extrusion-opacity', 0.5);
         popup.remove();
-
-        if (layerId == "speech") {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', ['get', 'color']);
-        } else if (layerId == "boundary") {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', '#0080ff');
-
-        } else if (layerId == "3d-police") {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', 'red');
-
-        }
-
+        // }
     });
-
-
-    map.on('click', layerId, (e) => {
-
+    
+    
+    map.on('click', 'speech', (e) => {
         map.getCanvas().style.cursor = 'pointer';
         e.preventDefault();
         let hoveredFeatures = map.queryRenderedFeatures(e.point);
-        let topHoveredLayerIds = {};
-        for (let i = 0; i < hoveredFeatures.length; i++) {
-            highlightedLayerIds.forEach((highlightedLayerId) => {
-                if (hoveredFeatures[i].layer.id == highlightedLayerId) {
-                    topHoveredLayerIds[highlightedLayerId] = Object.keys(topHoveredLayerIds).length;
-                }
-            });
-        }
-
-        if (topHoveredLayerIds[layerId] == 0) {
+        let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+        if (topHoveredLayerId == layerId) {
             map.setPaintProperty(layerId, 'fill-extrusion-color', '#8cff32');
-            map.setPaintProperty(layerId, 'fill-extrusion-opacity', 0.8);
-
-
-            let description = "";
-
-            if (layerId == "speech") {
-                description = "Speech Area";
-            } else if (layerId == "boundary") {
-                description = "CHOP Boundary";
-            } else if (layerId == "3d-police") {
-                description = "Seattle's city department of Police";
-            }
-
-            popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
+        map.setPaintProperty(layerId, 'fill-extrusion-opacity', 0.8);
+        let description = "Speech Area";
+        popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
         }
-
     });
+    
+    
+
+
+
+
+
+    
 
 
 });
 
 
 
+// Speech Area
+map.on('mouseenter', 'speech', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == 'speech') {
+    map.setPaintProperty('speech', 'fill-extrusion-color', '#8cff32');
+    map.setPaintProperty('speech', 'fill-extrusion-opacity', 0.8);
+    }
+});
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'speech', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    // if (topHoveredLayerId == 'speech') {
+    map.setPaintProperty('speech', 'fill-extrusion-color', ['get', 'color']);
+    map.setPaintProperty('speech', 'fill-extrusion-opacity', 0.5);
+    popup.remove();
+    // }
+});
 
 
-    // Grid
+map.on('click', 'speech', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == 'speech') {
+        map.setPaintProperty('speech', 'fill-extrusion-color', '#8cff32');
+    map.setPaintProperty('speech', 'fill-extrusion-opacity', 0.8);
+    let description = "Speech Area";
+    popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
+    }
+});
 
 
-    map.on('mousemove', 'grid-clusters', (e) => {
-        map.getCanvas().style.cursor = 'pointer';
-        if (e.features.length > 0) {
-            if (hoveredStateId !== null) {
-                map.setFeatureState({
-                    source: 'grid',
-                    id: hoveredStateId
-                }, {
-                    hover: false
-                });
-            }
-            hoveredStateId = e.features[0].id
-            map.setFeatureState({
-                source: 'grid',
-                id: hoveredStateId
-            }, {
-                hover: true
-            });
-        }
-    });
-
-    // When the mouse leaves the state-fill layer, update the feature state of the
-    // previously hovered feature.
-    map.on('mouseleave', 'grid-clusters', () => {
-        map.getCanvas().style.cursor = '';
-        if (hoveredStateId !== null) {
-            map.setFeatureState({
-                source: 'grid',
-                id: hoveredStateId
-            }, {
-                hover: false
-            });
-        }
-        hoveredStateId = null;
-    });
+// Boundary
+map.on('mouseenter', 'boundary', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    // if (topHoveredLayerId == 'boundary') {
+    map.setPaintProperty('boundary', 'fill-extrusion-color', '#8cff32');
+    map.setPaintProperty('boundary', 'fill-extrusion-opacity', 0.8);
+    // }
+});
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'boundary', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    // if (topHoveredLayerId == 'boundary') {
+    map.setPaintProperty('boundary', 'fill-extrusion-color', '#0080ff');
+    map.setPaintProperty('boundary', 'fill-extrusion-opacity', 0.5);
+    popup.remove();
+    // }
+});
 
 
-    map.on('click', 'grid-clusters', (e) => {
-        map.getCanvas().style.cursor = 'pointer';
-        if (e.features.length > 0) {
-            if (hoveredStateId !== null) {
-                map.setFeatureState({
-                    source: 'grid',
-                    id: hoveredStateId
-                }, {
-                    hover: false
-                });
-            }
-            hoveredStateId = e.features[0].id
-            map.setFeatureState({
-                source: 'grid',
-                id: hoveredStateId
-            }, {
-                hover: true
-            });
-            document.getElementById("featureInfo").innerHTML =  "Hexagon ID: " + e.features[0].properties.id;
-        }
-    });
+map.on('click', 'boundary', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == 'boundary') {
+        map.setPaintProperty('boundary', 'fill-extrusion-color', '#8cff32');
+    map.setPaintProperty('boundary', 'fill-extrusion-opacity', 0.8);
+    let description = "The Boundary of CHOP";
+    popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
+    }
+});
 
 
+// Police Dept.
 
+map.on('mouseenter', '3d-police', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == '3d-police') {
+        map.setPaintProperty('3d-police', 'fill-extrusion-color', '#8cff32');
+        map.setPaintProperty('3d-police', 'fill-extrusion-opacity', 0.8);
+    }
+});
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', '3d-police', (e) => {
 
-
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    // let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    // let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    // if (topHoveredLayerId == '3d-police') {
+    map.setPaintProperty('3d-police', 'fill-extrusion-color', 'red');
+    map.setPaintProperty('3d-police', 'fill-extrusion-opacity', 0.5);
+    popup.remove();
+    // }
+});
+map.on('click', '3d-police', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    e.preventDefault();
+    let hoveredFeatures = map.queryRenderedFeatures(e.point);
+    let topHoveredLayerId = hoveredFeatures[hoveredFeatures.length - 1].layer.id;
+    if (topHoveredLayerId == '3d-police') {
+        map.setPaintProperty('3d-police', 'fill-extrusion-color', '#8cff32');
+        map.setPaintProperty('3d-police', 'fill-extrusion-opacity', 0.8);
+    let description = "Seattle City's Department of Police";
+    popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
+    }
+});
 
 
 
