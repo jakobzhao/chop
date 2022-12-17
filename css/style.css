@@ -49,25 +49,24 @@ main,
   background: rgba(26, 24, 24, 0.9);
   box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
   color:#f1f1f1;
-  border-radius: 0.2em;
+  border-radius: 0.3em;
 }
 
 #featureInfo {
   z-index: 100;
   position: fixed;
   left: 1em;
-  top: 20em;
+  top: 17em;
   bottom: 3.5em;
   width: 33em;
-  /* height: 50em; */
   padding: 1em 1em;
   font-size: 1em;
-  /* background: rgba(255, 254, 254, .9);
+/* background: rgba(255, 254, 254, .9);
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); */
   background: rgba(26, 24, 24, 0.9);
   box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
   color:#f1f1f1;
-  border-radius: 0.2em;
+  border-radius: 0.3em;
 }
 
 #links {

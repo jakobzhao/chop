@@ -38,7 +38,8 @@
                     </div>
                     <div class="modal-body welcome-content">
                         <img src="img/logo.png"></img>
-                        Welcome to the digital memories of the Capital Hill Organization Protest (CHOP). On this map, you can:
+                        Welcome to the digital memories of the Capital Hill Organization Protest (CHOP). On this map,
+                        you can:
                         <ul>
                             <li> View an interactive map of the CHOP, the graffiti, and people's memories;
                             </li>
@@ -46,7 +47,8 @@
                                 and</li>
                             <li> Download the drone image of the CHOP for your projects.</li>
                         </ul>
-                        If you are visiting this website for the first time or want to know how to use this platform, please visit the about page or contact us about any questions you have. 
+                        If you are visiting this website for the first time or want to know how to use this platform,
+                        please visit the about page or contact us about any questions you have.
                     </div>
                     <div class="modal-footer">
                         <div class="form-switch" id="nextTimeSwitcher">
@@ -62,16 +64,17 @@
         </div>
         <div id="links">
             <div id="links-container">
-            <a>about</a> <a>data</a> <a>team</a> <a href="https://forms.gle/gjjWpuBM3A7tppDe9" target="_blank">contact us</a>
+                <a>about</a> <a>data</a> <a>team</a> <a href="https://forms.gle/gjjWpuBM3A7tppDe9"
+                    target="_blank">contact us</a>
 
-            <a href="https://github.com/jakobzhao/chop" class="bi bi-github" aria-current="page"></a>
+                <a href="https://github.com/jakobzhao/chop" class="bi bi-github" aria-current="page"></a>
 
-            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhgis.uw.edu%2Fvgi&amp;src=sdkpreparse"
-                class="bi bi-facebook" aria-current="page"></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhgis.uw.edu%2Fvgi&amp;src=sdkpreparse"
+                    class="bi bi-facebook" aria-current="page"></a>
 
-            <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/covid19-workers/&text=Check out this geospatial platform that allow local experts to contribution data about lgbtgq spaces."
-                class="bi bi-twitter " aria-current="page"></a>
-</div>
+                <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/covid19-workers/&text=Check out this geospatial platform that allow local experts to contribution data about lgbtgq spaces."
+                    class="bi bi-twitter " aria-current="page"></a>
+            </div>
         </div>
         <div id="info" class="d-flex flex-column">
             <h5 id="title"> Digital Memories of The Capitol Hill Organized Protest
@@ -124,7 +127,32 @@
 
         </div>
 
-        <div id="featureInfo" class="d-flex flex-column d-none"></div>
+        <div id="featureInfo" class="d-flex flex-column">
+            <!-- add from https://mdbootstrap.com/docs/standard/forms/overview/ -->
+            <form>
+                <!-- Name input -->
+                <div class="form-outline mb-4">
+                    <input type="text" id="reviewername" class="form-control" />
+                    <label class="form-label" for="reviewername">Name</label>
+                </div>
+
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                    <input type="email" id="email" class="form-control" />
+                    <label class="form-label" for="email">Email address</label>
+                </div>
+
+                <!-- Message input -->
+                <div class="form-outline mb-4">
+                    <textarea class="form-control" id="reviewcontent" rows="4"></textarea>
+                    <label class="form-label" for="reviewcontent">Message</label>
+                </div>
+                <!-- Submit button -->
+                <button type="submit" id="review-submit" class="btn btn-primary btn-block mb-4">Send</button>
+            </form>
+
+
+        </div>
 
         <div id="map"></div>
 
