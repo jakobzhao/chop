@@ -44,25 +44,52 @@ main,
   width: 33em;
   padding: 1em 1em;
   font-size: 1em;
-  background: rgba(255, 254, 254, .9);
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  /* background: rgba(255, 254, 254, .9);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); */
+  background: rgba(26, 24, 24, 0.9);
+  box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+  color:#f1f1f1;
   border-radius: 0.2em;
 }
 
 #featureInfo {
-
+  z-index: 100;
+  position: fixed;
+  left: 1em;
+  top: 20em;
+  bottom: 3.5em;
+  width: 33em;
+  /* height: 50em; */
+  padding: 1em 1em;
+  font-size: 1em;
+  /* background: rgba(255, 254, 254, .9);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2); */
+  background: rgba(26, 24, 24, 0.9);
+  box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+  color:#f1f1f1;
+  border-radius: 0.2em;
 }
 
 #links {
-  display: flex;
-  font-size:medium;
-  justify-content:end;
-  justify-content: right;
-  align-items: flex-end;
+  z-index: 100;
+  position: fixed;
+  right: 3.5em;
+  top: 0.6em;
+  width: 33em;
+
+ 
 }
-#links > a {
+#links-container {
+  display: flex;
+  justify-content: end;
+}
+#links-container > a {
   margin-left: 1em;
-  /* margin-right: 2em; */
+  color: white;
+  /* text-shadow: 0 0 3px #000000; */
+  text-shadow: 1px 1px 2px black, 0 0 25px black, 0 0 5px black;
+  padding-right: 0.5em;
+  font-size: medium; 
 }
 
 input {
@@ -81,7 +108,7 @@ input {
 /* attribution panel */
 #attribution {
   position: absolute;
-  width: 20em;
+  width: 30.2em;
   bottom: 0em;
   left: 0em;
   text-shadow: 2px 2px 4px gray;
@@ -91,8 +118,8 @@ input {
 
 #logos {
   position: relative;
-  width: 16em;
-  bottom: -4em;
+  width: 4em;
+  bottom: -3.5em;
 }
 
 #acknowledge {
@@ -100,8 +127,8 @@ input {
   position: relative;
   text-align: left;
   font-size: 9pt;
-  left: 6em;
-  bottom: 0em;
+  left: 4em;
+  bottom: -0.8em;
   
 }
 
