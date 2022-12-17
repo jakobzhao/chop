@@ -106,6 +106,12 @@ function rotateCamera(timestamp) {
 // Load geospatial datasets and display
 map.on('load', () => {
 
+    //download a spray icon from fa 6, and edit it at https://editor.method.ac/
+    map.loadImage('../img/spray-can2.png', (error, image) => {
+        if (error) throw error;
+        if (!map.hasImage('spray')) map.addImage('spray', image);
+    });
+
     //==============drone photo========================
     map.addSource('drone-tile', {
         'type': 'raster',
@@ -118,7 +124,7 @@ map.on('load', () => {
         'type': 'raster',
         'source': 'drone-tile',
         'layout': {
-            visibility: "visible",
+            'visibility': 'visible',
         }
     }, 'road-path');
 
@@ -164,7 +170,7 @@ map.on('load', () => {
         'data': 'assets/grid.geojson'
     });
     map.addLayer({
-        'id': 'grid-clusters',
+        'id': 'memory',
         'source': 'grid',
         'type': 'fill',
         'minzoom': 15,
@@ -176,21 +182,11 @@ map.on('load', () => {
                 0.5,
                 0
             ]
+        },
+        'layout': {
+            visibility: "none",
         }
     }, '3d-buildings');
-
-    // map.addLayer({
-    //     'id': '3d-grid-highlight',
-    //     'source': 'grid',
-    //     'type': 'fill-extrusion',
-    //     'minzoom': 15,
-    //     'paint': {
-    //         'fill-extrusion-color': 'purple',
-    //         'fill-extrusion-height': 0.5,
-    //         'fill-extrusion-base': 0,
-    //         'fill-extrusion-opacity': 0.5,
-    //     }
-    // }, '3d-buildings');
 
     //=============Police=========================
     map.addLayer({
@@ -254,8 +250,10 @@ map.on('load', () => {
 
 
     //==============graffito========================
+
     map.addSource('chop-graffito', {
         'type': 'geojson',
+        'generateId': true,
         'data': 'assets/graffito.geojson'
     });
 
@@ -267,36 +265,73 @@ map.on('load', () => {
         'source': 'chop-graffito',
         'layout': {
             'text-field': ['get', 'Message'],
-            'text-variable-anchor': ['left'],
-            // 'text-radial-offset': 0.5,
-            'text-justify': 'right',
-            'text-writing-mode': ['vertical'],
+
+            'text-justify': 'auto',
+            'text-anchor': 'top',
+            'text-size': 14,
+            'text-padding': 7,
+            // 'text-line-height': 1.5,
+            'text-offset': [0, 1],
+            'visibility': 'none',
+            'text-font': [
+                'literal',
+                ['DIN Pro Medium', 'Arial Unicode MS Regular']
+            ],
+            'icon-image': 'spray', // reference the image
+            'icon-padding':7,
+            // 'icon-offset':[0,-1],
+
+            'icon-anchor': 'center',
+            'icon-size': 1,
+            // 'icon-text-fit-padding':10,
         },
         'paint': {
-            'text-color': "#444",
-            'text-halo-color': "#fff",
-            'text-halo-width': 2
-        },
-        'layout': {
-            visibility: "visible",
+            'text-color': "white",
+            'text-halo-color': "#0C090A",
+            'text-halo-blur': 1,
+            'text-halo-width': 2,
+
+
         }
     }, 'road-label');
 
     map.addLayer({
         'id': 'graffito',
-        'type': 'fill-extrusion',
+        'type': 'fill',
         'source': 'chop-graffito',
         'layout': {
             'visibility': 'none'
         },
         'paint': {
-            'fill-extrusion-color': 'yellow',
-            'fill-extrusion-height': 0.4,
-            'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': 0.3
+            'fill-color': 'yellow',
+            'fill-opacity': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], false],
+                0,
+                0.5
+            ]
         }
-    }, 'road-label');
+    }, '3d-buildings');
 
+
+    map.addLayer({
+        'id': 'graffito-outline',
+        'type': 'line',
+        'source': 'chop-graffito',
+        'layout': {
+            'visibility': 'none'
+        },
+        'paint': {
+            'line-color': 'red',
+            'line-opacity': 0.2,
+            'line-width': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], false],
+                1,
+                0
+            ]
+        }
+    });
 
 
     hiddenLayers = ["transit-label", 'road-label', 'road-secondary-tertiary-case', 'road-street-case', 'road-street', 'road-primary-case', 'road-secondary-tertiary', 'road-minor-case']
@@ -310,62 +345,10 @@ map.on('load', () => {
     });
 
 
-    // create a HTML element for each feature
-    // const el = document.createElement('div');
-    // el.className = 'police';
-    // // make a marker for each feature and add to the map
-    // new mapboxgl.Marker(el).setLngLat(police_station.geometry.coordinates).setPopup(new mapboxgl.Popup({
-    //     offset: 25
-    // }).setHTML(`<h2>${police_station.properties.title}</h2>
-    //             <p>${police_station.properties.description}</p>
-    //             <button class="open-button" onclick="openForm()">Comment</button>`)).addTo(map);
-
-
-
-    // Allow the comment form to pop out once the user click anywhere on CHOP
-    // map.on('click', 'CHOP Zone', (e) => {
-    //     new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(e.features[0].properties.name).setHTML(`
-    //                                   <button class="open-button" onclick="openForm()">Comment</button>`).addTo(map);
-    // });
-
-
-
-    // When click on Graffiti, it will display the information of the graffiti
-    map.on("click", "graffito", (event) => {
-        new mapboxgl.Popup().setLngLat(event.lngLat).setHTML(`
-                                      <strong>Message:</strong> ${event.features[0].properties.Message}
-                                      <hr>
-                                      <strong>Color of Graffiti:</strong> ${event.features[0].properties.Color}`).addTo(map);
-    });
-
-
-
-
-
     $('#loader').fadeOut("slow");
 
 
-
-
 });
-
-
-
-
-
-// Change the cursor to a pointer when the mouse is over the places layer.
-map.on('mouseenter', 'graffito', () => {
-    map.getCanvas().style.cursor = 'pointer';
-});
-// Change it back to a pointer when it leaves.
-map.on('mouseleave', 'graffito', () => {
-    map.getCanvas().style.cursor = '';
-});
-
-
-
-
-
 
 
 
@@ -452,37 +435,75 @@ highlightedLayerIds.forEach((layerId) => {
 });
 
 
-
-
-
-    // Grid
-
-
-    map.on('mousemove', 'grid-clusters', (e) => {
-        map.getCanvas().style.cursor = 'pointer';
-        if (e.features.length > 0) {
-            if (hoveredStateId !== null) {
-                map.setFeatureState({
-                    source: 'grid',
-                    id: hoveredStateId
-                }, {
-                    hover: false
-                });
-            }
-            hoveredStateId = e.features[0].id
+//======================= Graffito ==========================
+// Change the cursor to a pointer when the mouse is over the places layer.
+map.on('mousemove', 'graffito', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    if (e.features.length > 0) {
+        if (hoveredStateId !== null) {
             map.setFeatureState({
-                source: 'grid',
+                source: 'chop-graffito',
                 id: hoveredStateId
             }, {
-                hover: true
+                hover: false
             });
         }
-    });
+        hoveredStateId = e.features[0].id
+        map.setFeatureState({
+            source: 'chop-graffito',
+            id: hoveredStateId
+        }, {
+            hover: true
+        });
+    }
+});
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'graffito', () => {
+    map.getCanvas().style.cursor = '';
+    if (hoveredStateId !== null) {
+        map.setFeatureState({
+            source: 'chop-graffito',
+            id: hoveredStateId
+        }, {
+            hover: false
+        });
+    }
+    hoveredStateId = null;
+});
 
-    // When the mouse leaves the state-fill layer, update the feature state of the
-    // previously hovered feature.
-    map.on('mouseleave', 'grid-clusters', () => {
-        map.getCanvas().style.cursor = '';
+
+
+// When click on Graffiti, it will display the information of the graffiti
+map.on("click", "graffito", (e) => {
+
+    map.getCanvas().style.cursor = 'pointer';
+    if (e.features.length > 0) {
+        if (hoveredStateId !== null) {
+            map.setFeatureState({
+                source: 'chop-graffito',
+                id: hoveredStateId
+            }, {
+                hover: false
+            });
+        }
+        hoveredStateId = e.features[0].id
+        map.setFeatureState({
+            source: 'chop-graffito',
+            id: hoveredStateId
+        }, {
+            hover: true
+        });
+        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`${e.features[0].properties.Message}`).addTo(map);
+    }
+
+
+});
+
+
+//======================= Memory ==========================
+map.on('mousemove', 'memory', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    if (e.features.length > 0) {
         if (hoveredStateId !== null) {
             map.setFeatureState({
                 source: 'grid',
@@ -491,31 +512,53 @@ highlightedLayerIds.forEach((layerId) => {
                 hover: false
             });
         }
-        hoveredStateId = null;
-    });
+        hoveredStateId = e.features[0].id
+        map.setFeatureState({
+            source: 'grid',
+            id: hoveredStateId
+        }, {
+            hover: true
+        });
+    }
+});
+
+// When the mouse leaves the state-fill layer, update the feature state of the
+// previously hovered feature.
+map.on('mouseleave', 'memory', () => {
+    map.getCanvas().style.cursor = '';
+    if (hoveredStateId !== null) {
+        map.setFeatureState({
+            source: 'grid',
+            id: hoveredStateId
+        }, {
+            hover: false
+        });
+    }
+    hoveredStateId = null;
+});
 
 
-    map.on('click', 'grid-clusters', (e) => {
-        map.getCanvas().style.cursor = 'pointer';
-        if (e.features.length > 0) {
-            if (hoveredStateId !== null) {
-                map.setFeatureState({
-                    source: 'grid',
-                    id: hoveredStateId
-                }, {
-                    hover: false
-                });
-            }
-            hoveredStateId = e.features[0].id
+map.on('click', 'memory', (e) => {
+    map.getCanvas().style.cursor = 'pointer';
+    if (e.features.length > 0) {
+        if (hoveredStateId !== null) {
             map.setFeatureState({
                 source: 'grid',
                 id: hoveredStateId
             }, {
-                hover: true
+                hover: false
             });
-            document.getElementById("featureInfo").innerHTML =  "Hexagon ID: " + e.features[0].properties.id;
         }
-    });
+        hoveredStateId = e.features[0].id
+        map.setFeatureState({
+            source: 'grid',
+            id: hoveredStateId
+        }, {
+            hover: true
+        });
+        document.getElementById("featureInfo").innerHTML = "Hexagon ID: " + e.features[0].properties.id;
+    }
+});
 
 
 
@@ -525,7 +568,7 @@ highlightedLayerIds.forEach((layerId) => {
 
 
 // Enumerate ids of the layers.
-const toggleableLayerIds = ['aerial', 'graffito', 'boundary', 'speech', '3d-police'];
+const toggleableLayerIds = ['aerial', 'graffito', 'boundary', 'speech', 'memory', '3d-police'];
 // Set up the corresponding toggle button for each layer.
 for (const id of toggleableLayerIds) {
 
@@ -537,8 +580,18 @@ for (const id of toggleableLayerIds) {
         const visibility = map.getLayoutProperty(clickedLayer, 'visibility');
         if (visibility === 'visible') {
             map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+            if (id == "graffito") {
+
+                map.setLayoutProperty("graffito-outline", 'visibility', 'none');
+                map.setLayoutProperty("graffito-label", 'visibility', 'none');
+            }
+
         } else {
             map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            if (id == "graffito") {
+                map.setLayoutProperty("graffito-outline", 'visibility', 'visible');
+                map.setLayoutProperty("graffito-label", 'visibility', 'visible');
+            }
         }
     });
 

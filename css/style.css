@@ -133,6 +133,14 @@ input {
   background-color: yellow;
 }
 
+#memory-legend {
+  display: inline-block;
+  border-radius: 20%;
+  width: 15px;
+  height: 10px;
+  margin-right: 5px;
+  background-color: purple;
+}
 
 
 
