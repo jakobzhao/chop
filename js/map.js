@@ -27,6 +27,8 @@ const popup = new mapboxgl.Popup({
 });
 
 let hoveredStateId = null;
+let hoveredStateId2 = null;
+
 
 //Return the original position of the map.
 document.getElementById('title').addEventListener('mouseenter', () => {
@@ -504,18 +506,18 @@ map.on("click", "graffito", (e) => {
 map.on('mousemove', 'memory', (e) => {
     map.getCanvas().style.cursor = 'pointer';
     if (e.features.length > 0) {
-        if (hoveredStateId !== null) {
+        if (hoveredStateId2 !== null) {
             map.setFeatureState({
                 source: 'grid',
-                id: hoveredStateId
+                id: hoveredStateId2
             }, {
                 hover: false
             });
         }
-        hoveredStateId = e.features[0].id
+        hoveredStateId2 = e.features[0].id
         map.setFeatureState({
             source: 'grid',
-            id: hoveredStateId
+            id: hoveredStateId2
         }, {
             hover: true
         });
@@ -526,33 +528,33 @@ map.on('mousemove', 'memory', (e) => {
 // previously hovered feature.
 map.on('mouseleave', 'memory', () => {
     map.getCanvas().style.cursor = '';
-    if (hoveredStateId !== null) {
+    if (hoveredStateId2 !== null) {
         map.setFeatureState({
             source: 'grid',
-            id: hoveredStateId
+            id: hoveredStateId2
         }, {
             hover: false
         });
     }
-    hoveredStateId = null;
+    hoveredStateId2 = null;
 });
 
 
 map.on('click', 'memory', (e) => {
     map.getCanvas().style.cursor = 'pointer';
     if (e.features.length > 0) {
-        if (hoveredStateId !== null) {
+        if (hoveredStateId2 !== null) {
             map.setFeatureState({
                 source: 'grid',
-                id: hoveredStateId
+                id: hoveredStateId2
             }, {
                 hover: false
             });
         }
-        hoveredStateId = e.features[0].id
+        hoveredStateId2 = e.features[0].id
         map.setFeatureState({
             source: 'grid',
-            id: hoveredStateId
+            id: hoveredStateId2
         }, {
             hover: true
         });
