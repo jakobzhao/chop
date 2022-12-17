@@ -48,3 +48,12 @@ function makeAlert(alertText) {
     let alertModal = new bootstrap.Modal(alert);
     alertModal.show();
 }
+
+    // status checks
+    function checkStatus(response) {
+        if (response.ok) {
+          return response;
+        } else {
+          throw Error("Error in request: " + response.statusText);
+        }
+      }
