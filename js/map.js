@@ -109,7 +109,7 @@ function rotateCamera(timestamp) {
 map.on('load', () => {
 
     //download a spray icon from fa 6, and edit it at https://editor.method.ac/
-    map.loadImage('../img/spray-can2.png', (error, image) => {
+    map.loadImage('../img/spray-can-yl2.png', (error, image) => {
         if (error) throw error;
         if (!map.hasImage('spray')) map.addImage('spray', image);
     });
@@ -288,7 +288,7 @@ map.on('load', () => {
             // 'icon-text-fit-padding':10,
         },
         'paint': {
-            'text-color': "#FFFF8F",
+            'text-color': "#FFFFC6",
             'text-halo-color': "#0C090A",
             'text-halo-blur': 1,
             'text-halo-width': 2,
