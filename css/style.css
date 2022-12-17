@@ -9,6 +9,7 @@ main,
   background: #fff;
   display: flex;
   flex-flow: column;
+  font-family: "Source Sans Pro", sans-serif;
   /* overflow-y: hidden; */
 }
 
@@ -52,6 +53,17 @@ main,
 
 }
 
+#links {
+  display: flex;
+  font-size:medium;
+  justify-content:end;
+  justify-content: right;
+  align-items: flex-end;
+}
+#links > a {
+  margin-left: 1em;
+  /* margin-right: 2em; */
+}
 
 input {
   cursor: pointer;
