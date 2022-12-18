@@ -181,6 +181,9 @@ main,
   
 }
 
+.welcome-content, #nextTimeLabel, .modal-title {
+  color:rgb(29, 29, 29);
+}
 .desc{
 
   color:rgb(29, 29, 29);

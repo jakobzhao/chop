@@ -12,9 +12,12 @@
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,800" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,800&family=Lobster&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,800&family=Lobster&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Open+Sans:wght@300&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/simplebar.css" />
@@ -41,7 +44,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Welcome！</h5>
+                        <h5 class="modal-title">Welcome！</h5>
                     </div>
                     <div class="modal-body welcome-content">
                         <img src="img/logo.png"></img>
@@ -76,10 +79,10 @@
 
                 <a href="https://github.com/jakobzhao/chop" class="bi bi-github" aria-current="page"></a>
 
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fhgis.uw.edu%2Fvgi&amp;src=sdkpreparse"
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://hgis.uw.edu/chop"
                     class="bi bi-facebook" aria-current="page"></a>
 
-                <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/covid19-workers/&text=Check out this geospatial platform that allow local experts to contribution data about lgbtgq spaces."
+                <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/chop/&text=Check out this web map visualizing the digital memories of the CHOP in 2020."
                     class="bi bi-twitter " aria-current="page"></a>
             </div>
         </div>
@@ -87,9 +90,11 @@
             <h5 id="title"> Digital Memories of The Capitol Hill Organized Protest
             </h5>
             <p>
-                The Capitol Hill Occupied Protest or the Capitol Hill Organized Protest, originally Free
-                Capitol Hill and later the Capitol Hill Autonomous Zone, was an occupation protest and self-declared
-                autonomous zone in the Capitol Hill neighborhood of Seattle, Washington. </p>
+                The Capitol Hill Occupied Protest (CHOP), originally Free Capitol Hill and later the Capitol Hill
+                Autonomous Zone, was an occupation protest and self-declared
+                autonomous zone in the Capitol Hill neighborhood of Seattle, Washington.
+
+            </p>
 
             <div class="container">
                 <div class="layer-controls row align-items-start">
@@ -112,7 +117,8 @@
 
                 <div class="layer-controls row align-items-start">
                     <div class="col">
-                        <input class="form-check-input  btn-secondary" type="checkbox" id="aerial" value="aerial" checked>
+                        <input class="form-check-input  btn-secondary" type="checkbox" id="aerial" value="aerial"
+                            checked>
                         <label class="form-check-label" for="aerial"><i id="drone-legend"> </i>Drone Photo</label>
                     </div>
                     <div class="col">
@@ -135,7 +141,9 @@
 
 
         <div id="featureInfo" class="d-flex flex-column d-none" data-simplebar data-simplebar-auto-hide="false">
-            <p id="featurePrompt">This panel shows memories of a location on which you will click in the map; you can also share your own memories of the place. <span id="promptHighlight"> To close this panel, you can toggle off the memory checkbox in the console above.</span></p>
+            <p id="featurePrompt">This panel shows memories of a location on which you will click in the map; you can
+                also share your own memories of the place. <span id="promptHighlight"> To close this panel, you can
+                    toggle off the memory checkbox in the console above.</span></p>
             <form id="reviewList" class="d-none">
                 <hr>
 
@@ -146,7 +154,8 @@
 
             <form id="reviewPanel" class="d-none">
                 <hr>
-                <p id="noReview" class="d-none"> No memories were found on the server. Be the first sharing memory using the form below.</p>
+                <p id="noReview" class="d-none"> No memories were found on the server. Be the first sharing memory using
+                    the form below.</p>
                 <p id="hasReview" class="d-none"> Use the text form below to share your memory about this location.</p>
                 <!-- <p>Share your own memory of the place on which you just clicked on the map</p> -->
                 <div class="form-row row">
@@ -174,9 +183,9 @@
                 </div>
                 <!-- Submit button -->
                 <div class="form-row row">
-                    <button type="submit" id="review-submit" class="btn btn-primary btn-block">Submit</button> 
+                    <button type="submit" id="review-submit" class="btn btn-primary btn-block">Submit</button>
                 </div>
-                
+
             </form>
 
             <!-- all reviews container -->
