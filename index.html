@@ -13,13 +13,16 @@
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,800" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/simplebar.css" />
     <link rel="stylesheet" href="css/style.css">
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
     </script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+    <script src="js/simplebar.min.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+    <script src="js/headshot.js"></script>
 
     <script src="js/main.js" defer></script>
 </head>
@@ -114,8 +117,7 @@
                     </div>
                     <div class="col">
                         <input class="form-check-input" type="checkbox" id="memory" value="memory">
-                        <label class="form-check-label" for="memory"><i id="memory-legend"> </i>Memory
-                            <i>(TBA)</i></label>
+                        <label class="form-check-label" for="memory"><i id="memory-legend"> </i>Memory</label>
                     </div>
                 </div>
 
@@ -127,41 +129,59 @@
 
         </div>
 
-        <div id="featureInfo" class="d-flex flex-column">
-            <p id="hexagonInfo"></p>
-            <!-- add from https://mdbootstrap.com/docs/standard/forms/overview/ -->
-            <form>
-                <!-- Name input -->
-                <div class="form-outline mb-4">
-                    <input type="text" id="reviewername" class="form-control" />
-                    <label class="form-label" for="reviewername">Name</label>
-                </div>
 
-                <!-- Email input -->
-                <div class="form-outline mb-4">
-                    <input type="email" id="email" class="form-control" />
-                    <label class="form-label" for="email">Email address</label>
+        <div id="featureInfo" class="d-flex flex-column d-none" data-simplebar data-simplebar-auto-hide="false">
+            <p>This panel shows a list of digital memories about the location you just clicked on the map. You can also
+                share your memories.</p>
+            <form id="reviewList" class="d-none">
+                <hr>
+
+
+                <div id="reviewList-container"></div>
+
+            </form>
+
+            <form id="reviewPanel" class="d-none">
+                <hr>
+                <p id="noReview" class="d-none"> No memories was found in the server. Be the first and share your memory
+                    about this location below.</p>
+                <p id="hasReview" class="d-none"> Use the text form below to share your memory about this location.</p>
+                <!-- <p>Share your own memory of the place on which you just clicked on the map</p> -->
+                <div class="form-row row">
+
+                    <!-- Name input -->
+                    <div class="form-outline col">
+                        <input type="text" id="reviewername" class="form-control" placeholder="Input your Name..." />
+                        <!-- <label class="form-label" for="reviewername">Name</label> -->
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline col">
+                        <input type="email" id="email" class="form-control" placeholder="Input your Email ..." />
+                        <!-- <label class="form-label" for="email">Email address</label> -->
+                    </div>
                 </div>
 
                 <!-- Message input -->
-                <div class="form-outline mb-4">
-                    <textarea class="form-control" id="reviewcontent" rows="4"></textarea>
-                    <label class="form-label" for="reviewcontent">Message</label>
+                <div class="form-row row">
+                    <div class="form-outline">
+                        <textarea class="form-control" id="reviewcontent" rows="4"
+                            placeholder="Share your memories about the CHOP here..."></textarea>
+                        <!-- <label class="form-label" for="reviewcontent">Your memories</label> -->
+                    </div>
                 </div>
                 <!-- Submit button -->
-                <button type="submit" id="review-submit" class="btn btn-primary btn-block mb-4">Send</button>
+                <div class="form-row row">
+
+        
+
+                    <button type="submit" id="review-submit" class="btn btn-primary btn-block col-2">Submit</button> 
+                    <button type="cancel" id="review-cancel" class="btn btn-secondary btn-block col-2">Cancel</button>
+                </div>
+                
             </form>
 
-               <!-- submitted review confirm -->
-      <div id="reviews-confirmation" class="icon-center d-none">
-        <i class="fas fa-check-circle fa-2x text-success"></i>
-        <p>Review has been submitted.</p>
-      </div>
-
-      <!-- all reviews container -->
-      <div id="reviews-container" class="mx-3">
-        TEST
-      </div>
+            <!-- all reviews container -->
 
 
         </div>
@@ -179,6 +199,25 @@
             </p>
             <!-- The frontend map libraries are from Mapbox, and the data for the basemaps are from OpenStreetMaps -->
         </div>
+
+
+        <div class="modal fade" id="alert-modal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Notice</h5>
+                    </div>
+                    <div class="modal-body" id="alert-text">
+                        Please log in before making any contribution to this geospatial platform.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="alert-cls-btn"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
 
     </main>

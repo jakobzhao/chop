@@ -69,6 +69,58 @@ main,
   border-radius: 0.3em;
 }
 
+
+#reviewPanel, #reviewList {
+  position: relative;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+#reviewPanel > div, #reviewList > div {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.memory-entry{
+  font-size:10pt;
+  
+  margin-bottom: 0.5em;
+}
+
+
+.review-cancel{
+  width: 2em;
+}
+.contributor-name{
+  font-size:12pt;
+  color: whitesmoke;
+  font-weight: 600;
+
+}
+
+.contributor-name >　canvas{
+  display: block;
+  margin: 0 auto;
+}
+
+
+.mentioned {
+  margin-left: 0.3em;
+  color: rgba(245, 245, 245, 0.3)
+}
+.memory-content{
+  font-size:12pt;
+  color:#c5c4c4;
+  
+}
+
+.created_at {
+
+  font-style: italic;
+  color: rgba(245, 245, 245, 0.3)
+}
+
+
 #links {
   z-index: 100;
   position: fixed;

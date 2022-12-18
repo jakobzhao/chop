@@ -523,11 +523,21 @@ for (const id of toggleableLayerIds) {
                 map.setLayoutProperty("graffito-label", 'visibility', 'none');
             }
 
+            if (id == "memory") {
+
+                document.getElementById("featureInfo").classList.add("d-none");
+            }
+
         } else {
             map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
             if (id == "graffito") {
                 map.setLayoutProperty("graffito-outline", 'visibility', 'visible');
                 map.setLayoutProperty("graffito-label", 'visibility', 'visible');
+            }
+            
+            if (id == "memory") {
+
+                document.getElementById("featureInfo").classList.remove("d-none");
             }
         }
     });

@@ -36,7 +36,7 @@ map.on('mouseleave', 'memory', () => {
 });
 
 
-map.on('click', 'memory', (e) => {
+map.on('click', 'memory', async (e) => {
     map.getCanvas().style.cursor = 'pointer';
     if (e.features.length > 0) {
         if (hoveredStateId2 !== null) {
@@ -54,38 +54,68 @@ map.on('click', 'memory', (e) => {
         }, {
             hover: true
         });
-        document.getElementById("hexagonInfo").innerHTML = "Hexagon ID: " + e.features[0].properties.id;
+        // document.getElementById("hexagonInfo").innerHTML = "Hexagon ID: " + e.features[0].properties.id;
         hid = e.features[0].properties.id;
+        
+        //capture previous reviews
+        // get all comments of the location
+        let reviewData = await getReviews(hid);
+        constructReviews(reviewData);
     }
 });
 
 
-//review
-
-document.getElementById('review-submit').removeEventListener('click', submitNewReview);
-document.getElementById('review-submit').addEventListener('click', submitNewReview);
-// get all comments of the location
-// let reviewData = await getReviews(hid);
-//constructReviews(reviewData);
-
+//==============================review============================================
 
 
 // create and style all incoming reviews from API request
-// function constructReviews(reviewData) {
-//     let reviewParent = document.getElementById('reviews-container');
-  
-//     for (let element of reviewData) {
-//       let reviewDiv = document.createElement('div');
-//       reviewDiv.innerHTML = element.content;
-//       reviewDiv.classList.add('review-box');
-//       reviewParent.append(reviewDiv);
-//     }
-//   }
+function constructReviews(memoryData) {
+
+    // initialize the reviewList
+    document.getElementById("reviewList").classList.add("d-none");
+    document.getElementById("noReview").classList.add("d-none");
+    document.getElementById("hasReview").classList.add("d-none");
+    document.getElementById("reviewPanel").classList.add("d-none");
+    document.getElementById('reviewList-container').innerHTML = "";
+
+    // construct the new review list
+   
+    if (memoryData.length == 0) {
+        document.getElementById("noReview").classList.remove("d-none");
+        // enable review
+        document.getElementById('review-submit').removeEventListener('click', submitNewReview);
+        document.getElementById('review-submit').addEventListener('click', submitNewReview);
+        document.getElementById("reviewPanel").classList.remove("d-none");
+
+    } else {
+        document.getElementById("hasReview").classList.remove("d-none");
+        document.getElementById("reviewPanel").classList.remove("d-none");
+        document.getElementById("reviewList").classList.remove("d-none");
+        let memoryListContainer = document.getElementById('reviewList-container');
+        let i = 0
+        for (let memory of memoryData) {
+            let memoryDiv = document.createElement('div');
+            let created_at = new Date(memory.created_at);
+            let dt = created_at.toLocaleDateString('en-US', {timeZone: 'PST'})
+            let tm = created_at.toLocaleTimeString('en-US', {timeZone: 'PST'})
+            memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-'+ i.toString() +'" height="15px" width="15px"></canvas> </span> <span class="mentioned" >mentioned: </span><span class="memory-content">'+memory.content+'    </span> <span class="created_at">'+ dt +  ' '+ tm + '</span>';
+            memoryDiv.classList.add('memory-entry');
+            memoryListContainer.append(memoryDiv);
+
+            drawHeadShot("memory-" + i.toString());
+            i++;
+        }
+    }
+}
+
+
+
 
 
 
 // helper function to submit new review
 function submitNewReview(e) {
+    e.preventDefault();
 
     let reviewer = document.getElementById('reviewername').value;
     let email = document.getElementById('email').value;
@@ -118,7 +148,7 @@ async function addNewReview(e, hid, reviewer, email, content) {
         // await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
         await fetch('http://localhost:3000/api/add-comment', settings);
         confirmationReview();
-        // getReviews(id);
+        getReviews(hid);
     } catch (err) {
         checkStatus(err);
     }
@@ -136,27 +166,22 @@ function confirmationReview() {
 
     // display user reaction confirmation screen
     let reviewCheck = document.getElementById('reviews-confirmation');
-    reviewCheck.classList.remove('d-none');
-    setTimeout(function () {
-        reviewCheck.classList.add('d-none')
-    }, 3000);
+
+    makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success "></i></p><p style="text-align:center">Review has been submitted.</p>');
 }
 
 
 // getReviews
 // Obtain data from database containing information for all the reviews of a specific location
-// async function getReviews(vid) {
-//     try {
-//         let id = vid;
-//         let getReview = await fetch(`https://lgbtqspaces-api.herokuapp.com/api/comment/${id}`, {
-//             method: 'GET'
-//         });
-//         let reviewData = await getReview.json();
-//         return reviewData;
-//     } catch (err) {
-//         console.log(err);
-//     }
-// }
-
-
-  
+async function getReviews(hid) {
+    try {
+        let id = hid;
+        let getReview = await fetch(`http://localhost:3000/api/comment/${id}`, {
+            method: 'GET'
+        });
+        let reviewData = await getReview.json();
+        return reviewData;
+    } catch (err) {
+        console.log(err);
+    }
+}
