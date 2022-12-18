@@ -28,6 +28,7 @@ const popup = new mapboxgl.Popup({
 
 let hoveredStateId = null;
 let hoveredStateId2 = null;
+let checkedState = false;
 let hid = null;
 
 
@@ -429,7 +430,7 @@ highlightedLayerIds.forEach((layerId) => {
                 description = "Seattle's city department of Police";
             }
 
-            popup.setLngLat(e.lngLat).setHTML(description).addTo(map);
+            popup.setLngLat(e.lngLat).setHTML("<div class='desc'>" + description +"</div>").addTo(map);
         }
 
     });
@@ -496,7 +497,7 @@ map.on("click", "graffito", (e) => {
         }, {
             hover: true
         });
-        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`${e.features[0].properties.Message}`).addTo(map);
+        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`<div class='desc'>${e.features[0].properties.Message}</div>`).addTo(map);
     }
 
 
@@ -535,7 +536,13 @@ for (const id of toggleableLayerIds) {
                 document.getElementById('reviewername').value = "";
                 document.getElementById('email').value = "";
                 document.getElementById('reviewcontent').value = "";
-                
+                map.setFeatureState({
+                    source: 'grid',
+                    id: hoveredStateId2
+                }, {
+                    hover: false
+                });
+
             }
 
         } else {

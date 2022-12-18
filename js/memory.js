@@ -1,39 +1,39 @@
 //======================= Memory ==========================
-map.on('mousemove', 'memory', (e) => {
-    map.getCanvas().style.cursor = 'pointer';
-    if (e.features.length > 0) {
-        if (hoveredStateId2 !== null) {
-            map.setFeatureState({
-                source: 'grid',
-                id: hoveredStateId2
-            }, {
-                hover: false
-            });
-        }
-        hoveredStateId2 = e.features[0].id
-        map.setFeatureState({
-            source: 'grid',
-            id: hoveredStateId2
-        }, {
-            hover: true
-        });
-    }
-});
+// map.on('mousemove', 'memory', (e) => {
+//     map.getCanvas().style.cursor = 'pointer';
+//     if (e.features.length > 0 && checkedState == false) {
+//         if (hoveredStateId2 !== null) {
+//             map.setFeatureState({
+//                 source: 'grid',
+//                 id: hoveredStateId2
+//             }, {
+//                 hover: false
+//             });
+//         }
+//         hoveredStateId2 = e.features[0].id
+//         map.setFeatureState({
+//             source: 'grid',
+//             id: hoveredStateId2
+//         }, {
+//             hover: true
+//         });
+//     }
+// });
 
 // When the mouse leaves the state-fill layer, update the feature state of the
 // previously hovered feature.
-map.on('mouseleave', 'memory', () => {
-    map.getCanvas().style.cursor = '';
-    if (hoveredStateId2 !== null) {
-        map.setFeatureState({
-            source: 'grid',
-            id: hoveredStateId2
-        }, {
-            hover: false
-        });
-    }
-    hoveredStateId2 = null;
-});
+// map.on('mouseleave', 'memory', () => {
+//     map.getCanvas().style.cursor = '';
+//     if (hoveredStateId2 !== null && checkedState == false) {
+//         map.setFeatureState({
+//             source: 'grid',
+//             id: hoveredStateId2
+//         }, {
+//             hover: false
+//         });
+//     }
+//     hoveredStateId2 = null;
+// });
 
 
 map.on('click', 'memory', async (e) => {
@@ -56,11 +56,13 @@ map.on('click', 'memory', async (e) => {
         });
         // document.getElementById("hexagonInfo").innerHTML = "Hexagon ID: " + e.features[0].properties.id;
         hid = e.features[0].properties.id;
-
         //capture previous reviews
         // get all comments of the location
         let reviewData = await getReviews(hid);
+   
         constructReviews(reviewData);
+
+       
     }
 });
 
@@ -102,7 +104,7 @@ function constructReviews(memoryData) {
             let tm = created_at.toLocaleTimeString('en-US', {
                 timeZone: 'PST'
             })
-            memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="15px" width="15px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at">' + dt + ' ' + tm + '</span>';
+            memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="15px" width="15px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at"> on ' + dt + ' at ' + tm + '</span>';
             memoryDiv.classList.add('memory-entry');
             memoryListContainer.append(memoryDiv);
 
@@ -112,21 +114,7 @@ function constructReviews(memoryData) {
     }
 }
 
-document.getElementById('reviewCancel').addEventListener('click', ()=>{
 
-    e.preventDefault();
-    document.getElementById("featureInfo").classList.add("d-none");
-
-    document.getElementById("reviewList").classList.add("d-none");
-    document.getElementById("noReview").classList.add("d-none");
-    document.getElementById("hasReview").classList.add("d-none");
-    document.getElementById("reviewPanel").classList.add("d-none");
-    document.getElementById('reviewList-container').innerHTML = "";
-    document.getElementById('reviewername').value = "";
-    document.getElementById('email').value = "";
-    document.getElementById('reviewcontent').value = "";
-   
-});
 
 
 
