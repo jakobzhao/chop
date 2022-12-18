@@ -75,22 +75,24 @@ function constructReviews(memoryData) {
 
     // initialize the reviewList
     document.getElementById("reviewList").classList.add("d-none");
-    document.getElementById("noReview").classList.add("d-none");
-    document.getElementById("hasReview").classList.add("d-none");
+    // document.getElementById("noReview").classList.add("d-none");
+    // document.getElementById("hasReview").classList.add("d-none");
     document.getElementById("reviewPanel").classList.add("d-none");
     document.getElementById('reviewList-container').innerHTML = "";
 
     // construct the new review list
 
     if (memoryData.length == 0) {
-        document.getElementById("noReview").classList.remove("d-none");
+        // document.getElementById("noReview").classList.remove("d-none");
         // enable review
+        document.getElementById("featureInfo").classList.add("d-none");
         document.getElementById('review-submit').removeEventListener('click', submitNewReview);
         document.getElementById('review-submit').addEventListener('click', submitNewReview);
         document.getElementById("reviewPanel").classList.remove("d-none");
 
     } else {
-        document.getElementById("hasReview").classList.remove("d-none");
+        document.getElementById("featureInfo").classList.remove("d-none");
+        // document.getElementById("hasReview").classList.remove("d-none");
         document.getElementById("reviewPanel").classList.remove("d-none");
         document.getElementById("reviewList").classList.remove("d-none");
         let memoryListContainer = document.getElementById('reviewList-container');

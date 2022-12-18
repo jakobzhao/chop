@@ -527,10 +527,9 @@ for (const id of toggleableLayerIds) {
             if (id == "memory") {
 
                 document.getElementById("featureInfo").classList.add("d-none");
-
                 document.getElementById("reviewList").classList.add("d-none");
-                document.getElementById("noReview").classList.add("d-none");
-                document.getElementById("hasReview").classList.add("d-none");
+                // document.getElementById("noReview").classList.add("d-none");
+                // document.getElementById("hasReview").classList.add("d-none");
                 document.getElementById("reviewPanel").classList.add("d-none");
                 document.getElementById('reviewList-container').innerHTML = "";
                 document.getElementById('reviewername').value = "";
@@ -554,7 +553,7 @@ for (const id of toggleableLayerIds) {
             
             if (id == "memory") {
 
-                document.getElementById("featureInfo").classList.remove("d-none");
+                // document.getElementById("featureInfo").classList.remove("d-none");
 
              
 

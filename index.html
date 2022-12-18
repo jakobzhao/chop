@@ -19,6 +19,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/simplebar.css" />
     <link rel="stylesheet" href="css/style.css">
@@ -79,15 +81,16 @@
 
                 <a href="https://github.com/jakobzhao/chop" class="bi bi-github" aria-current="page"></a>
 
-                <a href="https://www.facebook.com/sharer/sharer.php?u=https://hgis.uw.edu/chop"
-                    class="bi bi-facebook" aria-current="page"></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://hgis.uw.edu/chop" class="bi bi-facebook"
+                    aria-current="page"></a>
 
                 <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/chop/&text=Check out this web map visualizing the digital memories of the CHOP in 2020."
                     class="bi bi-twitter " aria-current="page"></a>
             </div>
         </div>
         <div id="info" class="d-flex flex-column">
-            <h5 id="title"> Digital Memories of The Capitol Hill Organized Protest <i style="font-size: 10pt; left:0.2em; bottom: 1em; position:relative"> Beta</i>
+            <h5 id="title"> Public Memories of The CHOP <i
+                    style="font-size: 10pt; left:0.2em; bottom: 1em; position:relative"> Beta</i>
             </h5>
             <p>
                 The Capitol Hill Occupied Protest (CHOP), originally Free Capitol Hill and later the Capitol Hill
@@ -139,54 +142,47 @@
 
         </div>
 
+        <form id="reviewPanel" class="d-none ">
+            <!-- <hr> -->
+            <!-- <p> Use this form to share your memory of the location that you clicked.</p> -->
+            <div class="form-row row">
 
-        <div id="featureInfo" class="d-flex flex-column d-none" data-simplebar data-simplebar-auto-hide="false">
-            <p id="featurePrompt">This panel shows memories of a location on which you will click in the map; you can
-                also share your own memories of the place. <span id="promptHighlight"> To close this panel, you can
-                    toggle off the memory checkbox in the console above.</span></p>
-            <form id="reviewList" class="d-none">
-                <hr>
-
-
-                <div id="reviewList-container"></div>
-
-            </form>
-
-            <form id="reviewPanel" class="d-none">
-                <hr>
-                <p id="noReview" class="d-none"> No memories were found on the server. Be the first sharing memory using
-                    the form below.</p>
-                <p id="hasReview" class="d-none"> Use the text form below to share your memory about this location.</p>
-                <!-- <p>Share your own memory of the place on which you just clicked on the map</p> -->
-                <div class="form-row row">
-
-                    <!-- Name input -->
-                    <div class="form-outline col">
-                        <input type="text" id="reviewername" class="form-control" placeholder="Input your Name..." />
-                        <!-- <label class="form-label" for="reviewername">Name</label> -->
-                    </div>
-
-                    <!-- Email input -->
-                    <div class="form-outline col">
-                        <input type="email" id="email" class="form-control" placeholder="Input your Email ..." />
-                        <!-- <label class="form-label" for="email">Email address</label> -->
-                    </div>
+                <!-- Name input -->
+                <div class="form-outline col">
+                    <input type="text" id="reviewername" class="form-control" placeholder="Input your Name..." />
+                    <!-- <label class="form-label" for="reviewername">Name</label> -->
                 </div>
 
-                <!-- Message input -->
-                <div class="form-row row">
-                    <div class="form-outline">
-                        <textarea class="form-control" id="reviewcontent" rows="4"
-                            placeholder="Share your memories about the CHOP here..."></textarea>
-                        <!-- <label class="form-label" for="reviewcontent">Your memories</label> -->
-                    </div>
+                <!-- Email input -->
+                <div class="form-outline col">
+                    <input type="email" id="email" class="form-control" placeholder="Input your Email ..." />
+                    <!-- <label class="form-label" for="email">Email address</label> -->
                 </div>
-                <!-- Submit button -->
-                <div class="form-row row">
-                    <button type="submit" id="review-submit" class="btn btn-primary btn-block">Submit</button>
-                </div>
+            </div>
 
-            </form>
+            <!-- Message input -->
+            <div class="form-row row">
+                <div class="form-outline">
+                    <textarea class="form-control" id="reviewcontent" rows="4"
+                        placeholder="Share your memory of the location upon which you clicked...."></textarea>
+                    <!-- <label class="form-label" for="reviewcontent">Your memories</label> -->
+                </div>
+            </div>
+            <!-- Submit button -->
+            <div class="form-row row">
+                <button type="submit" id="review-submit" class="btn btn-primary btn-block">Submit</button>
+            </div>
+
+        </form>
+        <div id="featureInfo" class="grid-container d-none" data-simplebar data-simplebar-auto-hide="false" >
+          
+            <div id="reviewList"   class="d-none"  >
+                <p id="featurePrompt">This panel shows public memories of the location upon which you just clicked.</p>
+                <div id="reviewList-container" class=""></div>
+
+            </div>
+            
+          
 
             <!-- all reviews container -->
 
@@ -199,11 +195,13 @@
             <p id="logos"><img width="38px" src="img/uw-logo3.png"></img></p>
             <p id="acknowledge">This platform is created by geographers from <a href="https://www.washington.edu/">the
                     University of Washington. The basemap is made up using <a
-                    href="https://www.openstreetmap.org/">&copy;OpenStreetMap</a>'s data by <a
-                    href="https://www.mapbox.com/">&copy;MapBox</a>.
+                        href="https://www.openstreetmap.org/">&copy;OpenStreetMap</a>'s data by <a
+                        href="https://www.mapbox.com/">&copy;MapBox</a>.
             </p>
             <!-- The frontend map libraries are from Mapbox, and the data for the basemaps are from OpenStreetMaps -->
         </div>
+
+
 
 
         <div class="modal fade" id="alert-modal">

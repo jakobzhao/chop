@@ -58,8 +58,11 @@ main,
 
 #title {
   color: white;
-  font-weight: 800;
-  font-family: 'Oswald', sans-serif;
+  font-weight: 500;
+  font-size: 20pt;
+  /* font-family: 'Oswald', sans-serif; */
+  font-family: 'Barlow Condensed', sans-serif;
+  
 }
 
 .form-check-label {
@@ -68,48 +71,86 @@ main,
 
 #featureInfo {
   z-index: 100;
-  position: fixed;
+  position:fixed;
   left: 1em;
-  top: 17em;
-  bottom: 3.5em;
+  top: 34.7em;
+  bottom: 4em;
   width: 32em;
   padding: 1em 1em;
   font-size: 11pt;
   background: rgba(26, 24, 24, 0.9);
   box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
   border-radius: 0.3em;
+  /* overflow-x: hidden;
+  overflow-y: scroll;
+  scrollbar-color: rebeccapurple green;
+  scrollbar-width: thin; */
+
 }
 
-#featurePrompt{
-  font-size: 11pt;
-  /* line-height: 1.2; */
+.scrollbar-primary::-webkit-scrollbar {
+  z-index:200;
+  width: 5px;
+  background-color: #F5F5F5;
 }
+
+.scrollbar-primary::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+  background-color: #4285F4;
+
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  /* Remove scrollbar space */
+  background: transparent;
+  /* scrollbar invisible */
+}
+
+
+
 #promptHighlight{
   text-decoration:none;
   text-decoration-style: dotted;
   font-style: italic;
 }
-#reviewPanel, #reviewList {
-  position: relative;
-  margin-left: 1em;
-  margin-right: 1em;
-}
+
 
 #reviewPanel > div, #reviewList > div {
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin-top: .8em;
+  margin-bottom: .8em;
 }
 
+#reviewList {
+
+  margin-left: 1em;
+  margin-right: 1em;
+
+}
 #reviewPanel{
-  padding-bottom: 200px;
-}
-#review-submit{
 
-  position: absolute;
-  display: inline-block;
-  left: 0em;
-  width:6em;
+  z-index: 100;
+  position:fixed;
+  left: 1em;
+  top: 17.2em;
+  /* bottom: 4em; */
+  width: 32em;
+  height: 17em;
+  padding: 1em 1em;
   font-size: 11pt;
+  background: rgba(26, 24, 24, 0.9);
+  box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+  border-radius: 0.3em;
+
+} 
+#review-submit{
+  position:absolute;
+  display: inline-block;
+  margin-left:0.6em;
+  width:6em;
+  right: 1em;
+  font-size: 10.5pt;
 }
 
 
@@ -118,7 +159,9 @@ main,
   padding-right: 0;
 }
 .form-control {
-  opacity: 0.6;
+  opacity: 0.5;
+  /* background-color:rgba(26, 24, 24, 0.9); */
+  font-size: 11pt;
 }
 
 
@@ -184,12 +227,7 @@ main,
 .welcome-content, #nextTimeLabel, .modal-title {
   color:rgb(29, 29, 29);
 }
-.desc{
 
-  color:rgb(29, 29, 29);
-  font-weight: 800;
-
-}
 input {
   cursor: pointer;
 }
@@ -198,10 +236,7 @@ input {
   font-size: smaller;
   padding-bottom: .75em;
 }
-.mapboxgl-popup {
-  max-width: 400px;
-  font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-  }
+
 
 /* attribution panel */
 #attribution {
@@ -304,7 +339,7 @@ input {
 
 .form-check-input {
 
-  background-color: whitesmoke;
+  background-color: rgb(173, 173, 173);
 }
 .form-check-input:checked{
   background-color:#0f4e7e;
@@ -322,55 +357,12 @@ input {
   max-width: 200px;
 }
 
-.mapboxgl-popup-content {
+.mapboxgl-popup-content,#alert-text {
   text-align: center;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
+  font-weight:200;
+  color:rgb(29, 29, 29);
+  font-size: 10.5pt;
+  font-weight: 800;
+
 }
-
-.form-popup {
-  display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
-  z-index: 9;
-}
-
-.form-container {
-  max-width: 300px;
-  padding: 10px;
-  background-color: white;
-}
-
-.form-container input[type=text],
-.form-container input[type=password] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  border: none;
-  background: #f1f1f1;
-}
-
-.form-container .btn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  margin-bottom: 10px;
-  opacity: 0.8;
-}
-
-.form-container .cancel {
-  background-color: red;
-}
-
-.form-container .btn:hover,
-.open-button:hover {
-  opacity: 1;
-}
-
-
-
-
