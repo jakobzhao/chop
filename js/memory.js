@@ -56,7 +56,7 @@ map.on('click', 'memory', async (e) => {
         });
         // document.getElementById("hexagonInfo").innerHTML = "Hexagon ID: " + e.features[0].properties.id;
         hid = e.features[0].properties.id;
-        
+
         //capture previous reviews
         // get all comments of the location
         let reviewData = await getReviews(hid);
@@ -79,7 +79,7 @@ function constructReviews(memoryData) {
     document.getElementById('reviewList-container').innerHTML = "";
 
     // construct the new review list
-   
+
     if (memoryData.length == 0) {
         document.getElementById("noReview").classList.remove("d-none");
         // enable review
@@ -96,9 +96,13 @@ function constructReviews(memoryData) {
         for (let memory of memoryData) {
             let memoryDiv = document.createElement('div');
             let created_at = new Date(memory.created_at);
-            let dt = created_at.toLocaleDateString('en-US', {timeZone: 'PST'})
-            let tm = created_at.toLocaleTimeString('en-US', {timeZone: 'PST'})
-            memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-'+ i.toString() +'" height="15px" width="15px"></canvas> </span> <span class="mentioned" >mentioned: </span><span class="memory-content">'+memory.content+'    </span> <span class="created_at">'+ dt +  ' '+ tm + '</span>';
+            let dt = created_at.toLocaleDateString('en-US', {
+                timeZone: 'PST'
+            })
+            let tm = created_at.toLocaleTimeString('en-US', {
+                timeZone: 'PST'
+            })
+            memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="15px" width="15px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at">' + dt + ' ' + tm + '</span>';
             memoryDiv.classList.add('memory-entry');
             memoryListContainer.append(memoryDiv);
 
@@ -108,6 +112,21 @@ function constructReviews(memoryData) {
     }
 }
 
+document.getElementById('reviewCancel').addEventListener('click', ()=>{
+
+    e.preventDefault();
+    document.getElementById("featureInfo").classList.add("d-none");
+
+    document.getElementById("reviewList").classList.add("d-none");
+    document.getElementById("noReview").classList.add("d-none");
+    document.getElementById("hasReview").classList.add("d-none");
+    document.getElementById("reviewPanel").classList.add("d-none");
+    document.getElementById('reviewList-container').innerHTML = "";
+    document.getElementById('reviewername').value = "";
+    document.getElementById('email').value = "";
+    document.getElementById('reviewcontent').value = "";
+   
+});
 
 
 
