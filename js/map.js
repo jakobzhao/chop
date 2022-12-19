@@ -526,13 +526,13 @@ for (const id of toggleableLayerIds) {
 
             if (id == "memory") {
 
-                document.getElementById("featureInfo").classList.add("d-none");
-                document.getElementById("reviewList").classList.add("d-none");
+                document.getElementById("memory-list").classList.add("d-none");
+                // document.getElementById("reviewList").classList.add("d-none");
                 // document.getElementById("noReview").classList.add("d-none");
                 // document.getElementById("hasReview").classList.add("d-none");
-                document.getElementById("reviewPanel").classList.add("d-none");
-                document.getElementById('reviewList-container').innerHTML = "";
-                document.getElementById('reviewername').value = "";
+                document.getElementById("memory-panel").classList.add("d-none");
+                document.getElementById('memory-list-container').innerHTML = "";
+                document.getElementById('contributorname').value = "";
                 document.getElementById('email').value = "";
                 document.getElementById('reviewcontent').value = "";
                 map.setFeatureState({
@@ -553,7 +553,7 @@ for (const id of toggleableLayerIds) {
             
             if (id == "memory") {
 
-                // document.getElementById("featureInfo").classList.remove("d-none");
+                // document.getElementById("memory-list").classList.remove("d-none");
 
              
 

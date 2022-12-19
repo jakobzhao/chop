@@ -73,29 +73,29 @@ map.on('click', 'memory', async (e) => {
 // create and style all incoming reviews from API request
 function constructReviews(memoryData) {
 
-    // initialize the reviewList
-    document.getElementById("reviewList").classList.add("d-none");
+    // initialize the memory-list
+    // document.getElementById("memory-list").classList.add("d-none");
     // document.getElementById("noReview").classList.add("d-none");
     // document.getElementById("hasReview").classList.add("d-none");
-    document.getElementById("reviewPanel").classList.add("d-none");
-    document.getElementById('reviewList-container').innerHTML = "";
+    document.getElementById("memory-panel").classList.add("d-none");
+    document.getElementById('memory-list-container').innerHTML = "";
 
     // construct the new review list
 
     if (memoryData.length == 0) {
         // document.getElementById("noReview").classList.remove("d-none");
         // enable review
-        document.getElementById("featureInfo").classList.add("d-none");
-        document.getElementById('review-submit').removeEventListener('click', submitNewReview);
-        document.getElementById('review-submit').addEventListener('click', submitNewReview);
-        document.getElementById("reviewPanel").classList.remove("d-none");
+        document.getElementById("memory-list").classList.add("d-none");
+        document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
+        document.getElementById('memory-submit').addEventListener('click', submitNewReview);
+        document.getElementById("memory-panel").classList.remove("d-none");
 
     } else {
-        document.getElementById("featureInfo").classList.remove("d-none");
+        document.getElementById("memory-list").classList.remove("d-none");
         // document.getElementById("hasReview").classList.remove("d-none");
-        document.getElementById("reviewPanel").classList.remove("d-none");
-        document.getElementById("reviewList").classList.remove("d-none");
-        let memoryListContainer = document.getElementById('reviewList-container');
+        document.getElementById("memory-panel").classList.remove("d-none");
+        document.getElementById("memory-list").classList.remove("d-none");
+        let memoryListContainer = document.getElementById('memory-list-container');
         let i = 0
         for (let memory of memoryData) {
             let memoryDiv = document.createElement('div');
@@ -113,6 +113,15 @@ function constructReviews(memoryData) {
             drawHeadShot("memory-" + i.toString());
             i++;
         }
+
+
+        let bottomDiv = document.createElement('div');
+        bottomDiv.classList.add('memory-entry-bottom');
+        memoryListContainer.append(bottomDiv);
+
+
+
+
     }
 }
 
@@ -126,7 +135,7 @@ function constructReviews(memoryData) {
 function submitNewReview(e) {
     e.preventDefault();
 
-    let reviewer = document.getElementById('reviewername').value;
+    let reviewer = document.getElementById('contributorname').value;
     let email = document.getElementById('email').value;
     let content = document.getElementById('reviewcontent').value;
     // add new review
@@ -169,7 +178,7 @@ async function addNewReview(e, hid, reviewer, email, content) {
 // Display user reaction screen when review is confirmed and is submitted into database
 function confirmationReview() {
     // hide and remove comment textarea
-    document.getElementById('reviewername').value = '';
+    document.getElementById('contributorname').value = '';
     document.getElementById('email').value = '';
     document.getElementById('reviewcontent').value = '';
 

@@ -17,21 +17,21 @@
         })
 
         if (localStorage.getItem('popState') != 'shown') {
-            console.log("show disclaimer");
-            $('#disclaimer').modal('show');
+            console.log("show welcome");
+            $('#welcome').modal('show');
 
         } else {
-            console.log("hide disclaimer");
-            $('#disclaimer').modal('hide');
+            console.log("hide welcome");
+            $('#welcome').modal('hide');
         }
-        $('#disclaimer-close').click(function (e) // You are clicking the close button
+        $('#welcome-close').click(function (e) // You are clicking the close button
             {
-                $('#disclaimer').fadeOut(); // Now the pop up is hiden.
-                $('#disclaimer').modal('hide');
+                $('#welcome').fadeOut(); // Now the pop up is hiden.
+                $('#welcome').modal('hide');
             });
 
         $(".showFrontPage").on("click", function () {
-            $('#disclaimer').modal('show');
+            $('#welcome').modal('show');
             localStorage.setItem('popState', 'notShown');
         })
      

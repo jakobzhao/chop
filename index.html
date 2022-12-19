@@ -11,6 +11,7 @@
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <!-- google font -->
+    <!-- TODO: Delete those Unnecessary Google Web Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,800" rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,800&family=Lobster&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Open+Sans:wght@300&display=swap"
@@ -41,8 +42,7 @@
         <!-- LOADER -->
         <div id="loader"></div>
         <!-- Welcome Panel -->
-        <div id="disclaimer" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-            aria-hidden="true">
+        <div id="welcome" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -68,7 +68,7 @@
                         </div>
                         <label id="nextTimeLabel">Don't show this info again.</label>
 
-                        <button id="disclaimer-close" type="button" class="btn btn-primary"
+                        <button id="welcome-close" type="button" class="btn btn-primary py-1"
                             data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -101,36 +101,37 @@
 
             <div class="container">
                 <div class="layer-controls row align-items-start">
-                    <div class="col">
+                    <div class="col form-switch">
+
                         <input class=" form-check-input" type="checkbox" id="3d-police" value="3d-police" checked>
-                        <label class="form-check-label" for="3d-police"> <i id="police-legend"> </i>Police Dept.</label>
+                        <label class="form-check-label" for="3d-police"> <i id="police-legend" class="legend police"> </i>Police Dept.</label>
                     </div>
-                    <div class="col">
+                    <div class="col form-switch">
                         <input class=" form-check-input" type="checkbox" id="speech" value="speech" checked>
-                        <label class="form-check-label" for="speech"><i id="speech-legend"> </i>Speech Area</label>
+                        <label class="form-check-label" for="speech"><i id="speech-legend" class="legend speech"> </i>Speech Area</label>
                     </div>
 
-                    <div class="col">
+                    <div class="col form-switch">
                         <input class=" form-check-input" type="checkbox" id="boundary" value="boundary" checked>
-                        <label class="form-check-label" for="boundary"><i id="boundary-legend"> </i>CHOP
+                        <label class="form-check-label" for="boundary"><i id="boundary-legend" class="legend boundary"> </i>CHOP
                             Boundary</label>
                     </div>
 
                 </div>
 
                 <div class="layer-controls row align-items-start">
-                    <div class="col">
+                    <div class="col form-switch">
                         <input class="form-check-input  btn-secondary" type="checkbox" id="aerial" value="aerial"
                             checked>
-                        <label class="form-check-label" for="aerial"><i id="drone-legend"> </i>Drone Photo</label>
+                        <label class="form-check-label" for="aerial"><i id="drone-legend" class="legend drone"> </i>Drone Photo</label>
                     </div>
-                    <div class="col">
+                    <div class="col form-switch">
                         <input class="form-check-input" type="checkbox" id="graffito" value="graffito">
-                        <label class="form-check-label" for="graffito"><i id="graffito-legend"> </i>Graffito</label>
+                        <label class="form-check-label" for="graffito"><i id="graffito-legend" class="legend graffito"> </i>Graffito</label>
                     </div>
-                    <div class="col">
+                    <div class="col form-switch">
                         <input class="form-check-input" type="checkbox" id="memory" value="memory">
-                        <label class="form-check-label" for="memory"><i id="memory-legend"> </i>Memory</label>
+                        <label class="form-check-label" for="memory"><i id="memory-legend" class="legend memory"> </i>Memory</label>
                     </div>
                 </div>
 
@@ -142,24 +143,10 @@
 
         </div>
 
-        <form id="reviewPanel" class="d-none ">
+        <form id="memory-panel" class="d-none ">
             <!-- <hr> -->
             <!-- <p> Use this form to share your memory of the location that you clicked.</p> -->
-            <div class="form-row row">
-
-                <!-- Name input -->
-                <div class="form-outline col">
-                    <input type="text" id="reviewername" class="form-control" placeholder="Input your Name..." />
-                    <!-- <label class="form-label" for="reviewername">Name</label> -->
-                </div>
-
-                <!-- Email input -->
-                <div class="form-outline col">
-                    <input type="email" id="email" class="form-control" placeholder="Input your Email ..." />
-                    <!-- <label class="form-label" for="email">Email address</label> -->
-                </div>
-            </div>
-
+       
             <!-- Message input -->
             <div class="form-row row">
                 <div class="form-outline">
@@ -169,23 +156,37 @@
                 </div>
             </div>
             <!-- Submit button -->
+
             <div class="form-row row">
-                <button type="submit" id="review-submit" class="btn btn-primary btn-block">Submit</button>
+
+                <!-- Name input -->
+                <div class="form-outline col">
+                    <input type="text" id="contributorname" class="form-control" placeholder="Your Name..." />
+                    <!-- <label class="form-label" for="contributorname">Name</label> -->
+                </div>
+
+                <!-- Email input -->
+                <div class="form-outline col">
+                    <input type="email" id="email" class="form-control" placeholder="Your Email ..." />
+                    <!-- <label class="form-label" for="email">Email address</label> -->
+                </div>
+                <div class="form-outline col"></div>
+                <button type="submit" id="memory-submit" class="btn btn-primary ">Submit</button>
+                </div>
             </div>
+
+
+
+            <!-- <div class="form-row row">
+                
+            </div> -->
 
         </form>
-        <div id="featureInfo" class="grid-container d-none" data-simplebar data-simplebar-auto-hide="false" >
-          
-            <div id="reviewList"   class="d-none"  >
-                <p id="featurePrompt">This panel shows public memories of the location upon which you just clicked.</p>
-                <div id="reviewList-container" class=""></div>
+        <div id="memory-list" class="grid-container d-none" data-simplebar data-simplebar-auto-hide="false">
 
-            </div>
-            
-          
 
-            <!-- all reviews container -->
-
+            <p id="memory-list-prompt">This panel shows public memories of the location upon which you just clicked.</p>
+            <div id="memory-list-container" class=""></div>
 
         </div>
 
@@ -198,11 +199,7 @@
                         href="https://www.openstreetmap.org/">&copy;OpenStreetMap</a>'s data by <a
                         href="https://www.mapbox.com/">&copy;MapBox</a>.
             </p>
-            <!-- The frontend map libraries are from Mapbox, and the data for the basemaps are from OpenStreetMaps -->
         </div>
-
-
-
 
         <div class="modal fade" id="alert-modal">
             <div class="modal-dialog">
@@ -211,18 +208,15 @@
                         <h5 class="modal-title">Notice</h5>
                     </div>
                     <div class="modal-body" id="alert-text">
-                        Please log in before making any contribution to this geospatial platform.
+                       placeholder
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="alert-cls-btn"
+                        <button type="button" id="alert-cls-btn" class="btn btn-primary" 
                             data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
     </main>
 
     <script src="js/map.js" defer></script>
