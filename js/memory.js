@@ -98,7 +98,7 @@ function constructReviews(memoryData) {
         let memoryListContainer = document.getElementById('memory-list-container');
         let i = 0
         for (let memory of memoryData) {
-            let memoryDiv = document.createElement('div');
+            let memoryDiv = document.createElement('p');
             let created_at = new Date(memory.created_at);
             let dt = created_at.toLocaleDateString('en-US', {
                 timeZone: 'PST'
@@ -108,7 +108,14 @@ function constructReviews(memoryData) {
             })
             memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="15px" width="15px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at"> on ' + dt + ' at ' + tm + '</span>';
             memoryDiv.classList.add('memory-entry');
+
+        
+
             memoryListContainer.append(memoryDiv);
+
+            let hrDiv = document.createElement('hr');
+            // bottomDiv.classList.add('memory-entry-bottom');
+            memoryListContainer.append(hrDiv);
 
             drawHeadShot("memory-" + i.toString());
             i++;

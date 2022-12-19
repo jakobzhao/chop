@@ -140,7 +140,6 @@ main,
   margin-left: 0.6em;
   width: 6em;
   right: 1em;
-  /* font-size: small */
 }
 
 
@@ -152,11 +151,8 @@ main,
 }
 
 
-
-
 .memory-entry {
   font-size: 10pt;
-
   margin-bottom: 0.5em;
 }
 
@@ -170,10 +166,11 @@ main,
   color: whitesmoke;
   font-weight: 600;
 
+
 }
 
-.contributor-name>canvas {
-  display: block;
+.contributor-name > canvas {
+  display:inline-block;
   margin: 0 auto;
 }
 
