@@ -142,23 +142,23 @@ function constructReviews(memoryData) {
 function submitNewReview(e) {
     e.preventDefault();
 
-    let reviewer = document.getElementById('contributorname').value;
+    let contributor = document.getElementById('contributor').value;
     let email = document.getElementById('email').value;
     let content = document.getElementById('reviewcontent').value;
     // add new review
-    addNewReview(e, hid, reviewer, email, content);
+    addNewReview(e, hid, contributor, email, content);
 };
 
 
 
 // addNewReview
 // Insert data into database and adds a new review to the corresponding VID
-async function addNewReview(e, hid, reviewer, email, content) {
+async function addNewReview(e, hid, contributor, email, content) {
     e.preventDefault();
     // obtain data from user input form
     let newReview = new URLSearchParams();
     newReview.append('hid', hid.toString());
-    newReview.append('reviewer', reviewer);
+    newReview.append('contributor', contributor);
     newReview.append('email', email);
     newReview.append('content', content);
 
