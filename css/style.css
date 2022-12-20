@@ -24,15 +24,23 @@ main,
   height: 100vh;
   top: 0;
   bottom: 0;
-  z-index: 99;
+  z-index: 999;
   background: url("../img/loading.gif") 50% 50% no-repeat white;
   opacity: 1;
 }
 
 
 /* welcome panel */
+
+.map-window {
+  --bs-modal-bg: rgba(26, 24, 24, 0.75);
+  --bs-modal-header-border-color: rgba(158, 153, 153, 0.205);
+  --bs-modal-footer-border-color: rgba(158, 153, 153, 0.205);
+  color: #dddddd;
+}
+
 .map-window-content {
-  font-size: small;
+  font-size: medium;
 }
 
 .map-window-content>img {
@@ -41,18 +49,18 @@ main,
   margin: 5px
 }
 
-.map-window-content,
+/* .map-window-content, */
 .modal-title, #nextTimeLabel {
-  color: rgb(29, 29, 29);
+  color: #dddddd;
 }
 
 .modal{
   background-color: rgba(0, 0, 0, 0.55);
-  /* opacity: 0.8; */
 }
-.modal-footer {
+
+/* .modal-footer {
   font-size: medium
-}
+} */
 
 #nextTimeSwitcher {
   font-size: medium;
@@ -85,14 +93,13 @@ main,
   font-size: 20pt;
   /* font-family: 'Oswald', sans-serif; */
   font-family: 'Barlow Condensed', sans-serif;
-
 }
+
 
 
 /* legend */
 
 .legend {
-
   display: inline-block;
   border-radius: 15%;
   width: 2em;
@@ -123,7 +130,6 @@ main,
 }
 
 .memory {
-
   background-color: purple;
 }
 
@@ -141,23 +147,6 @@ main,
   margin-top: .8em;
   margin-bottom: .8em;
 }
-
-
-/* .invalid-tooltip {
-
-  position: absolute;
-    top: 100%;
-    z-index: 5;
-    display: none;
-    max-width: 100%;
-    padding: 0.25rem 0.5rem;
-    margin-top: 0.1rem;
-    font-size: .875rem;
-    color: #fff;
-    background-color: rgba(220,53,69,.9);
-    border-radius: 0.25rem;
-} */
-
 
 .iv-tooltip {
   position: relative;
@@ -182,12 +171,18 @@ main,
 
 
 #memory-list {
-
   top: 31.2em;
   bottom: 4em;
-
 }
 
+
+#location-title {
+  color: white;
+  font-weight: 500;
+  font-size: 16pt;
+  /* font-family: 'Oswald', sans-serif; */
+  font-family: 'Barlow Condensed', sans-serif;
+}
 
 .memory-entry {
   font-size: 10pt;
@@ -203,15 +198,12 @@ main,
   font-size: 13pt;
   color: rgba(245, 245, 245, 0.884);
   font-weight: 600;
-
-
 }
 
 .contributor-name > canvas {
   display:inline-block;
   margin: 0 auto;
 }
-
 
 .mentioned {
   margin-left: 0.1em;
@@ -253,11 +245,7 @@ main,
   padding-right: 0.5em;
   font-size: medium;
   text-decoration: none;
-
 }
-
-
-
 
 
 /* attribution panel */
@@ -292,10 +280,7 @@ main,
 }
 
 
-
 /* fundamental libraries */
-
-
 input {
   cursor: pointer;
 }
@@ -350,8 +335,7 @@ input {
   max-width: 200px;
 }
 
-.mapboxgl-popup-content,
-#alert-text {
+.mapboxgl-popup-content {
   text-align: center;
   font-family: "Source Sans Pro", sans-serif;
   font-weight: 200;
