@@ -505,7 +505,11 @@ map.on("click", "graffito", (e) => {
         }, {
             hover: true
         });
-        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`<div class='desc'>${e.features[0].properties.Message}</div>`).addTo(map);
+        let message = e.features[0].properties.Message;
+        if (message == undefined) {
+            message = "This graffito is unclear. Further investigation is needed."
+        }
+        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`<div class='desc'>${message}</div>`).addTo(map);
     }
 
 
