@@ -1,4 +1,4 @@
-
+//memory related functions and variables
 
 map.on('click', 'memory', async (e) => {
     map.getCanvas().style.cursor = 'pointer';
@@ -25,30 +25,21 @@ map.on('click', 'memory', async (e) => {
         let reviewData = await getReviews(hid);
    
         constructReviews(reviewData);
-
-       
     }
 });
-
-
-//==============================review============================================
 
 
 // create and style all incoming reviews from API request
 function constructReviews(memoryData) {
 
     // initialize the memory-list
-    // document.getElementById("memory-list").classList.add("d-none");
-    // document.getElementById("noReview").classList.add("d-none");
-    // document.getElementById("hasReview").classList.add("d-none");
     document.getElementById("memory-panel").classList.add("d-none");
     document.getElementById('memory-list-container').innerHTML = "";
 
-    // construct the new review list
+    // construct the new memory list
 
     if (memoryData.length == 0) {
-        // document.getElementById("noReview").classList.remove("d-none");
-        // enable review
+        // enable memory
         document.getElementById("memory-list").classList.add("d-none");
         document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
         document.getElementById('memory-submit').addEventListener('click', submitNewReview);
@@ -73,41 +64,47 @@ function constructReviews(memoryData) {
             memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="15px" width="15px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at"> on ' + dt + ' at ' + tm + '</span>';
             memoryDiv.classList.add('memory-entry');
 
-        
-
             memoryListContainer.append(memoryDiv);
-
-            let hrDiv = document.createElement('hr');
-            // bottomDiv.classList.add('memory-entry-bottom');
+            const hrDiv = document.createElement('hr');
+            
+            // separators
             memoryListContainer.append(hrDiv);
-
+            
+            // random head shot
             drawHeadShot("memory-" + i.toString());
             i++;
         }
-
 
         let bottomDiv = document.createElement('div');
         bottomDiv.classList.add('memory-entry-bottom');
         memoryListContainer.append(bottomDiv);
 
-
-
-
     }
 }
 
 
-
-
-// helper function to submit new review
+//helper function to submit new review
 function submitNewReview(e) {
     e.preventDefault();
 
     let contributor = document.getElementById('contributor').value;
-    let email = document.getElementById('email').value;
+    // let email = document.getElementById('email').value;
     let content = document.getElementById('memory-content').value;
+    let email  = "";
+
+    validateContributor = (contributor != "") ? true:false;
+    // validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)?true:false;
+    validateContent = (content != "") ? true:false;
+
+    if (validateContributor && validateContent) {
+        
+    }
+
+
+
     // add new review
     addNewReview(e, hid, contributor, email, content);
+  
 };
 
 
@@ -134,8 +131,6 @@ async function addNewReview(e, hid, contributor, email, content) {
         // await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
         await fetch('http://localhost:3000/api/add-comment', settings);
         confirmationReview();
-         
-        
     } catch (err) {
         checkStatus(err);
     }
@@ -152,17 +147,15 @@ async function addNewReview(e, hid, contributor, email, content) {
     
 }
 
-
-
 // confirmationReview
 // Display user reaction screen when review is confirmed and is submitted into database
 function confirmationReview() {
     // hide and remove comment textarea
     document.getElementById('contributor').value = '';
-    document.getElementById('email').value = '';
+    // document.getElementById('email').value = '';
     document.getElementById('memory-content').value = '';
 
-    makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success"></i></p><p style="text-align:center">Review has been submitted.</p>');
+    makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success"></i></p><p style="text-align:center">Your memory has been submitted.</p>');
 }
 
 

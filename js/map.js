@@ -433,7 +433,7 @@ highlightedLayerIds.forEach((layerId) => {
             } else if (layerId == "boundary") {
                 description = "CHOP Boundary";
             } else if (layerId == "3d-police") {
-                description = "Seattle's city department of Police";
+                description = "Seattle's City Department of Police";
             }
 
             popup.setLngLat(e.lngLat).setHTML("<div class='desc'>" + description +"</div>").addTo(map);

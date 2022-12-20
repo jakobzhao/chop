@@ -104,16 +104,19 @@
                     <div class="col form-switch">
 
                         <input class=" form-check-input" type="checkbox" id="3d-police" value="3d-police" checked>
-                        <label class="form-check-label" for="3d-police"> <i id="police-legend" class="legend police"> </i>Police Dept.</label>
+                        <label class="form-check-label" for="3d-police"> <i id="police-legend" class="legend police">
+                            </i>Police Dept.</label>
                     </div>
                     <div class="col form-switch">
                         <input class=" form-check-input" type="checkbox" id="speech" value="speech" checked>
-                        <label class="form-check-label" for="speech"><i id="speech-legend" class="legend speech"> </i>Speech Area</label>
+                        <label class="form-check-label" for="speech"><i id="speech-legend" class="legend speech">
+                            </i>Speech Area</label>
                     </div>
 
                     <div class="col form-switch">
                         <input class=" form-check-input" type="checkbox" id="boundary" value="boundary" checked>
-                        <label class="form-check-label" for="boundary"><i id="boundary-legend" class="legend boundary"> </i>CHOP
+                        <label class="form-check-label" for="boundary"><i id="boundary-legend" class="legend boundary">
+                            </i>CHOP
                             Boundary</label>
                     </div>
 
@@ -121,19 +124,21 @@
 
                 <div class="layer-controls row align-items-start">
                     <div class="col form-switch">
-                        <input class="form-check-input" type="checkbox" id="aerial" value="aerial"
-                            checked>
-                        <label class="form-check-label" for="aerial"><i id="drone-legend" class="legend drone"> </i>Drone Photo</label>
+                        <input class="form-check-input" type="checkbox" id="aerial" value="aerial" checked>
+                        <label class="form-check-label" for="aerial"><i id="drone-legend" class="legend drone">
+                            </i>Drone Photo</label>
                     </div>
                     <div class="col form-switch">
                         <input class="form-check-input" type="checkbox" id="memory" value="memory" checked>
-                        <label class="form-check-label" for="memory"><i id="memory-legend" class="legend memory"> </i>Memory</label>
+                        <label class="form-check-label" for="memory"><i id="memory-legend" class="legend memory">
+                            </i>Memory</label>
                     </div>
                     <div class="col form-switch">
                         <input class="form-check-input" type="checkbox" id="graffito" value="graffito">
-                        <label class="form-check-label" for="graffito"><i id="graffito-legend" class="legend graffito"> </i>Graffito</label>
+                        <label class="form-check-label" for="graffito"><i id="graffito-legend" class="legend graffito">
+                            </i>Graffito</label>
                     </div>
-                  
+
                 </div>
 
 
@@ -147,12 +152,12 @@
         <form id="memory-panel" class="map-panel grid-container d-none">
             <!-- <hr> -->
             <!-- <p> Use this form to share your memory of the location that you clicked.</p> -->
-       
+
             <!-- Message input -->
-            <div class="form-row row">
+            <div class="form-row row ">
                 <div class="form-outline">
                     <textarea class="form-control" id="memory-content" rows="4"
-                        placeholder="Share your memory of the location upon which you clicked...."></textarea>
+                        placeholder="Share your memory of the location upon which you clicked...." required></textarea>
                     <!-- <label class="form-label" for="reviewcontent">Your memories</label> -->
                 </div>
             </div>
@@ -162,21 +167,18 @@
 
                 <!-- Name input -->
                 <div class="form-outline col">
-                    <input type="text" id="contributor" class="form-control" placeholder="Your Name..." />
-                    <!-- <label class="form-label" for="contributor">Name</label> -->
+                    <input type="text" id="contributor" class="form-control" placeholder="Your Name..." required />
                 </div>
 
                 <!-- Email input -->
-                <div class="form-outline col">
-                    <input type="email" id="email" class="form-control" placeholder="Your Email ..." />
-                    <!-- <label class="form-label" for="email">Email address</label> -->
-                </div>
+                <!-- <div class="form-outline col">
+                    <input type="email" id="email" class="form-control" placeholder="Your Email" />
+                    <div class="valid-feedback">Email field is valid!</div>
+                                 <div class="invalid-feedback">Email field cannot be blank!</div>
+                </div> -->
                 <div class="form-outline col"></div>
                 <button type="submit" id="memory-submit" class="btn btn-primary">Submit</button>
-                </div>
             </div>
-
-
 
             <!-- <div class="form-row row">
                 
@@ -209,10 +211,10 @@
                         <h5 class="modal-title">Notice</h5>
                     </div>
                     <div class="modal-body" id="alert-text">
-                       placeholder
+                        placeholder
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="alert-cls-btn" class="btn btn-primary" 
+                        <button type="button" id="alert-cls-btn" class="btn btn-primary"
                             data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
