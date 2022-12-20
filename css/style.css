@@ -281,6 +281,11 @@ main,
 
 /* team */
 
+
+.teammember {
+  margin-left: 2em;
+  margin-right: 2em;
+}
 a.about-social-link {
   color:gray
 }
