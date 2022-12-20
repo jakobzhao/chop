@@ -30,22 +30,37 @@
                 $('#welcome').modal('hide');
             });
 
-        $(".showFrontPage").on("click", function () {
-            $('#welcome').modal('show');
-            localStorage.setItem('popState', 'notShown');
-        })
+     
+    $("#nav-team").on("click", function() {
+        $('#team').modal('show');
+        // localStorage.setItem('popState', 'notShown');
+      })
+  
 
 
-        $('#contributor-tooltip').hide();
+        // $('#contributor-tooltip').hide();
  
-            $('#content-tooltip').hide();
+        //     $('#content-tooltip').hide();
 
     }
 
 
+    // document.getElementById("team").addEventListener("click", (e)=> {
+
+
+
+    //     alertModal.show();
+
+
+
+
+    // })
+
 
 
 })();
+
+
 
 function makeAlert(alertText) {
     let alert = document.getElementById("alert-modal");

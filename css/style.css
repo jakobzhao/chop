@@ -31,16 +31,25 @@ main,
 
 
 /* welcome panel */
-.welcome-content {
+.map-window-content {
   font-size: small;
 }
 
-.welcome-content>img {
+.map-window-content>img {
   float: right;
   width: 200px;
   margin: 5px
 }
 
+.map-window-content,
+.modal-title, #nextTimeLabel {
+  color: rgb(29, 29, 29);
+}
+
+.modal{
+  background-color: rgba(0, 0, 0, 0.55);
+  /* opacity: 0.8; */
+}
 .modal-footer {
   font-size: medium
 }
@@ -247,11 +256,6 @@ main,
 
 }
 
-.welcome-content,
-#nextTimeLabel,
-.modal-title {
-  color: rgb(29, 29, 29);
-}
 
 
 
