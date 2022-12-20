@@ -35,6 +35,11 @@
             localStorage.setItem('popState', 'notShown');
         })
 
+
+        $('#contributor-tooltip').hide();
+ 
+            $('#content-tooltip').hide();
+
     }
 
 

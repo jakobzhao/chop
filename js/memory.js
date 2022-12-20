@@ -23,7 +23,7 @@ map.on('click', 'memory', async (e) => {
         //capture previous reviews
         // get all comments of the location
         let reviewData = await getReviews(hid);
-   
+
         constructReviews(reviewData);
     }
 });
@@ -47,7 +47,6 @@ function constructReviews(memoryData) {
 
     } else {
         document.getElementById("memory-list").classList.remove("d-none");
-        // document.getElementById("hasReview").classList.remove("d-none");
         document.getElementById("memory-panel").classList.remove("d-none");
         document.getElementById("memory-list").classList.remove("d-none");
         let memoryListContainer = document.getElementById('memory-list-container');
@@ -66,10 +65,10 @@ function constructReviews(memoryData) {
 
             memoryListContainer.append(memoryDiv);
             const hrDiv = document.createElement('hr');
-            
+
             // separators
             memoryListContainer.append(hrDiv);
-            
+
             // random head shot
             drawHeadShot("memory-" + i.toString());
             i++;
@@ -88,23 +87,18 @@ function submitNewReview(e) {
     e.preventDefault();
 
     let contributor = document.getElementById('contributor').value;
-    // let email = document.getElementById('email').value;
     let content = document.getElementById('memory-content').value;
-    let email  = "";
+    let email = "";
 
-    validateContributor = (contributor != "") ? true:false;
+    validateContributor = (contributor != "") ? true : false;
     // validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)?true:false;
-    validateContent = (content != "") ? true:false;
+    validateContent = (content != "") ? true : false;
 
     if (validateContributor && validateContent) {
-        
+        addNewReview(e, hid, contributor, email, content);
+    } else {
+        makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Your submission did not succeed. Both text fields are required.</p>');
     }
-
-
-
-    // add new review
-    addNewReview(e, hid, contributor, email, content);
-  
 };
 
 
@@ -138,13 +132,13 @@ async function addNewReview(e, hid, contributor, email, content) {
     try {
         let newMemoryData = await getReviews(hid);
         constructReviews(newMemoryData);
-         
-        
+
+
     } catch (err) {
         checkStatus(err);
     }
 
-    
+
 }
 
 // confirmationReview
@@ -155,7 +149,7 @@ function confirmationReview() {
     // document.getElementById('email').value = '';
     document.getElementById('memory-content').value = '';
 
-    makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success"></i></p><p style="text-align:center">Your memory has been submitted.</p>');
+    makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success"></i></p><p style="text-align:center">Your memory has been submitted successfully.</p>');
 }
 
 
