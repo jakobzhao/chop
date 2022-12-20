@@ -12,7 +12,7 @@ let map = new mapboxgl.Map({
     bounds: [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038],
     maxBounds: [-123.9180845532934, 47.04828654073975, -121.14008445949332, 48.71935997846136],
     minZoom: 12,
-    maxZoom: 20,
+    maxZoom: 21,
     pitch: 72,
     // bearing: 230, // bearing in degrees
     antialias: true,
