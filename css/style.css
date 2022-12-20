@@ -279,6 +279,20 @@ main,
   color: rgb(220, 220, 220);
 }
 
+/* team */
+
+a.about-social-link {
+  color:gray
+}
+
+.about-img-thumbnail {
+  padding: 0.1rem;
+  background-color: rgba(255, 255, 255, 0.733);
+  border: 1px solid #dee2e6b2;
+  border-radius: 0.25rem;
+  max-width: 100%;
+  height: auto;
+}
 
 /* fundamental libraries */
 input {
