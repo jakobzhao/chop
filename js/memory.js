@@ -134,10 +134,22 @@ async function addNewReview(e, hid, contributor, email, content) {
         // await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
         await fetch('http://localhost:3000/api/add-comment', settings);
         confirmationReview();
-        getReviews(hid);
+         
+        
     } catch (err) {
         checkStatus(err);
     }
+
+    try {
+        let newMemoryData = await getReviews(hid);
+        constructReviews(newMemoryData);
+         
+        
+    } catch (err) {
+        checkStatus(err);
+    }
+
+    
 }
 
 
@@ -149,9 +161,6 @@ function confirmationReview() {
     document.getElementById('contributor').value = '';
     document.getElementById('email').value = '';
     document.getElementById('memory-content').value = '';
-
-    // display user reaction confirmation screen
-    // let reviewCheck = document.getElementById('reviews-confirmation');
 
     makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success"></i></p><p style="text-align:center">Review has been submitted.</p>');
 }

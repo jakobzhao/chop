@@ -170,7 +170,7 @@ map.on('load', () => {
             'fill-extrusion-color': bldgColor,
             'fill-extrusion-height': ['get', 'eheight'],
             'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': 0.9
+            'fill-extrusion-opacity': 0.8
         }
     }, 'road-label');
 

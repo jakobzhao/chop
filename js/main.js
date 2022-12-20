@@ -26,7 +26,7 @@
         }
         $('#welcome-close').click(function (e) // You are clicking the close button
             {
-                $('#welcome').fadeOut(); // Now the pop up is hiden.
+                $('#welcome').fadeOut(); // Now the pop up is hidden.
                 $('#welcome').modal('hide');
             });
 
@@ -38,21 +38,23 @@
     }
 
 
-    function makeAlert(alertText) {
-        let alert = document.getElementById("alert-modal");
-        let alertTextBox = document.getElementById("alert-text");
-        alertTextBox.innerHTML = alertText;
-        let alertModal = new bootstrap.Modal(alert);
-        alertModal.show();
-    }
 
-    // status checks
-    function checkStatus(response) {
-        if (response.ok) {
-            return response;
-        } else {
-            throw Error("Error in request: " + response.statusText);
-        }
-    }
 
 })();
+
+function makeAlert(alertText) {
+    let alert = document.getElementById("alert-modal");
+    let alertTextBox = document.getElementById("alert-text");
+    alertTextBox.innerHTML = alertText;
+    let alertModal = new bootstrap.Modal(alert);
+    alertModal.show();
+}
+
+// status checks
+function checkStatus(response) {
+    if (response.ok) {
+        return response;
+    } else {
+        throw Error("Error in request: " + response.statusText);
+    }
+}
