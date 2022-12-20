@@ -30,37 +30,23 @@
                 $('#welcome').modal('hide');
             });
 
-     
+
     $("#nav-team").on("click", function() {
         $('#team').modal('show');
-        // localStorage.setItem('popState', 'notShown');
-      })
+
+      });
 
       $("#nav-statement").on("click", function() {
         $('#statement').modal('show');
-        // localStorage.setItem('popState', 'notShown');
-      })
+ 
+      });
   
 
+      $("#nav-about").on("click", function() {
+        $('#welcome').modal('show');
 
-        // $('#contributor-tooltip').hide();
- 
-        //     $('#content-tooltip').hide();
-
+      });    
     }
-
-
-    // document.getElementById("team").addEventListener("click", (e)=> {
-
-
-
-    //     alertModal.show();
-
-
-
-
-    // })
-
 
 
 })();
