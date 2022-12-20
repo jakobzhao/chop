@@ -192,14 +192,14 @@ map.on('load', () => {
             'fill-opacity': [
                 'case',
                 ['boolean', ['feature-state', 'hover'], false],
-                0.5,
+                0.7,
                 0
             ]
         },
         'layout': {
             visibility: "visible",
         }
-    }, '3d-buildings');
+    }, 'road-label');
 
     //=============Police=========================
     map.addLayer({
