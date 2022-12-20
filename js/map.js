@@ -26,7 +26,7 @@ const popup = new mapboxgl.Popup({
     closeButton: false,
     closeOnClick: false
 });
-
+let graffitoData = null;
 let hoveredStateId = null;
 let hoveredStateId2 = null;
 let hid = null;
@@ -270,7 +270,7 @@ map.on('load', () => {
         'data': 'assets/graffito.geojson'
     });
 
-
+    
     //Add graffiti labels
     map.addLayer({
         'id': 'graffito-label',
@@ -324,8 +324,8 @@ map.on('load', () => {
             ]
         }
     }, '3d-buildings');
-
-
+   
+  
     map.addLayer({
         'id': 'graffito-outline',
         'type': 'line',

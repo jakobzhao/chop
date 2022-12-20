@@ -22,15 +22,17 @@ map.on('click', 'memory', async (e) => {
         hid = e.features[0].properties.id;
         //capture previous reviews
         // get all comments of the location
-        let reviewData = await getReviews(hid);
+        let memoryData = await getMemories(hid);
 
-        constructReviews(reviewData);
+        
+
+        constructMemories(memoryData);
     }
 });
 
 
 // create and style all incoming reviews from API request
-function constructReviews(memoryData) {
+function constructMemories(memoryData) {
 
     // initialize the memory-list
     document.getElementById("memory-panel").classList.add("d-none");
@@ -130,8 +132,8 @@ async function addNewReview(e, hid, contributor, email, content) {
     }
 
     try {
-        let newMemoryData = await getReviews(hid);
-        constructReviews(newMemoryData);
+        let newMemoryData = await getMemories(hid);
+        constructMemories(newMemoryData);
 
 
     } catch (err) {
@@ -153,17 +155,17 @@ function confirmationReview() {
 }
 
 
-// getReviews
+// getMemories
 // Obtain data from database containing information for all the reviews of a specific location
-async function getReviews(hid) {
+async function getMemories(hid) {
     try {
         let id = hid;
         let getReview = await fetch(`https://chop-rest-api.herokuapp.com/api/comment/${id}`, {
         // let getReview = await fetch(`http://localhost:3000/api/comment/${id}`, {
             method: 'GET'
         });
-        let reviewData = await getReview.json();
-        return reviewData;
+        let memoryData = await getReview.json();
+        return memoryData;
     } catch (err) {
         console.log(err);
     }
