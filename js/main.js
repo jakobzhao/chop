@@ -35,6 +35,11 @@
         $('#team').modal('show');
         // localStorage.setItem('popState', 'notShown');
       })
+
+      $("#nav-statement").on("click", function() {
+        $('#statement').modal('show');
+        // localStorage.setItem('popState', 'notShown');
+      })
   
 
 
