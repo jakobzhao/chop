@@ -122,8 +122,8 @@ async function addNewReview(e, hid, contributor, email, content) {
     }
 
     try {
-        // await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
-        await fetch('http://localhost:3000/api/add-comment', settings);
+        await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
+        // await fetch('http://localhost:3000/api/add-comment', settings);
         confirmationReview();
     } catch (err) {
         checkStatus(err);
@@ -158,8 +158,8 @@ function confirmationReview() {
 async function getReviews(hid) {
     try {
         let id = hid;
-        // let getReview = await fetch(`https://chop-rest-api.herokuapp.com/api/comment/${id}`, {
-        let getReview = await fetch(`http://localhost:3000/api/comment/${id}`, {
+        let getReview = await fetch(`https://chop-rest-api.herokuapp.com/api/comment/${id}`, {
+        // let getReview = await fetch(`http://localhost:3000/api/comment/${id}`, {
             method: 'GET'
         });
         let reviewData = await getReview.json();
