@@ -28,8 +28,19 @@ const popup = new mapboxgl.Popup({
 
 let hoveredStateId = null;
 let hoveredStateId2 = null;
-let checkedState = false;
 let hid = null;
+
+
+const policeColor = getComputedStyle(document.querySelector('.police')).backgroundColor;
+const speechColor = getComputedStyle(document.querySelector('.speech')).backgroundColor;
+const boundaryColor = getComputedStyle(document.querySelector('.boundary')).backgroundColor;
+const memoryColor = getComputedStyle(document.querySelector('.memory')).backgroundColor;
+const graffitoColor = getComputedStyle(document.querySelector('.graffito')).backgroundColor;
+const highlightColor = '#8cff32';
+const bldgColor = '#aaa';
+const origOpacity = 0.5;
+const hoverOpacity = 0.7;
+
 
 
 //Return the original position of the map.
@@ -156,10 +167,10 @@ map.on('load', () => {
         'type': 'fill-extrusion',
         'minzoom': 15,
         'paint': {
-            'fill-extrusion-color': '#aaa',
+            'fill-extrusion-color': bldgColor,
             'fill-extrusion-height': ['get', 'eheight'],
             'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': 0.8
+            'fill-extrusion-opacity': 0.9
         }
     }, 'road-label');
 
@@ -175,7 +186,7 @@ map.on('load', () => {
         'type': 'fill',
         'minzoom': 15,
         'paint': {
-            'fill-color': 'purple',
+            'fill-color': memoryColor,
             'fill-opacity': [
                 'case',
                 ['boolean', ['feature-state', 'hover'], false],
@@ -196,10 +207,10 @@ map.on('load', () => {
         'type': 'fill-extrusion',
         'minzoom': 15,
         'paint': {
-            'fill-extrusion-color': 'red',
+            'fill-extrusion-color': policeColor,
             'fill-extrusion-height': 30,
             'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': 0.5
+            'fill-extrusion-opacity': origOpacity
         },
         'layout': {
             visibility: "visible",
@@ -217,10 +228,10 @@ map.on('load', () => {
         'type': 'fill-extrusion',
         'source': 'chop-boundary',
         'paint': {
-            'fill-extrusion-color': '#0080ff',
+            'fill-extrusion-color': boundaryColor,
             'fill-extrusion-height': 5,
             'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': 0.5
+            'fill-extrusion-opacity':origOpacity
         },
         'layout': {
             visibility: "visible",
@@ -238,10 +249,10 @@ map.on('load', () => {
         'type': 'fill-extrusion',
         'source': 'speech-area',
         'paint': {
-            'fill-extrusion-color': ['get', 'color'],
+            'fill-extrusion-color': speechColor,
             'fill-extrusion-height': 5,
             'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': 0.5
+            'fill-extrusion-opacity': origOpacity
         },
         'layout': {
             visibility: "visible",
@@ -265,7 +276,6 @@ map.on('load', () => {
         'source': 'chop-graffito',
         'layout': {
             'text-field': ['get', 'Message'],
-
             'text-justify': 'auto',
             'text-anchor': 'top',
             'text-size': 14,
@@ -303,7 +313,7 @@ map.on('load', () => {
             'visibility': 'none'
         },
         'paint': {
-            'fill-color': 'yellow',
+            'fill-color': graffitoColor,
             'fill-opacity': [
                 'case',
                 ['boolean', ['feature-state', 'hover'], false],
@@ -323,11 +333,11 @@ map.on('load', () => {
         },
         'paint': {
             'line-color': 'red',
-            'line-opacity': 0.2,
+            'line-opacity': 0.5,
             'line-width': [
                 'case',
                 ['boolean', ['feature-state', 'hover'], false],
-                1,
+                1.5,
                 0
             ]
         }
@@ -371,8 +381,8 @@ highlightedLayerIds.forEach((layerId) => {
         }
 
         if (topHoveredLayerIds[layerId] == 0) {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', '#8cff32');
-            map.setPaintProperty(layerId, 'fill-extrusion-opacity', 0.8);
+            map.setPaintProperty(layerId, 'fill-extrusion-color', highlightColor);
+            map.setPaintProperty(layerId, 'fill-extrusion-opacity', hoverOpacity);
 
         }
 
@@ -381,16 +391,16 @@ highlightedLayerIds.forEach((layerId) => {
     map.on('mouseleave', layerId, (e) => {
         map.getCanvas().style.cursor = 'pointer';
         e.preventDefault();
-        map.setPaintProperty(layerId, 'fill-extrusion-opacity', 0.5);
+        map.setPaintProperty(layerId, 'fill-extrusion-opacity', origOpacity);
         popup.remove();
 
         if (layerId == "speech") {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', ['get', 'color']);
+            map.setPaintProperty(layerId, 'fill-extrusion-color', speechColor);
         } else if (layerId == "boundary") {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', '#0080ff');
+            map.setPaintProperty(layerId, 'fill-extrusion-color', boundaryColor);
 
         } else if (layerId == "3d-police") {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', 'red');
+            map.setPaintProperty(layerId, 'fill-extrusion-color', policeColor);
 
         }
 
@@ -412,8 +422,8 @@ highlightedLayerIds.forEach((layerId) => {
         }
 
         if (topHoveredLayerIds[layerId] == 0) {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', '#8cff32');
-            map.setPaintProperty(layerId, 'fill-extrusion-opacity', 0.8);
+            map.setPaintProperty(layerId, 'fill-extrusion-color', highlightColor);
+            map.setPaintProperty(layerId, 'fill-extrusion-opacity', hoverOpacity);
 
 
             let description = "";
@@ -523,14 +533,11 @@ for (const id of toggleableLayerIds) {
             if (id == "memory") {
 
                 document.getElementById("memory-list").classList.add("d-none");
-                // document.getElementById("reviewList").classList.add("d-none");
-                // document.getElementById("noReview").classList.add("d-none");
-                // document.getElementById("hasReview").classList.add("d-none");
                 document.getElementById("memory-panel").classList.add("d-none");
                 document.getElementById('memory-list-container').innerHTML = "";
-                document.getElementById('contributorname').value = "";
+                document.getElementById('contributor').value = "";
                 document.getElementById('email').value = "";
-                document.getElementById('reviewcontent').value = "";
+                document.getElementById('memory-content').value = "";
                 map.setFeatureState({
                     source: 'grid',
                     id: hoveredStateId2
@@ -545,15 +552,6 @@ for (const id of toggleableLayerIds) {
             if (id == "graffito") {
                 map.setLayoutProperty("graffito-outline", 'visibility', 'visible');
                 map.setLayoutProperty("graffito-label", 'visibility', 'visible');
-            }
-            
-            if (id == "memory") {
-
-                // document.getElementById("memory-list").classList.remove("d-none");
-
-             
-
-
             }
         }
     });

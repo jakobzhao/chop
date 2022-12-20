@@ -1,39 +1,3 @@
-//======================= Memory ==========================
-// map.on('mousemove', 'memory', (e) => {
-//     map.getCanvas().style.cursor = 'pointer';
-//     if (e.features.length > 0 && checkedState == false) {
-//         if (hoveredStateId2 !== null) {
-//             map.setFeatureState({
-//                 source: 'grid',
-//                 id: hoveredStateId2
-//             }, {
-//                 hover: false
-//             });
-//         }
-//         hoveredStateId2 = e.features[0].id
-//         map.setFeatureState({
-//             source: 'grid',
-//             id: hoveredStateId2
-//         }, {
-//             hover: true
-//         });
-//     }
-// });
-
-// When the mouse leaves the state-fill layer, update the feature state of the
-// previously hovered feature.
-// map.on('mouseleave', 'memory', () => {
-//     map.getCanvas().style.cursor = '';
-//     if (hoveredStateId2 !== null && checkedState == false) {
-//         map.setFeatureState({
-//             source: 'grid',
-//             id: hoveredStateId2
-//         }, {
-//             hover: false
-//         });
-//     }
-//     hoveredStateId2 = null;
-// });
 
 
 map.on('click', 'memory', async (e) => {
