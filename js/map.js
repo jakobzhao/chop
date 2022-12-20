@@ -20,6 +20,7 @@ let map = new mapboxgl.Map({
     attributionControl: false,
 });
 
+//TODO: #2 the compress level for zoom level 20 is still very coarse, improvement is needed. @PaulHuatingSun 
 // Create a popup, but don't add it to the map yet.
 const popup = new mapboxgl.Popup({
     closeButton: false,
@@ -126,7 +127,8 @@ map.on('load', () => {
     //==============drone photo========================
     map.addSource('drone-tile', {
         'type': 'raster',
-        'tiles': ['assets/drone_img/{z}/{x}/{y}.png'],
+        // 'tiles': ['assets/drone_img/{z}/{x}/{y}.png'],
+        'tiles': ['https://hgis.uw.edu/chop_drone_imgs/{z}/{x}/{y}.png'],
         'bounds': [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038],
         'tileSize': 256
     });
