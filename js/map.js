@@ -103,10 +103,6 @@ function rotateCamera(timestamp) {
 
 
 
-
-
-
-
 // Load geospatial datasets and display
 map.on('load', () => {
 
@@ -167,7 +163,7 @@ map.on('load', () => {
         }
     }, 'road-label');
 
-    //=============grid=========================
+    //=============Memory=========================
     map.addSource('grid', {
         'type': 'geojson',
         'generateId': true,
@@ -188,7 +184,7 @@ map.on('load', () => {
             ]
         },
         'layout': {
-            visibility: "none",
+            visibility: "visible",
         }
     }, '3d-buildings');
 
