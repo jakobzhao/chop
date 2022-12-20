@@ -135,16 +135,13 @@ function constructReviews(memoryData) {
 
 
 
-
-
-
 // helper function to submit new review
 function submitNewReview(e) {
     e.preventDefault();
 
     let contributor = document.getElementById('contributor').value;
     let email = document.getElementById('email').value;
-    let content = document.getElementById('reviewcontent').value;
+    let content = document.getElementById('memory-content').value;
     // add new review
     addNewReview(e, hid, contributor, email, content);
 };
@@ -170,8 +167,8 @@ async function addNewReview(e, hid, contributor, email, content) {
     }
 
     try {
-        await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
-        // await fetch('http://localhost:3000/api/add-comment', settings);
+        // await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
+        await fetch('http://localhost:3000/api/add-comment', settings);
         confirmationReview();
         getReviews(hid);
     } catch (err) {
@@ -185,14 +182,14 @@ async function addNewReview(e, hid, contributor, email, content) {
 // Display user reaction screen when review is confirmed and is submitted into database
 function confirmationReview() {
     // hide and remove comment textarea
-    document.getElementById('contributorname').value = '';
+    document.getElementById('contributor').value = '';
     document.getElementById('email').value = '';
-    document.getElementById('reviewcontent').value = '';
+    document.getElementById('memory-content').value = '';
 
     // display user reaction confirmation screen
-    let reviewCheck = document.getElementById('reviews-confirmation');
+    // let reviewCheck = document.getElementById('reviews-confirmation');
 
-    makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success "></i></p><p style="text-align:center">Review has been submitted.</p>');
+    makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success"></i></p><p style="text-align:center">Review has been submitted.</p>');
 }
 
 
@@ -201,8 +198,8 @@ function confirmationReview() {
 async function getReviews(hid) {
     try {
         let id = hid;
-        let getReview = await fetch(`https://chop-rest-api.herokuapp.com/api/comment/${id}`, {
-        // let getReview = await fetch(`http://localhost:3000/api/comment/${id}`, {
+        // let getReview = await fetch(`https://chop-rest-api.herokuapp.com/api/comment/${id}`, {
+        let getReview = await fetch(`http://localhost:3000/api/comment/${id}`, {
             method: 'GET'
         });
         let reviewData = await getReview.json();

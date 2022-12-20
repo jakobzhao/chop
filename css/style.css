@@ -297,6 +297,10 @@ input {
   border-color: rgb(29, 29, 29);
 }
 
+.form-check-label {
+  font-size:small;
+  vertical-align: middle;
+}
 
 .btn {
   color: #dddddd;
