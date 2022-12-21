@@ -11,10 +11,6 @@ main,
   display: flex;
   flex-flow: column;
   font-family: "Source Sans Pro", sans-serif;
-  /* font-family: 'Sorts Mill Goudy', serif; */
-  /* font-family: 'Fira Sans', sans-serif; */
-  /* font-family: 'Noto Serif', serif; */
-  /* overflow-y: hidden; */
 }
 
 
@@ -59,9 +55,6 @@ main,
   background-color: rgba(0, 0, 0, 0.55);
 }
 
-/* .modal-footer {
-  font-size: medium
-} */
 
 #nextTimeSwitcher {
   font-size: medium;
@@ -378,9 +371,6 @@ a.about-social-link {
 div#statement p {
 
   font-family: 'Sorts Mill Goudy', serif;
-  /* font-family: 'Fira Sans', sans-serif; */
-  /* font-family: 'Noto Serif', serif; */
-  /* overflow-y: hidden; */
 }
 
 .map-window-content a {
@@ -472,11 +462,7 @@ input {
 .introjs-tooltip{
 max-width: 40vw;;
 }
-.introjs-tooltip-header{
-  /* margin-top: 0!important;
-  padding-top: 0!important; */
 
-}
 
 .introjs-skipbutton{
   /* width:25px;
