@@ -19,7 +19,7 @@ let map = new mapboxgl.Map({
     logoPosition: 'bottom-right',
     attributionControl: false,
 });
-
+ 
 // Create a popup, but don't add it to the map yet.
 const popup = new mapboxgl.Popup({
     closeButton: false,
@@ -67,7 +67,7 @@ map.addControl(new mapboxgl.NavigationControl({
 map.on('load', () => {
 
     //download a spray icon from fa 6, and edit it at https://editor.method.ac/
-    map.loadImage('../img/spray-can-yl2.png', (error, image) => {
+    map.loadImage('https://jakobzhao.github.io/chop/img/spray-can-yl2.png', (error, image) => {
         if (error) throw error;
         if (!map.hasImage('spray')) map.addImage('spray', image);
     });
