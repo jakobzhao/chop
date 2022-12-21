@@ -490,7 +490,6 @@ for (const id of toggleableLayerIds) {
                 document.getElementById("memory-panel").classList.add("d-none");
                 document.getElementById('memory-list-container').innerHTML = "";
                 document.getElementById('contributor').value = "";
-                document.getElementById('email').value = "";
                 document.getElementById('memory-content').value = "";
                 map.setFeatureState({
                     source: 'grid',
