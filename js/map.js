@@ -26,7 +26,7 @@ const popup = new mapboxgl.Popup({
     closeButton: false,
     closeOnClick: false
 });
-let graffitoData = null;
+
 let hoveredStateId = null;
 let hoveredStateId2 = null;
 let hid = null;

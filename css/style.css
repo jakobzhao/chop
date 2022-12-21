@@ -180,23 +180,54 @@ main,
 #location-title {
   color: white;
   font-weight: 500;
+  margin-bottom: 0em;
   font-size: 16pt;
   /* font-family: 'Oswald', sans-serif; */
   font-family: 'Barlow Condensed', sans-serif;
 }
 
-.memory-entry {
-  font-size: 10pt;
-  margin-bottom: 0.5em;
+
+.graffiti-prompt{
+  font-size: 14pt;
+  font-family: 'Barlow Condensed', sans-serif;
 }
 
+.graffito-box {
+
+  border: 1px solid #747474b2;
+  background-color: #000000;
+  color:rgba(238, 238, 238, 0.70);
+  font-weight: 800;
+  font-size:small;
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  margin-left: 0.2em;
+  margin-right: 0.2em;
+}
+
+.memory-prompt, .poi-prompt{
+  font-size: 14pt;
+  font-family: 'Barlow Condensed', sans-serif;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.memory-entry {
+  font-size: 10pt;
+  margin-bottom: 0.25em;
+}
+
+.memory-hr{
+  margin-top:.5em;
+  margin-bottom: .5em;
+}
 .memory-entry-bottom {
   position: relative;
   padding-bottom: 500px;
 }
 
 .contributor-name {
-  font-size: 13pt;
+  font-size: 12pt;
   color: rgba(245, 245, 245, 0.884);
   font-weight: 600;
 }

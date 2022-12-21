@@ -2,7 +2,8 @@
 
 map.on('click', 'memory', async (e) => {
     map.getCanvas().style.cursor = 'pointer';
-    if (e.features.length > 0) {
+    const clickedfeatures = e.features;
+    if (clickedfeatures.length > 0) {
         if (hoveredStateId2 !== null) {
             map.setFeatureState({
                 source: 'grid',
@@ -11,7 +12,7 @@ map.on('click', 'memory', async (e) => {
                 hover: false
             });
         }
-        hoveredStateId2 = e.features[0].id
+        hoveredStateId2 = clickedfeatures[0].id
         map.setFeatureState({
             source: 'grid',
             id: hoveredStateId2
@@ -19,28 +20,65 @@ map.on('click', 'memory', async (e) => {
             hover: true
         });
         // document.getElementById("hexagonInfo").innerHTML = "Hexagon ID: " + e.features[0].properties.id;
-        hid = e.features[0].properties.id;
+        hid = clickedfeatures[0].properties.id;
         //capture previous reviews
         // get all comments of the location
         let memoryData = await getMemories(hid);
 
-        
 
-        constructMemories(memoryData);
+        const center = turf.center(clickedfeatures[0]);
+        const buffer = turf.buffer(center, 0.05, {
+            units: 'kilometers'
+        });
+        const clickedfeature = clickedfeatures[0];
+        let graffitiIntersected = []
+        graffitoData.features.forEach(graffito => {
+            // if (turf.pointsWithinPolygon(graffito.geometry.coordinates, buffer.geometry.coordinates).features.length > 0 && graffitoData.features[0].properties.Message != undefined){
+            //     graffitiWithin.push(graffitoData.features[0].properties.Message);
+            // }
+            if (turf.intersect(graffito, clickedfeature) != null && graffito.properties.Message != undefined) {
+                graffitiIntersected.push(graffito.properties.Message);
+            }
+
+        });
+
+        let poiIntersected = []
+        let j = 0
+        poiData.features.forEach(poi => {
+            // if (turf.pointsWithinPolygon(graffito.geometry.coordinates, buffer.geometry.coordinates).features.length > 0 && graffitoData.features[0].properties.Message != undefined){
+            //     graffitiWithin.push(graffitoData.features[0].properties.Message);
+            // }
+            if (turf.booleanWithin(poi.geometry, buffer.geometry) && poi.properties.name != null) {
+                poiIntersected.push(poi.properties.name);
+
+            }
+
+
+
+
+        });
+        console.log(graffitiIntersected);
+        console.log(poiIntersected);
+        constructMemories([memoryData, graffitiIntersected, poiIntersected]);
     }
 });
 
 
 // create and style all incoming reviews from API request
-function constructMemories(memoryData) {
+function constructMemories(memoryProfile) {
+    const memoryData = memoryProfile[0];
+    const graffitiIntersected = memoryProfile[1];
+    const poiIntersected = memoryProfile[2];
 
     // initialize the memory-list
     document.getElementById("memory-panel").classList.add("d-none");
     document.getElementById('memory-list-container').innerHTML = "";
+    document.getElementById('graffiti-container').innerHTML = "";
+    document.getElementById('poi-container').innerHTML = "";
 
     // construct the new memory list
 
-    if (memoryData.length == 0) {
+    if (memoryData.length == 0 && graffitiIntersected.length ==0 && poiIntersected.length ==0) {
         // enable memory
         document.getElementById("memory-list").classList.add("d-none");
         document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
@@ -51,8 +89,49 @@ function constructMemories(memoryData) {
         document.getElementById("memory-list").classList.remove("d-none");
         document.getElementById("memory-panel").classList.remove("d-none");
         document.getElementById("memory-list").classList.remove("d-none");
+
+        // graffitiContainer
+
+        let graffitiContainer = document.getElementById('graffiti-container');
+
+        let text = "<span class='graffiti-prompt'> Graffiti </span>";
+        for (let graffitoNum in graffitiIntersected) {
+            text += "<span class='graffito-box'>" + graffitiIntersected[graffitoNum] + "</span>"
+        }
+
+
+        let textDiv = document.createElement('div');
+        // textDiv.classList.add('memory-entry-bottom');
+        textDiv.innerHTML = text;
+        graffitiContainer.append(textDiv);
+
+        //poi list
+
+
+        let poiContainer = document.getElementById('poi-container');
+
+        text = "<span class='poi-prompt'> Landmarks </span>";
+        for (let poiNum in poiIntersected) {
+            text += "<span class='graffito-box'>" + poiIntersected[poiNum] + "</span>"
+        }
+
+
+        textDiv = document.createElement('div');
+        // textDiv.classList.add('memory-entry-bottom');
+        textDiv.innerHTML = text;
+        poiContainer.append(textDiv);
+
+
+        // memory list
+
         let memoryListContainer = document.getElementById('memory-list-container');
-        let i = 0
+
+        let promptDiv = document.createElement('div');
+        promptDiv.classList.add('memory-prompt');
+        promptDiv.innerHTML = "Memories";
+        memoryListContainer.append(promptDiv);
+
+        let i = 0;
         for (let memory of memoryData) {
             let memoryDiv = document.createElement('p');
             let created_at = new Date(memory.created_at);
@@ -62,11 +141,12 @@ function constructMemories(memoryData) {
             let tm = created_at.toLocaleTimeString('en-US', {
                 timeZone: 'PST'
             })
-            memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="15px" width="15px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at"> on ' + dt + ' at ' + tm + '</span>';
+            memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="13px" width="13px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at"> on ' + dt + ' at ' + tm + '</span>';
             memoryDiv.classList.add('memory-entry');
 
             memoryListContainer.append(memoryDiv);
             const hrDiv = document.createElement('hr');
+            hrDiv.classList.add('memory-hr');
 
             // separators
             memoryListContainer.append(hrDiv);
@@ -161,7 +241,7 @@ async function getMemories(hid) {
     try {
         let id = hid;
         let getReview = await fetch(`https://chop-rest-api.herokuapp.com/api/comment/${id}`, {
-        // let getReview = await fetch(`http://localhost:3000/api/comment/${id}`, {
+            // let getReview = await fetch(`http://localhost:3000/api/comment/${id}`, {
             method: 'GET'
         });
         let memoryData = await getReview.json();

@@ -1,55 +1,57 @@
-"use strict";
+window.addEventListener("load", init);
+let graffitoData = null;
+let poiData = null;
 
-(function () {
+// init function
+async function init() {
 
-    window.addEventListener("load", init);
-
-    // init function
-    async function init() {
-
-        $("#nextTimeSwitcher input").on("click", function () {
-            if ($("#nextTimeSwitcher input:checked").val() === "on") {
-                localStorage.setItem('popState', 'shown');
-            } else {
-
-                localStorage.setItem('popState', 'notShown');
-            }
-        })
-
-        if (localStorage.getItem('popState') != 'shown') {
-            console.log("show welcome");
-            $('#welcome').modal('show');
-
+    $("#nextTimeSwitcher input").on("click", function () {
+        if ($("#nextTimeSwitcher input:checked").val() === "on") {
+            localStorage.setItem('popState', 'shown');
         } else {
-            console.log("hide welcome");
-            $('#welcome').modal('hide');
+
+            localStorage.setItem('popState', 'notShown');
         }
-        $('#welcome-close').click(function (e) // You are clicking the close button
-            {
-                $('#welcome').fadeOut(); // Now the pop up is hidden.
-                $('#welcome').modal('hide');
-            });
+    })
 
-
-    $("#nav-team").on("click", function() {
-        $('#team').modal('show');
-
-      });
-
-      $("#nav-statement").on("click", function() {
-        $('#statement').modal('show');
- 
-      });
-  
-
-      $("#nav-about").on("click", function() {
+    if (localStorage.getItem('popState') != 'shown') {
+        console.log("show welcome");
         $('#welcome').modal('show');
 
-      });    
+    } else {
+        console.log("hide welcome");
+        $('#welcome').modal('hide');
     }
+    $('#welcome-close').click(function (e) // You are clicking the close button
+        {
+            $('#welcome').fadeOut(); // Now the pop up is hidden.
+            $('#welcome').modal('hide');
+        });
 
 
-})();
+    $("#nav-team").on("click", function () {
+        $('#team').modal('show');
+
+    });
+
+    $("#nav-statement").on("click", function () {
+        $('#statement').modal('show');
+
+    });
+
+
+    $("#nav-about").on("click", function () {
+        $('#welcome').modal('show');
+
+    });
+
+    let response = await fetch('assets/graffito.geojson');
+    graffitoData = await response.json();
+
+    response = await fetch('assets/poi-full.geojson');
+    poiData = await response.json();
+
+}
 
 
 
