@@ -20,7 +20,6 @@ let map = new mapboxgl.Map({
     attributionControl: false,
 });
 
-//TODO: #2 the compress level for zoom level 20 is still very coarse, improvement is needed. @PaulHuatingSun 
 // Create a popup, but don't add it to the map yet.
 const popup = new mapboxgl.Popup({
     closeButton: false,
@@ -62,57 +61,6 @@ map.addControl(new mapboxgl.NavigationControl({
     showCompass: true
     // visualizePitch: true
 }));
-
-// Allow map camera to rotate
-let isRotating = true;
-
-function rotateCamera(timestamp) {
-    // clamp the rotation between 0 -360 degrees
-    // Divide timestamp by 100 to slow rotation to ~10 degrees / sec
-    map.rotateTo((timestamp / 100) % 360, {
-        duration: 0
-    });
-    // Request the next frame of the animation.
-    if (isRotating !== false) {
-        requestAnimationFrame(rotateCamera);
-    }
-}
-
-// Add customize controls like zoom 
-// class CustomControl {
-//     onAdd(map) {
-//         this._map = map;
-//         this._container = document.createElement('button');
-//         this._container.style.backgroundColor = 'black';
-//         this._container.style.color = 'white';
-//         this._container.className = 'mapboxgl-ctrl';
-//         this._container.textContent = 'start rotate';
-//         this._container.onclick = () => {
-//             if (this.isRotating) {
-//                 isRotating = false;
-//                 rotateCamera(false);
-//                 this._container.textContent = 'start rotate';
-//             } else {
-//                 isRotating = true;
-//                 rotateCamera(0);
-//                 this._container.textContent = 'stop rotate';
-//             }
-//             this.isRotating = !this.isRotating;
-//         }
-//         return this._container;
-//     }
-//     onRemove() {
-//         this._container.parentNode.removeChild(this._container);
-//         this._map = undefined;
-//     }
-// }
-// map.addControl(new mapboxgl.NavigationControl({
-//     showCompass: true,
-//     visualizePitch: true
-// }));
-// map.addControl(new CustomControl());
-// Add the bounding box
-
 
 
 // Load geospatial datasets and display

@@ -24,6 +24,8 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/simplebar.css" />
+    <link rel="stylesheet" href="css/introjs.min.css" />
+    <link rel="stylesheet" href="css/introjs-dark.css" />
     <link rel="stylesheet" href="css/style.css">
     <!-- <link rel="stylesheet" href="css/pages.css"> -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
@@ -35,6 +37,8 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.1/mapbox-gl.js"></script>
     <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
     <script src="js/headshot.js"></script>
+    <script src="js/intro.min.js"></script>
+
 
     <script src="js/main.js" defer></script>
 </head>
@@ -44,7 +48,7 @@
         <!-- LOADER -->
         <div id="loader"></div>
         <!-- Welcome Panel -->
-        <div id="welcome" class="modal fade map-window" tabindex="-1" role="dialog" aria-hidden="true">
+        <div id="welcome" class="modal fade map-window modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -52,8 +56,8 @@
                     </div>
                     <div class="modal-body map-window-content">
                         <img src="img/logo.png"></img>
-                        Welcome to the public memories of the Capital Hill Organization Protest (CHOP). On this map,
-                        you can:
+                        <p>This map reconstructs the Capital Hill Organization Protest (CHOP) with a unique drone image collected during the protest in June 2020. As Seattle's law enforcement sweeps the CHOP, this digital geographical archive still provides a way to engage with this social movement through the geovisualization of graffiti, encampments, barriers, and more. 
+                        On this map, you can:</p>
                         <ul>
                             <li> View an interactive map of the CHOP, the graffiti, and people's memories;
                             </li>
@@ -61,8 +65,7 @@
                                 and</li>
                             <li> Download the drone image of the CHOP for your projects.</li>
                         </ul>
-                        If you are visiting this website for the first time or want to know how to use this platform,
-                        please visit the about page or contact us about any questions you have.
+                        <p>We welcome everyone's contribution. If you have any ideas to improve this web map, please <a href="https://forms.gle/gjjWpuBM3A7tppDe9" target="_blank">contact us </a>about any questions you have.</p>
                     </div>
                     <div class="modal-footer">
                         <div class="form-switch" id="nextTimeSwitcher">
@@ -76,9 +79,19 @@
                 </div>
             </div>
         </div>
-        <div id="links">
+        <div id="links" data-intro="
+           <ul>
+            <li style='margin-bottom:0.5em'><b>About page</b> provides a brief description of this project. </li>
+            <li style='margin-bottom:0.5em'><b>Instruction page</b> will walk you through the main functions of this web map. </li>
+            <li style='margin-bottom:0.5em'><b style='color:orangered'>Statement page</b> shows the intention of the drone pilot who collect the drone imagery. </li>
+            <li style='margin-bottom:0.5em'><b>Data & cite us page</b> describes how to download the drone photo for reuse and to cite this web map. </li>
+            <li style='margin-bottom:0.5em'><b>Team page</b> list all the team members of this project. </li>
+            <li style='margin-bottom:0.5em'>You can share us your comments on this project on the <b>contact us page</b>. </li>
+            <li style='margin-bottom:0.5em'>Share this map with your social media community by clicking on the <b>social media buttons</b>.</li>
+           </ul>" data-step="6">
             <div id="links-container">
                 <a id="nav-about" href="#">about</a>
+                <a id="nav-instruction" href="#">instruction</a>
                 <a id="nav-statement" style="color:rgb(255, 68, 0)" href="#">statement</a>
                 <a id="nav-data" href="#">data & cite us <sup>TBA</sup></a>
                 <a id="nav-team" href="#">team</a>
@@ -92,18 +105,16 @@
             </div>
         </div>
         <div id="info" class="d-flex grid-container flex-column map-panel">
-            <h5 id="title"> Public Memories of The CHOP <i
+            <h5 id="title" data-intro="click on here to get back to the original map position." data-step="1"> Memories of the CHOP <i
                     style="font-size: 10pt; left:0.2em; bottom: 1em; position:relative"> Beta</i>
             </h5>
             <p>
-                The Capitol Hill Occupied Protest (CHOP), originally Free Capitol Hill and later the Capitol Hill
-                Autonomous Zone, was an occupation protest and self-declared
-                autonomous zone in the Capitol Hill neighborhood of Seattle, Washington.
+                This map reconstructs the Capital Hill Organization Protest (CHOP) with a unique drone image collected during the protest in June 2020. As Seattle's law enforcement sweeps the CHOP, this digital geographical archive still provides a way to engage with this social movement through the geovisualization of graffiti, encampments, barriers, and more. Please visit <a class="familiarization" href="#">here</a> to quickly familiarize yourself with the functionality of this web map. 
 
             </p>
-
+<hr>
             <div class="container">
-                <div class="layer-controls row align-items-start">
+                <div class="layer-controls row align-items-start" data-intro="Toggling on/off the Police Dept, Speech Area, and CHOP Boundary legend patches to turn on/off these map components."  data-step="2">
                     <div class="col form-switch">
 
                         <input class=" form-check-input" type="checkbox" id="3d-police" value="3d-police" checked>
@@ -125,19 +136,26 @@
 
                 </div>
 
-                <div class="layer-controls row align-items-start">
-                    <div class="col form-switch">
-                        <input class="form-check-input" type="checkbox" id="aerial" value="aerial" checked>
+                <div class="layer-controls row align-items-start" >
+                    <div class="col form-switch" >
+                        <input class="form-check-input" type="checkbox" id="aerial" value="aerial" checked  data-intro="Toggling on/off the Drone photo to compare the view of CHOP with another view before the protest."  data-step="3">
                         <label class="form-check-label" for="aerial"><i id="drone-legend" class="legend drone">
                             </i>Drone Photo</label>
                     </div>
                     <div class="col form-switch">
-                        <input class="form-check-input" type="checkbox" id="memory" value="memory" checked>
+                        <input class="form-check-input" type="checkbox" id="memory" value="memory" checked data-intro="
+                        <p>When <b>memory</b> option is on, </p>
+                        <ul >
+                            <li style='margin-bottom:0.5em'> A user can click on any location on the map, and then two side panels will appear to the left of the map and under the main console on the top left. </li>
+                            <li style='margin-bottom:0.5em'> Then, a user can contribute their own in-situ experiences on the higher panel of the two. Or</li>
+                            <li style='margin-bottom:0.5em'> A user can view details about this location on the lower panel, including nearby graffiti and landmarks, and people's memories.</li>
+                        </ul>"  data-step="4">
                         <label class="form-check-label" for="memory"><i id="memory-legend" class="legend memory">
                             </i>Memory</label>
                     </div>
                     <div class="col form-switch">
-                        <input class="form-check-input" type="checkbox" id="graffito" value="graffito">
+                        <input class="form-check-input" type="checkbox" id="graffito" value="graffito"  data-intro="
+                        <p>When <b>graffito</b> option is on, all graffiti on the map will be labelled and highlighted in yellow.</p>"  data-step="5">
                         <label class="form-check-label" for="graffito"><i id="graffito-legend" class="legend graffito">
                             </i>Graffito</label>
                     </div>
@@ -248,7 +266,7 @@
                                 </span>
                             </p>
                             <p class="team-position">Principal Investigator</p>
-                            <p class="member-bio"> An associate Professor in Geography and GIScience at University of
+                            <p class="member-bio"> Associate Professor in Geography and GIScience at University of
                                 Washington - Seattle, where he also spearheads the Humanistic GIS Lab. </p>
                         </div>
                         <!-- End-->

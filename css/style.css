@@ -217,7 +217,7 @@ main,
   margin-bottom: 0.25em;
 }
 
-.memory-hr{
+hr{
   margin-top:.5em;
   margin-bottom: .5em;
 }
@@ -375,12 +375,21 @@ a.about-social-link {
 
 }
 
-.map-window-content>p {
+div#statement p {
 
   font-family: 'Sorts Mill Goudy', serif;
   /* font-family: 'Fira Sans', sans-serif; */
   /* font-family: 'Noto Serif', serif; */
   /* overflow-y: hidden; */
+}
+
+.map-window-content a {
+  color:#777777
+}
+
+p a{
+
+  color:#777777
 }
 
 /* fundamental libraries */
@@ -445,4 +454,61 @@ input {
   color: rgb(29, 29, 29);
   font-size: 10.5pt;
   font-weight: 800;
+}
+
+/* instruction */
+
+.introjs-bottom-left-aligned{
+  /* margin:0; */
+
+  color: #dddddd;
+  font-family: "Source Sans Pro", sans-serif;
+  background: rgba(26, 24, 24, 0.9);
+  /* left: 1em; */
+  font-size: 11pt;
+
+  /* border-radius: 0.3em; */
+}
+.introjs-tooltip{
+max-width: 40vw;;
+}
+.introjs-tooltip-header{
+  /* margin-top: 0!important;
+  padding-top: 0!important; */
+
+}
+
+.introjs-skipbutton{
+  /* width:25px;
+  height: 25px; */
+  top:-.7em;
+  right:-.5em;
+}
+
+.introjs-tooltiptext {
+  font-size: small;
+  padding:.5em;
+}
+
+.introjs-tooltipbuttons{
+  font-family: "Source Sans Pro", sans-serif;
+  background: rgba(26, 24, 24, 0.9);
+  padding: 0;
+  font-size: 12pt;
+  border:0px solid #83828271;
+}
+.introjs-button{
+  font-family: "Source Sans Pro", sans-serif;
+  padding-top:0;
+  margin-top:0.7em;
+  margin-bottom:.5em;
+  margin-right:1em;
+  margin-left:1em;
+  border:1px solid #83828271;
+  
+}
+
+.introjs-fixedTooltip{
+  background: rgba(26, 24, 24, 0.0);
+  border:2px solid #ffffffc7;
 }

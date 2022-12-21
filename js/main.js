@@ -45,6 +45,18 @@ async function init() {
 
     });
 
+    $("#nav-instruction").on("click", function () {
+        introJs().start();
+
+    });
+
+    $("#familiarization").on("click", function () {
+        introJs().start();
+
+    });
+
+    
+
     let response = await fetch('assets/graffito.geojson');
     graffitoData = await response.json();
 
