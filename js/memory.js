@@ -27,7 +27,7 @@ map.on('click', 'memory', async (e) => {
 
 
         const center = turf.center(clickedfeatures[0]);
-        const buffer = turf.buffer(center, 0.05, {
+        const buffer = turf.buffer(center, 0.030, {
             units: 'kilometers'
         });
         const clickedfeature = clickedfeatures[0];
@@ -43,13 +43,10 @@ map.on('click', 'memory', async (e) => {
         });
 
         let poiIntersected = []
-        let j = 0
         poiData.features.forEach(poi => {
-            // if (turf.pointsWithinPolygon(graffito.geometry.coordinates, buffer.geometry.coordinates).features.length > 0 && graffitoData.features[0].properties.Message != undefined){
-            //     graffitiWithin.push(graffitoData.features[0].properties.Message);
-            // }
+
             if (turf.booleanWithin(poi.geometry, buffer.geometry) && poi.properties.name != null) {
-                poiIntersected.push(poi.properties.name);
+                poiIntersected.push(poi.properties.name.toUpperCase());
 
             }
 
@@ -57,8 +54,8 @@ map.on('click', 'memory', async (e) => {
 
 
         });
-        console.log(graffitiIntersected);
-        console.log(poiIntersected);
+        // console.log(graffitiIntersected);
+        // console.log(poiIntersected);
         constructMemories([memoryData, graffitiIntersected, poiIntersected]);
     }
 });
@@ -78,7 +75,7 @@ function constructMemories(memoryProfile) {
 
     // construct the new memory list
 
-    if (memoryData.length == 0 && graffitiIntersected.length ==0 && poiIntersected.length ==0) {
+    if (memoryData.length == 0 && graffitiIntersected.length == 0 && poiIntersected.length == 0) {
         // enable memory
         document.getElementById("memory-list").classList.add("d-none");
         document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
@@ -91,37 +88,37 @@ function constructMemories(memoryProfile) {
         document.getElementById("memory-list").classList.remove("d-none");
 
         // graffitiContainer
+        if (graffitiIntersected.length > 0) {
+            let graffitiContainer = document.getElementById('graffiti-container');
 
-        let graffitiContainer = document.getElementById('graffiti-container');
+            let text = "<span class='graffiti-prompt'> Graffiti </span>";
+            for (let graffitoNum in graffitiIntersected) {
+                text += "<span class='graffito-box'>" + graffitiIntersected[graffitoNum] + "</span>"
+            }
 
-        let text = "<span class='graffiti-prompt'> Graffiti </span>";
-        for (let graffitoNum in graffitiIntersected) {
-            text += "<span class='graffito-box'>" + graffitiIntersected[graffitoNum] + "</span>"
+
+            let textDiv = document.createElement('div');
+            // textDiv.classList.add('memory-entry-bottom');
+            textDiv.innerHTML = text;
+            graffitiContainer.append(textDiv);
         }
-
-
-        let textDiv = document.createElement('div');
-        // textDiv.classList.add('memory-entry-bottom');
-        textDiv.innerHTML = text;
-        graffitiContainer.append(textDiv);
-
         //poi list
 
+        if (poiIntersected.length > 0) {
+            let poiContainer = document.getElementById('poi-container');
 
-        let poiContainer = document.getElementById('poi-container');
+            text = "<span class='poi-prompt'> Landmarks </span>";
+            for (let poiNum in poiIntersected) {
+                text += "<span class='graffito-box'>" + poiIntersected[poiNum] + "</span>"
+            }
 
-        text = "<span class='poi-prompt'> Landmarks </span>";
-        for (let poiNum in poiIntersected) {
-            text += "<span class='graffito-box'>" + poiIntersected[poiNum] + "</span>"
+
+            textDiv = document.createElement('div');
+            // textDiv.classList.add('memory-entry-bottom');
+            textDiv.innerHTML = text;
+            poiContainer.append(textDiv);
+
         }
-
-
-        textDiv = document.createElement('div');
-        // textDiv.classList.add('memory-entry-bottom');
-        textDiv.innerHTML = text;
-        poiContainer.append(textDiv);
-
-
         // memory list
 
         let memoryListContainer = document.getElementById('memory-list-container');
@@ -131,34 +128,45 @@ function constructMemories(memoryProfile) {
         promptDiv.innerHTML = "Memories";
         memoryListContainer.append(promptDiv);
 
-        let i = 0;
-        for (let memory of memoryData) {
-            let memoryDiv = document.createElement('p');
-            let created_at = new Date(memory.created_at);
-            let dt = created_at.toLocaleDateString('en-US', {
-                timeZone: 'PST'
-            })
-            let tm = created_at.toLocaleTimeString('en-US', {
-                timeZone: 'PST'
-            })
-            memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="13px" width="13px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at"> on ' + dt + ' at ' + tm + '</span>';
-            memoryDiv.classList.add('memory-entry');
 
-            memoryListContainer.append(memoryDiv);
-            const hrDiv = document.createElement('hr');
-            hrDiv.classList.add('memory-hr');
 
-            // separators
-            memoryListContainer.append(hrDiv);
+        if (memoryData.length > 0) {
+            let i = 0;
+            for (let memory of memoryData) {
+                let memoryDiv = document.createElement('p');
+                let created_at = new Date(memory.created_at);
+                let dt = created_at.toLocaleDateString('en-US', {
+                    timeZone: 'PST'
+                })
+                let tm = created_at.toLocaleTimeString('en-US', {
+                    timeZone: 'PST'
+                })
+                memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="13px" width="13px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at"> on ' + dt + ' at ' + tm + '</span>';
+                memoryDiv.classList.add('memory-entry');
 
-            // random head shot
-            drawHeadShot("memory-" + i.toString());
-            i++;
+                memoryListContainer.append(memoryDiv);
+                const hrDiv = document.createElement('hr');
+                hrDiv.classList.add('memory-hr');
+
+                // separators
+                memoryListContainer.append(hrDiv);
+
+                // random head shot
+                drawHeadShot("memory-" + i.toString());
+                i++;
+            }
+
+            let bottomDiv = document.createElement('div');
+            bottomDiv.classList.add('memory-entry-bottom');
+            memoryListContainer.append(bottomDiv);
+
+        } else {
+
+            let bottomDiv = document.createElement('div');
+            bottomDiv.classList.add('memory-entry-bottom');
+            bottomDiv.innerHTML = "<p><i>No memories have been shared yet.</i></p>"
+            memoryListContainer.append(bottomDiv);
         }
-
-        let bottomDiv = document.createElement('div');
-        bottomDiv.classList.add('memory-entry-bottom');
-        memoryListContainer.append(bottomDiv);
 
     }
 }
@@ -196,7 +204,7 @@ async function addNewReview(e, hid, contributor, email, content) {
     newReview.append('email', email);
     newReview.append('content', content);
 
-    console.log(newReview);
+    //console.log(newReview);
 
     let settings = {
         method: 'POST',
@@ -213,7 +221,44 @@ async function addNewReview(e, hid, contributor, email, content) {
 
     try {
         let newMemoryData = await getMemories(hid);
-        constructMemories(newMemoryData);
+        let feature = null;
+
+        memories = map.queryRenderedFeatures({layers: ['memory']});
+
+        memories.forEach(memory=>{
+            if (hid == memory.properties.id) {
+
+                feature = memory;
+                return true;
+            }
+        })
+
+        const center = turf.center(feature);
+        const buffer = turf.buffer(center, 0.030, {
+            units: 'kilometers'
+        });
+
+        let graffitiIntersected = [];
+        graffitoData.features.forEach(graffito => {
+            // if (turf.pointsWithinPolygon(graffito.geometry.coordinates, buffer.geometry.coordinates).features.length > 0 && graffitoData.features[0].properties.Message != undefined){
+            //     graffitiWithin.push(graffitoData.features[0].properties.Message);
+            // }
+            if (turf.intersect(graffito, feature) != null && graffito.properties.Message != undefined) {
+                graffitiIntersected.push(graffito.properties.Message);
+            }
+
+        });
+
+        let poiIntersected = [];
+        poiData.features.forEach(poi => {
+
+            if (turf.booleanWithin(poi.geometry, buffer.geometry) && poi.properties.name != null) {
+                poiIntersected.push(poi.properties.name.toUpperCase());
+            }
+
+        });
+
+        constructMemories([newMemoryData, graffitiIntersected, poiIntersected]);
 
 
     } catch (err) {
