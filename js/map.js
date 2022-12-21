@@ -305,6 +305,25 @@ map.on('load', () => {
     });
 
 
+
+    $("#nextTimeSwitcher input").on("click", function () {
+        if ($("#nextTimeSwitcher input:checked").val() === "on") {
+            localStorage.setItem('popState', 'shown');
+        } else {
+            localStorage.setItem('popState', 'notShown');
+        }
+    })
+
+    if (localStorage.getItem('popState') != 'shown') {
+      
+        $('#welcome').modal('show');
+
+    } else {
+   
+        $('#welcome').modal('hide');
+    }
+
+
     $('#loader').fadeOut("slow");
 
 

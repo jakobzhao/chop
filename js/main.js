@@ -5,28 +5,6 @@ let poiData = null;
 // init function
 async function init() {
 
-    $("#nextTimeSwitcher input").on("click", function () {
-        if ($("#nextTimeSwitcher input:checked").val() === "on") {
-            localStorage.setItem('popState', 'shown');
-        } else {
-
-            localStorage.setItem('popState', 'notShown');
-        }
-    })
-
-    if (localStorage.getItem('popState') != 'shown') {
-        console.log("show welcome");
-        $('#welcome').modal('show');
-
-    } else {
-        console.log("hide welcome");
-        $('#welcome').modal('hide');
-    }
-    $('#welcome-close').click(function (e) // You are clicking the close button
-        {
-            $('#welcome').fadeOut(); // Now the pop up is hidden.
-            $('#welcome').modal('hide');
-        });
 
 
     $("#nav-team").on("click", function () {
