@@ -15,7 +15,7 @@ main,
 
 
 
-@media only screen and (max-width: 1150px) {
+@media only screen and (max-width: 1160px) {
   #links {
     display: none;
   }
@@ -52,6 +52,7 @@ main,
     display: none;
   }
 }
+
 
 #loader {
   position: fixed;
@@ -108,7 +109,7 @@ main,
   position: fixed;
   left: 1em;
   padding: 1em 1em;
-  width: 32em;
+  width: 36em;
   font-size: 11pt;
   background: rgba(26, 24, 24, 0.9);
   box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
@@ -117,7 +118,6 @@ main,
 
 #info {
   top: 1em;
-  width: 32em;
 }
 
 #title {
@@ -128,6 +128,11 @@ main,
   font-family: 'Barlow Condensed', sans-serif;
 }
 
+
+#info > p, #info > ul {
+
+  margin-bottom: 0.2em;
+}
 
 
 /* legend */
@@ -150,6 +155,10 @@ main,
   background-color: orange;
 }
 
+.bldgs {
+  background-color: #aaa;
+}
+
 .boundary {
   background-color: #0080ff;
 }
@@ -170,7 +179,7 @@ main,
 
 #memory-panel {
 
-  top: 24em;
+  top: 26.4em;
   height: 13.25em;
   padding-top: 0.75em;
 }
@@ -204,7 +213,7 @@ main,
 
 
 #memory-list {
-  top: 37.8em;
+  top: 40.1em;
   bottom: 4em;
 }
 
@@ -306,7 +315,8 @@ hr{
   color: white;
   /* text-shadow: 0 0 3px #000000; */
   text-shadow: 1px 1px 2px rgb(68, 68, 68), 0 0 25px rgb(73, 73, 73), 0 0 5px rgb(100, 100, 100);
-  padding-right: 0.5em;
+  padding-right: 1em;
+  margin: 0;
   font-size: medium;
   text-decoration: none;
 }
@@ -315,7 +325,7 @@ hr{
 /* attribution panel */
 #attribution {
   position: absolute;
-  width: 27em;
+  width: 30em;
   bottom: 0em;
   left: 0em;
   text-shadow: 2px 2px 4px gray;

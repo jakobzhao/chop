@@ -32,12 +32,12 @@ let hid = null;
 
 
 const policeColor = getComputedStyle(document.querySelector('.police')).backgroundColor;
-const speechColor = getComputedStyle(document.querySelector('.speech')).backgroundColor;
+// const speechColor = getComputedStyle(document.querySelector('.speech')).backgroundColor;
 const boundaryColor = getComputedStyle(document.querySelector('.boundary')).backgroundColor;
 const memoryColor = getComputedStyle(document.querySelector('.memory')).backgroundColor;
 const graffitoColor = getComputedStyle(document.querySelector('.graffito')).backgroundColor;
 const highlightColor = '#8cff32';
-const bldgColor = '#aaa';
+const bldgColor = getComputedStyle(document.querySelector('.bldgs')).backgroundColor;;
 const origOpacity = 0.5;
 const hoverOpacity = 0.7;
 
@@ -106,13 +106,13 @@ map.on('load', () => {
     });
 
     //=============Buildings=========================
-    map.addSource('buildings', {
+    map.addSource('buildings-source', {
         'type': 'geojson',
         'data': 'assets/buildings.geojson'
     });
     map.addLayer({
-        'id': '3d-buildings',
-        'source': 'buildings',
+        'id': 'bldgs',
+        'source': 'buildings-source',
         'filter': ['!=', 'type', 'police'],
         'type': 'fill-extrusion',
         'minzoom': 15,
@@ -121,8 +121,12 @@ map.on('load', () => {
             'fill-extrusion-height': ['get', 'eheight'],
             'fill-extrusion-base': 0,
             'fill-extrusion-opacity': 0.8
+        },
+        'layout': {
+            visibility: "visible",
         }
     }, 'road-label');
+
 
     //=============Memory=========================
     map.addSource('grid', {
@@ -152,7 +156,7 @@ map.on('load', () => {
     //=============Police=========================
     map.addLayer({
         'id': '3d-police',
-        'source': 'buildings',
+        'source': 'buildings-source',
         'filter': ['==', 'type', 'police'],
         'type': 'fill-extrusion',
         'minzoom': 15,
@@ -189,25 +193,25 @@ map.on('load', () => {
     }, 'road-label');
 
     //==============Speech Area========================
-    map.addSource('speech-area', {
-        'type': 'geojson',
-        'data': 'assets/speech_area.geojson'
-    });
+    // map.addSource('speech-area', {
+    //     'type': 'geojson',
+    //     'data': 'assets/speech_area.geojson'
+    // });
 
-    map.addLayer({
-        'id': 'speech',
-        'type': 'fill-extrusion',
-        'source': 'speech-area',
-        'paint': {
-            'fill-extrusion-color': speechColor,
-            'fill-extrusion-height': 5,
-            'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': origOpacity
-        },
-        'layout': {
-            visibility: "visible",
-        }
-    }, 'road-label');
+    // map.addLayer({
+    //     'id': 'speech',
+    //     'type': 'fill-extrusion',
+    //     'source': 'speech-area',
+    //     'paint': {
+    //         'fill-extrusion-color': speechColor,
+    //         'fill-extrusion-height': 5,
+    //         'fill-extrusion-base': 0,
+    //         'fill-extrusion-opacity': origOpacity
+    //     },
+    //     'layout': {
+    //         visibility: "visible",
+    //     }
+    // }, 'road-label');
 
 
     //==============graffito========================
@@ -268,10 +272,10 @@ map.on('load', () => {
                 'case',
                 ['boolean', ['feature-state', 'hover'], false],
                 0,
-                0.5
+                0.1
             ]
         }
-    }, '3d-buildings');
+    }, 'bldgs');
    
   
     map.addLayer({
@@ -331,7 +335,7 @@ map.on('load', () => {
 
 
 
-const highlightedLayerIds = ["speech", 'boundary', '3d-police']
+const highlightedLayerIds = ["3d-buildings", 'boundary', '3d-police']
 
 highlightedLayerIds.forEach((layerId) => {
 
@@ -363,8 +367,8 @@ highlightedLayerIds.forEach((layerId) => {
         map.setPaintProperty(layerId, 'fill-extrusion-opacity', origOpacity);
         popup.remove();
 
-        if (layerId == "speech") {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', speechColor);
+        if (layerId == "3d-buildings") {
+            map.setPaintProperty(layerId, 'fill-extrusion-color', bldgColor);
         } else if (layerId == "boundary") {
             map.setPaintProperty(layerId, 'fill-extrusion-color', boundaryColor);
 
@@ -485,7 +489,7 @@ map.on("click", "graffito", (e) => {
 
 
 // Enumerate ids of the layers.
-const toggleableLayerIds = ['aerial', 'graffito', 'boundary', 'speech', 'memory', '3d-police'];
+const toggleableLayerIds = ['aerial', 'graffito', 'boundary',  'bldgs', 'memory', '3d-police'];
 // Set up the corresponding toggle button for each layer.
 for (const id of toggleableLayerIds) {
 
