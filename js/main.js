@@ -23,6 +23,11 @@ async function init() {
 
     });
 
+    $("#nav-data").on("click", function () {
+        $('#datacite').modal('show');
+
+    });
+
     $("#nav-instruction").on("click", function () {
         introJs().start();
 
