@@ -40,7 +40,7 @@ async function init() {
 
     
 
-    let response = await fetch('assets/graffito.geojson');
+    let response = await fetch('assets/graffiti.geojson');
     graffitoData = await response.json();
 
     response = await fetch('assets/poi.geojson');
