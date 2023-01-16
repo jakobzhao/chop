@@ -164,7 +164,7 @@ function constructMemories(memoryProfile) {
 
             let bottomDiv = document.createElement('div');
             bottomDiv.classList.add('memory-entry-bottom');
-            bottomDiv.innerHTML = "<p><i>No memories have been shared yet.</i></p>"
+            bottomDiv.innerHTML = "<p><i>No shared memories have been found. Be the first to share your memory, in-situ experience, or just  personal feelings about this location./i></p>"
             memoryListContainer.append(bottomDiv);
         }
 
