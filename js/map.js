@@ -219,7 +219,7 @@ map.on('load', () => {
     map.addSource('chop-graffito', {
         'type': 'geojson',
         'generateId': true,
-        'data': 'assets/graffito.geojson'
+        'data': 'assets/graffiti.geojson'
     });
 
     
