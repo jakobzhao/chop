@@ -2,13 +2,13 @@
 <html lang="en">
 
 <head>
-    <title>Memories of The CHOP</title>
+    <title>Archiving The CHOP</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name='robots' content='max-image-preview:large' />
     <meta name="description" content="This interactive map experience provides a digital record and public commons exploring the
-        geography of the Capitol Hill Organized Protest (CHOP) in Seattle which took place in June
-        2020." />
+    geography of the Capitol Hill Organized Protest (CHOP) in Seattle which took place in June
+    2020." />
     <link rel="icon" type="image/png" href="img/logo.png" />
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.1/mapbox-gl.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -58,8 +58,7 @@
                         <ul>
                             <li>Visualize a high resolution aerial map of the CHOP.</li>
                             <li>Read and explore the messages and street art made throughout the CHOP.</li>
-                            <li>Provide memories or commentary on different locations within the CHOP, using the map
-                            </li>
+                            <li>Provide memories or commentary on different locations within the CHOP.</li>
                             <li>Access the map’s open data.</li>
                         </ul>
                         <p>While the physical space that was created by the CHOP has long since reopened and been
@@ -130,13 +129,12 @@
                     aria-current="page"></a> -->
                 <a href="https://www.facebook.com/sharer/sharer.php?u=https://hgis.uw.edu/chop" target="_blank"
                     class="bi bi-facebook" aria-current="page"></a>
-                <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/chop/&text=Check out this web map visualizing the public memories of the the Capitol Hill Organization Protest (CHOP) at Seattle in mid-2020."
+                <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/chop/&text=This map provides a digital public commons exploring the Capitol Hill Organized Protest (CHOP) in Seattle which took place in June 2020." 
                     class="bi bi-twitter " aria-current="page"></a>
             </div>
         </div>
         <div id="info" class="d-flex grid-container flex-column map-panel">
-            <h5 id="title" data-intro="click on here to get back to the original map position." data-step="1"> Memories
-                of the CHOP <i style="font-size: 10pt; left:0.2em; bottom: 1em; position:relative"> Beta</i>
+            <h5 id="title" data-intro="click on here to get back to the original map position." data-step="1"> Archiving the CHOP <i style="font-size: 10pt; left:-0.3em; bottom: 1em; position:relative"> Beta</i>
             </h5>
             <p>
                 Revisit Seattle’s Capitol Hill Organization Protest (CHOP) through this interactive digital geographical
@@ -153,6 +151,35 @@
                 interactive web map and fully immerse yourself in this important moment in history.</p>
             <hr>
             <div class="container">
+
+                <div class="layer-controls row align-items-start">
+                    <div class="col form-switch">
+                        <input class="form-check-input" type="checkbox" id="aerial" value="aerial" checked
+                            data-intro="Toggling on/off the Drone photo to compare the view of CHOP with another view before the protest."
+                            data-step="3">
+                        <label class="form-check-label" for="aerial"><i id="drone-legend" class="legend drone">
+                            </i>Drone Photo</label>
+                    </div>
+                    <div class="col form-switch">
+                        <input class="form-check-input" type="checkbox" id="memory" value="memory" checked data-intro="
+                        <p>When <b>memory</b> option is on, </p>
+                        <ul >
+                            <li style='margin-bottom:0.5em'> A user can click on any location on the map, and then two side panels will appear to the left of the map and under the main console on the top left. </li>
+                            <li style='margin-bottom:0.5em'> Then, a user can contribute their own in-situ experiences on the higher panel of the two. Or</li>
+                            <li style='margin-bottom:0.5em'> A user can view details about this location on the lower panel, including nearby graffiti and landmarks, and people's memories.</li>
+                        </ul>" data-step="4">
+                        <label class="form-check-label" for="memory" title="Click any location of the Chop, and contribute your memory or commentary to this digital archive." ><i id="memory-legend" class="legend memory">
+                            </i><span style="color:lightcoral; font-weight: 700;">Memory</span></label>
+                    </div>
+                    <div class="col form-switch">
+                        <input class="form-check-input" type="checkbox" id="graffito" value="graffito"
+                            data-intro="
+                        <p>When <b>graffiti</b> option is on, all graffiti on the map will be labelled and highlighted in yellow.</p>" data-step="5">
+                        <label class="form-check-label" for="graffito"><i id="graffito-legend" class="legend graffito">
+                            </i>Graffiti</label>
+                    </div>
+                </div>
+
                 <div class="layer-controls row align-items-start"
                     data-intro="Toggling on/off the Police Dept, Buildings, and CHOP Boundary legend patches to turn on/off these map components."
                     data-step="2">
@@ -177,33 +204,7 @@
 
                 </div>
 
-                <div class="layer-controls row align-items-start">
-                    <div class="col form-switch">
-                        <input class="form-check-input" type="checkbox" id="aerial" value="aerial" checked
-                            data-intro="Toggling on/off the Drone photo to compare the view of CHOP with another view before the protest."
-                            data-step="3">
-                        <label class="form-check-label" for="aerial"><i id="drone-legend" class="legend drone">
-                            </i>Drone Photo</label>
-                    </div>
-                    <div class="col form-switch">
-                        <input class="form-check-input" type="checkbox" id="memory" value="memory" checked data-intro="
-                        <p>When <b>memory</b> option is on, </p>
-                        <ul >
-                            <li style='margin-bottom:0.5em'> A user can click on any location on the map, and then two side panels will appear to the left of the map and under the main console on the top left. </li>
-                            <li style='margin-bottom:0.5em'> Then, a user can contribute their own in-situ experiences on the higher panel of the two. Or</li>
-                            <li style='margin-bottom:0.5em'> A user can view details about this location on the lower panel, including nearby graffiti and landmarks, and people's memories.</li>
-                        </ul>" data-step="4">
-                        <label class="form-check-label" for="memory"><i id="memory-legend" class="legend memory">
-                            </i>Memory</label>
-                    </div>
-                    <div class="col form-switch">
-                        <input class="form-check-input" type="checkbox" id="graffito" value="graffito"
-                            data-intro="
-                        <p>When <b>graffiti</b> option is on, all graffiti on the map will be labelled and highlighted in yellow.</p>" data-step="5">
-                        <label class="form-check-label" for="graffito"><i id="graffito-legend" class="legend graffito">
-                            </i>Graffiti</label>
-                    </div>
-                </div>
+               
             </div>
         </div>
 
