@@ -78,14 +78,20 @@ function constructMemories(memoryProfile) {
     if (memoryData.length == 0 && graffitiIntersected.length == 0 && poiIntersected.length == 0) {
         // enable memory
         document.getElementById("memory-list").classList.add("d-none");
+        document.getElementById("memory-panel").classList.remove("d-none");
         document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
         document.getElementById('memory-submit').addEventListener('click', submitNewReview);
-        document.getElementById("memory-panel").classList.remove("d-none");
+        // document.getElementById('memory-submit').removeEventListener('submit', submitNewReview);
+        // document.getElementById('memory-submit').addEventListener('submit', submitNewReview);
+        
 
     } else {
         document.getElementById("memory-list").classList.remove("d-none");
         document.getElementById("memory-panel").classList.remove("d-none");
-        document.getElementById("memory-list").classList.remove("d-none");
+        document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
+        document.getElementById('memory-submit').addEventListener('click', submitNewReview);
+        // document.getElementById('memory-submit').removeEventListener('submit', submitNewReview);
+        // document.getElementById('memory-submit').addEventListener('submit', submitNewReview);
 
         // graffitiContainer
         if (graffitiIntersected.length > 0) {
@@ -174,7 +180,7 @@ function constructMemories(memoryProfile) {
 
 //helper function to submit new review
 function submitNewReview(e) {
-    e.preventDefault();
+ 
 
     let contributor = document.getElementById('contributor').value;
     let content = document.getElementById('memory-content').value;
@@ -189,6 +195,8 @@ function submitNewReview(e) {
     } else {
         makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Your submission did not succeed. Both text fields are required.</p>');
     }
+
+    e.preventDefault();
 };
 
 
