@@ -63,6 +63,7 @@ function checkStatus(response) {
     if (response.ok) {
         return response;
     } else {
-        throw Error("Error in request: " + response.statusText);
+        console.log("where the error is:" + response)
+        throw Error("CHOP: Error in request: " + response.statusText);
     }
 }
