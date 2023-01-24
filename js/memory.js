@@ -284,7 +284,7 @@ function confirmationReview() {
     // document.getElementById('email').value = '';
     document.getElementById('memory-content').value = '';
 
-    makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success"></i></p><p style="text-align:center">Your memory has been submitted successfully.</p>');
+    makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success"></i></p><p style="text-align:center">Your memory or commentary has been submitted successfully.</p>');
 }
 
 
