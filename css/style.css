@@ -109,7 +109,7 @@ main,
   position: fixed;
   left: 1em;
   padding: 1em 1em;
-  width: 36em;
+  width: 33em;
   font-size: 11pt;
   background: rgba(26, 24, 24, 0.9);
   box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
@@ -178,7 +178,7 @@ main,
 
 #memory-panel {
 
-  top: 26.2em;
+  top: 24.7em;
   height: 13.25em;
   padding-top: 0.75em;
 }
@@ -212,7 +212,7 @@ main,
 
 
 #memory-list {
-  top: 39.7em;
+  top: 38.2em;
   bottom: 4em;
 }
 
