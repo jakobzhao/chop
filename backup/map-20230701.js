@@ -13,7 +13,7 @@ let map = new mapboxgl.Map({
     maxBounds: [-123.9180845532934, 47.04828654073975, -121.14008445949332, 48.71935997846136],
     minZoom: 12,
     maxZoom: 21,
-    pitch: 30,
+    pitch: 72,
     // bearing: 230, // bearing in degrees
     antialias: true,
     logoPosition: 'bottom-right',
@@ -33,7 +33,7 @@ let hid = null;
 
 const policeColor = getComputedStyle(document.querySelector('.police')).backgroundColor;
 // const speechColor = getComputedStyle(document.querySelector('.speech')).backgroundColor;
-// const boundaryColor = getComputedStyle(document.querySelector('.boundary')).backgroundColor;
+const boundaryColor = getComputedStyle(document.querySelector('.boundary')).backgroundColor;
 const memoryColor = getComputedStyle(document.querySelector('.memory')).backgroundColor;
 const graffitoColor = getComputedStyle(document.querySelector('.graffito')).backgroundColor;
 const highlightColor = '#8cff32';
@@ -88,6 +88,7 @@ map.on('load', () => {
             'visibility': 'visible',
         }
     }, 'road-path');
+
     //=============outside mask=========================
 
     map.addSource('mask', {
@@ -152,26 +153,6 @@ map.on('load', () => {
         }
     }, 'road-label');
 
-    // =============Highlighted Memories=========================
-    // Call the async function and use the result in a .then() function
-    getHighlights().then(highlights => {
-    // Extract the hids into an array
-    var hid = highlights.map(highlight => highlight.hid);
-
-    map.addLayer({
-        'id': 'highlighted-memories',
-        'source': 'grid',
-        'type': 'fill', 
-        'paint': {
-            'fill-color': 'purple',
-            'fill-opacity': 0.5 
-        },
-        'filter': ['in', 'id'].concat(hid)
-    });
-    }).catch(error => {
-        console.error("Error loading highlights:", error);
-    });
-
     //=============Police=========================
     map.addLayer({
         'id': '3d-police',
@@ -191,25 +172,25 @@ map.on('load', () => {
     }, 'road-label');
 
     //==============Boundary========================
-    //map.addSource('chop-boundary', {
-    //    'type': 'geojson',
-    //    'data': 'assets/chop-boundary-polygon.geojson'
-    //});
+    map.addSource('chop-boundary', {
+        'type': 'geojson',
+        'data': 'assets/chop-boundary-polygon.geojson'
+    });
 
-    //map.addLayer({
-    //    'id': 'boundary',
-    //    'type': 'fill-extrusion',
-    //    'source': 'chop-boundary',
-    //    'paint': {
-    //        'fill-extrusion-color': boundaryColor,
-    //        'fill-extrusion-height': 5,
-    //        'fill-extrusion-base': 0,
-    //        'fill-extrusion-opacity':origOpacity
-    //    },
-    //    'layout': {
-    //        visibility: "none",
-    //    }
-    //}, 'road-label');
+    map.addLayer({
+        'id': 'boundary',
+        'type': 'fill-extrusion',
+        'source': 'chop-boundary',
+        'paint': {
+            'fill-extrusion-color': boundaryColor,
+            'fill-extrusion-height': 5,
+            'fill-extrusion-base': 0,
+            'fill-extrusion-opacity':origOpacity
+        },
+        'layout': {
+            visibility: "visible",
+        }
+    }, 'road-label');
 
     //==============Speech Area========================
     // map.addSource('speech-area', {
@@ -232,7 +213,6 @@ map.on('load', () => {
     //     }
     // }, 'road-label');
 
-    map.setLayoutProperty('poi-label', 'visibility', 'visible'); 
 
     //==============graffito========================
 
@@ -256,7 +236,7 @@ map.on('load', () => {
             'text-padding': 7,
             // 'text-line-height': 1.5,
             'text-offset': [0, 1],
-            'visibility': 'visible',
+            'visibility': 'none',
             'text-font': [
                 'literal',
                 ['DIN Pro Medium', 'Arial Unicode MS Regular']
@@ -284,7 +264,7 @@ map.on('load', () => {
         'type': 'fill',
         'source': 'chop-graffito',
         'layout': {
-            'visibility': 'visible'
+            'visibility': 'none'
         },
         'paint': {
             'fill-color': graffitoColor,
@@ -353,7 +333,9 @@ map.on('load', () => {
 
 });
 
-const highlightedLayerIds = ["3d-buildings", '3d-police']
+
+
+const highlightedLayerIds = ["3d-buildings", 'boundary', '3d-police']
 
 highlightedLayerIds.forEach((layerId) => {
 
@@ -387,8 +369,8 @@ highlightedLayerIds.forEach((layerId) => {
 
         if (layerId == "3d-buildings") {
             map.setPaintProperty(layerId, 'fill-extrusion-color', bldgColor);
-        // } else if (layerId == "boundary") {
-        //    map.setPaintProperty(layerId, 'fill-extrusion-color', boundaryColor);
+        } else if (layerId == "boundary") {
+            map.setPaintProperty(layerId, 'fill-extrusion-color', boundaryColor);
 
         } else if (layerId == "3d-police") {
             map.setPaintProperty(layerId, 'fill-extrusion-color', policeColor);
@@ -421,8 +403,8 @@ highlightedLayerIds.forEach((layerId) => {
 
             if (layerId == "speech") {
                 description = "Speech Area";
-            //} else if (layerId == "boundary") {
-            //    description = "CHOP Boundary";
+            } else if (layerId == "boundary") {
+                description = "CHOP Boundary";
             } else if (layerId == "3d-police") {
                 description = "Seattle's City Department of Police";
             }
@@ -438,7 +420,7 @@ highlightedLayerIds.forEach((layerId) => {
 
 //======================= Graffito ==========================
 // Change the cursor to a pointer when the mouse is over the places layer.
-/* map.on('mousemove', 'graffito', (e) => {
+map.on('mousemove', 'graffito', (e) => {
     map.getCanvas().style.cursor = 'pointer';
     if (e.features.length > 0) {
         if (hoveredStateId !== null) {
@@ -502,12 +484,12 @@ map.on("click", "graffito", (e) => {
     }
 
 
-}); */
+});
 
 
 
 // Enumerate ids of the layers.
-const toggleableLayerIds = ['aerial', 'graffito',  'bldgs', 'memory', '3d-police', 'poi-label'];
+const toggleableLayerIds = ['aerial', 'graffito', 'boundary',  'bldgs', 'memory', '3d-police'];
 // Set up the corresponding toggle button for each layer.
 for (const id of toggleableLayerIds) {
 
@@ -524,7 +506,6 @@ for (const id of toggleableLayerIds) {
                 map.setLayoutProperty("graffito-outline", 'visibility', 'none');
                 map.setLayoutProperty("graffito-label", 'visibility', 'none');
             }
-            
 
             if (id == "memory") {
 
@@ -539,7 +520,6 @@ for (const id of toggleableLayerIds) {
                 }, {
                     hover: false
                 });
-                map.setLayoutProperty("highlighted-memories", 'visibility', 'none');
 
             }
 
@@ -548,9 +528,6 @@ for (const id of toggleableLayerIds) {
             if (id == "graffito") {
                 map.setLayoutProperty("graffito-outline", 'visibility', 'visible');
                 map.setLayoutProperty("graffito-label", 'visibility', 'visible');
-            }
-            if (id == "memory") {
-                map.setLayoutProperty("highlighted-memories", 'visibility', 'visible');
             }
         }
     });

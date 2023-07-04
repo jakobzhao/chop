@@ -46,6 +46,15 @@ async function init() {
     response = await fetch('assets/poi.geojson');
     poiData = await response.json();
 
+    document.querySelector('#details').addEventListener('toggle', function() {
+        let summaryText = document.querySelector('#summary-text');
+        if (this.open) {
+            summaryText.textContent = "(click to collapse)";
+        } else {
+            summaryText.textContent = "(click to show instructions)";
+        }
+    });
+
 }
 
 

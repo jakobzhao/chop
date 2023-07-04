@@ -26,7 +26,7 @@ map.on('click', 'memory', async (e) => {
         let memoryData = await getMemories(hid);
 
 
-        const center = turf.center(clickedfeatures[0]);
+        /*const center = turf.center(clickedfeatures[0]);
         const buffer = turf.buffer(center, 0.030, {
             units: 'kilometers'
         });
@@ -53,10 +53,10 @@ map.on('click', 'memory', async (e) => {
 
 
 
-        });
+        });*/
         // console.log(graffitiIntersected);
         // console.log(poiIntersected);
-        constructMemories([memoryData, graffitiIntersected, poiIntersected]);
+        constructMemories([memoryData]);//, graffitiIntersected, poiIntersected]);
     }
 });
 
@@ -64,18 +64,18 @@ map.on('click', 'memory', async (e) => {
 // create and style all incoming reviews from API request
 function constructMemories(memoryProfile) {
     const memoryData = memoryProfile[0];
-    const graffitiIntersected = memoryProfile[1];
-    const poiIntersected = memoryProfile[2];
+    //const graffitiIntersected = memoryProfile[1];
+    //const poiIntersected = memoryProfile[2];
 
     // initialize the memory-list
     document.getElementById("memory-panel").classList.add("d-none");
     document.getElementById('memory-list-container').innerHTML = "";
-    document.getElementById('graffiti-container').innerHTML = "";
-    document.getElementById('poi-container').innerHTML = "";
+    //document.getElementById('graffiti-container').innerHTML = "";
+    //document.getElementById('poi-container').innerHTML = "";
 
     // construct the new memory list
 
-    if (memoryData.length == 0 && graffitiIntersected.length == 0 && poiIntersected.length == 0) {
+    if (memoryData.length == 0) {// && graffitiIntersected.length == 0 && poiIntersected.length == 0) {
         // enable memory
         document.getElementById("memory-list").classList.add("d-none");
         document.getElementById("memory-panel").classList.remove("d-none");
@@ -94,7 +94,7 @@ function constructMemories(memoryProfile) {
         // document.getElementById('memory-submit').addEventListener('submit', submitNewReview);
 
         // graffitiContainer
-        if (graffitiIntersected.length > 0) {
+        /*if (graffitiIntersected.length > 0) {
             let graffitiContainer = document.getElementById('graffiti-container');
 
             let text = "<span class='graffiti-prompt'> Graffiti </span>";
@@ -124,7 +124,7 @@ function constructMemories(memoryProfile) {
             textDiv.innerHTML = text;
             poiContainer.append(textDiv);
 
-        }
+        }*/
         // memory list
 
         let memoryListContainer = document.getElementById('memory-list-container');
@@ -299,6 +299,20 @@ async function getMemories(hid) {
         });
         let memoryData = await getReview.json();
         return memoryData;
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+// getHighlights
+// Obtain data from database containing information for all the locations with associated reviews
+async function getHighlights() {
+    try {
+        let getHighlight = await fetch(`https://chop-rest-api.herokuapp.com/api/highlights`, {
+            method: 'GET'
+        });
+        let highlightData = await getHighlight.json();
+        return highlightData;
     } catch (err) {
         console.log(err);
     }

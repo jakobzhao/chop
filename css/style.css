@@ -54,6 +54,18 @@ main,
 }
 
 
+@media (max-width: 768px) {
+  #memory-panel {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  #memory-list {
+    width: 100%;
+  }
+}
+
 #loader {
   position: fixed;
   width: 100vw;
@@ -100,14 +112,15 @@ main,
   font-size: medium;
 }
 
-
+#sidebar {
+  display: flex;
+  flex-direction: column;
+}
 
 /* basic map panel layout */
 
 .map-panel {
   z-index: 10;
-  position: fixed;
-  left: 1em;
   padding: 1em 1em;
   width: 32em;
   font-size: 11pt;
@@ -115,6 +128,7 @@ main,
   box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
   border-radius: 0.3em;
 }
+
 
 #info {
   top: 1em;
@@ -133,7 +147,9 @@ main,
   margin-bottom: 0.2em;
 }
 
-
+#map {
+  position:fixed;
+}
 /* legend */
 
 .legend {
@@ -174,10 +190,12 @@ main,
   background-color: purple;
 }
 
+.poi-label {
+  background-color: #0080ff;
+}
+
 
 #memory-panel {
-
-  top: 23.15em;
   height: 13.25em;
   padding-top: 0.75em;
 }
@@ -202,17 +220,16 @@ main,
 
 
 #memory-submit {
-  position: absolute;
   display: inline-block;
   margin-left: 0.6em;
   width: 6em;
-  right: 1em;
+  margin-right: 1em;
 }
 
 
 #memory-list {
-  top: 36.7em;
-  bottom: 4em;
+  max-height: 18em;
+  overflow-y: auto;
 }
 
 
@@ -247,8 +264,7 @@ main,
 .memory-prompt, .poi-prompt{
   font-size: 14pt;
   font-family: 'Barlow Condensed', sans-serif;
-  margin-top: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
 }
 
 .memory-entry {

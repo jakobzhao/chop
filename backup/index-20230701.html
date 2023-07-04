@@ -49,7 +49,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Acknowledgement</h5>
+                        <h5 class="modal-title">Prologue</h5>
                     </div>
                     <div class="modal-body map-window-content">
                         <img src="img/logo.png"></img>
@@ -122,7 +122,7 @@
             <li style='margin-bottom:0.5em'>Share this map with your social media community by clicking on the <b>social media buttons</b>.</li>
            </ul>" data-step="6">
             <div id="links-container">
-                <a id="nav-about" href="#">Acknoledgement</a>
+                <a id="nav-about" href="#">prologue</a>
                 <a id="nav-statement" href="#">statement</a>
                 <a id="nav-instruction" href="#">user guide</a>
                 <a id="nav-data" href="#">data & cite us
@@ -132,130 +132,120 @@
                 <a href="https://forms.gle/gjjWpuBM3A7tppDe9" target="_blank">contact us</a>
                 <!-- <a href="https://github.com/jakobzhao/chop" class="bi bi-github" target="_blank"
                     aria-current="page"></a> -->
-                <!-- <a href="https://www.facebook.com/sharer/sharer.php?u=https://hgis.uw.edu/chop" target="_blank"
-                    class="bi bi-facebook" aria-current="page"></a> -->
-                <!-- <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/chop/&text=Check out this map that provides a digital public commmons exploring the Capitol Hill Organized Protest (CHOP) in Seattle which took place in June 2020."
-                    class="bi bi-twitter " aria-current="page"></a> -->
+                <a href="https://www.facebook.com/sharer/sharer.php?u=https://hgis.uw.edu/chop" target="_blank"
+                    class="bi bi-facebook" aria-current="page"></a>
+                <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/chop/&text=Check out this map that provides a digital public commmons exploring the Capitol Hill Organized Protest (CHOP) in Seattle which took place in June 2020."
+                    class="bi bi-twitter " aria-current="page"></a>
             </div>
         </div>
-        <div id="sidebar">
-            <div id="info" class="d-flex grid-container flex-column map-panel">
-                <h5 id="title" data-intro="click on here to get back to the original map position." data-step="1"> Archiving
-                    the CHOP <i style="font-size: 10pt; left:-0.3em; bottom: 1em; position:relative"> Beta</i>
-                </h5>
-                <details id="details">
-                    <summary>
-                        <span id="summary-text">(click to show instructions)</span>
-                    </summary>
-                    <p>This interactive digital archive enables you to</p>
-                    <ul>
-                        <li>Explore the CHOP from above, seeing all of the detailed street art, graffiti, encampments, barriers,
-                            and more.</li>
-                        <li>Read transcriptions of individual graffiti and discover the messages and patterns of speech in the
-                            CHOP.</li>
-                        <li>Leave your memories or commentary <span style="color:lightcoral"> by clicking a location within the
-                                CHOP when the <b><i>nearby</i></b> toggle is on.</span> </li>
-                    </ul>
-                    <p>Click <a id="familiarization" href="#">here</a> to familiarize yourself with the functionality of this
-                        archive.
-                    </p>
-                </details>
-                <hr>
-                
-                
-                <div class="container">
+        <div id="info" class="d-flex grid-container flex-column map-panel">
+            <h5 id="title" data-intro="click on here to get back to the original map position." data-step="1"> Archiving
+                the CHOP <i style="font-size: 10pt; left:-0.3em; bottom: 1em; position:relative"> Beta</i>
+            </h5>
+            <p>
+                This interactive digital archive enables you to
+            </p>
+            <ul>
+                <li>Explore the CHOP from above, seeing all of the detailed street art, graffiti, encampments, barriers,
+                    and more.</li>
+                <li>Read transcriptions of individual graffiti and discover the messages and patterns of speech in the
+                    CHOP.</li>
+                <li>Leave your memories or commentary <span style="color:lightcoral"> by clicking a location within the
+                        CHOP when the <b><i>nearby</i></b> toggle is on.</span> </li>
+            </ul>
+            <p>Click <a id="familiarization" href="#">here</a> to familiarize yourself with the functionality of this
+                archive.</p>
+            <hr>
+            <div class="container">
 
-                    <div class="layer-controls row align-items-start">
-                        <div class="col form-switch">
-                            <input class="form-check-input" type="checkbox" id="aerial" value="aerial" checked
-                                data-intro="Toggling on/off the Drone photo to compare the view of CHOP with another view before the protest."
-                                data-step="3">
-                            <label class="form-check-label" for="aerial"><i id="drone-legend" class="legend drone">
-                                </i>Drone Photo</label>
-                        </div>
-                        <div class="col form-switch">
-                            <input class="form-check-input" type="checkbox" id="memory" value="memory" checked data-intro="
-                            <p>When <b>memory</b> option is on, </p>
-                            <ul >
-                                <li style='margin-bottom:0.5em'> A user can click on any location on the map, and then two side panels will appear to the left of the map and under the main console on the top left. </li>
-                                <li style='margin-bottom:0.5em'> Then, a user can contribute their own in-situ experiences on the higher panel of the two. Or</li>
-                                <li style='margin-bottom:0.5em'> A user can view details about this location on the lower panel, including nearby graffiti and landmarks, and people's memories.</li>
-                            </ul>" data-step="4">
-                            <label class="form-check-label" for="memory"
-                                title="Click any location of the Chop, and contribute your memory or commentary to this digital archive."><i
-                                    id="memory-legend" class="legend memory">
-                                </i><span style="color:lightcoral; font-weight: 700;">Nearby</span></label>
-                        </div>
-                        <div class="col form-switch">
-                            <input class="form-check-input" type="checkbox" id="graffito" value="graffito" checked
-                                data-intro="
-                            <p>When <b>graffiti</b> option is on, all graffiti on the map will be labelled and highlighted in yellow.</p>" data-step="5">
-                            <label class="form-check-label" for="graffito"><i id="graffito-legend" class="legend graffito">
-                                </i>Graffiti</label>
-                        </div>
+                <div class="layer-controls row align-items-start">
+                    <div class="col form-switch">
+                        <input class="form-check-input" type="checkbox" id="aerial" value="aerial" checked
+                            data-intro="Toggling on/off the Drone photo to compare the view of CHOP with another view before the protest."
+                            data-step="3">
+                        <label class="form-check-label" for="aerial"><i id="drone-legend" class="legend drone">
+                            </i>Drone Photo</label>
+                    </div>
+                    <div class="col form-switch">
+                        <input class="form-check-input" type="checkbox" id="memory" value="memory" checked data-intro="
+                        <p>When <b>memory</b> option is on, </p>
+                        <ul >
+                            <li style='margin-bottom:0.5em'> A user can click on any location on the map, and then two side panels will appear to the left of the map and under the main console on the top left. </li>
+                            <li style='margin-bottom:0.5em'> Then, a user can contribute their own in-situ experiences on the higher panel of the two. Or</li>
+                            <li style='margin-bottom:0.5em'> A user can view details about this location on the lower panel, including nearby graffiti and landmarks, and people's memories.</li>
+                        </ul>" data-step="4">
+                        <label class="form-check-label" for="memory"
+                            title="Click any location of the Chop, and contribute your memory or commentary to this digital archive."><i
+                                id="memory-legend" class="legend memory">
+                            </i><span style="color:lightcoral; font-weight: 700;">Nearby</span></label>
+                    </div>
+                    <div class="col form-switch">
+                        <input class="form-check-input" type="checkbox" id="graffito" value="graffito"
+                            data-intro="
+                        <p>When <b>graffiti</b> option is on, all graffiti on the map will be labelled and highlighted in yellow.</p>" data-step="5">
+                        <label class="form-check-label" for="graffito"><i id="graffito-legend" class="legend graffito">
+                            </i>Graffiti</label>
+                    </div>
+                </div>
+
+                <div class="layer-controls row align-items-start"
+                    data-intro="Toggling on/off the Police Dept, Buildings, and CHOP Boundary legend patches to turn on/off these map components."
+                    data-step="2">
+                    <div class="col form-switch">
+
+                        <input class=" form-check-input" type="checkbox" id="3d-police" value="3d-police" checked>
+                        <label class="form-check-label" for="3d-police"> <i id="police-legend" class="legend police">
+                            </i>Police Dept.</label>
+                    </div>
+                    <div class="col form-switch">
+                        <input class=" form-check-input" type="checkbox" id="bldgs" value="bldgs" checked>
+                        <label class="form-check-label" for="bldgs"><i id="speech-legend" class="legend bldgs">
+                            </i>Buildings</label>
                     </div>
 
-                    <div class="layer-controls row align-items-start"
-                        data-intro="Toggling on/off the Police Dept, Buildings, and CHOP Boundary legend patches to turn on/off these map components."
-                        data-step="2">
-                        <div class="col form-switch">
-
-                            <input class=" form-check-input" type="checkbox" id="3d-police" value="3d-police" checked>
-                            <label class="form-check-label" for="3d-police"> <i id="police-legend" class="legend police">
-                                </i>Police Dept.</label>
-                        </div>
-                        <div class="col form-switch">
-                            <input class=" form-check-input" type="checkbox" id="bldgs" value="bldgs" checked>
-                            <label class="form-check-label" for="bldgs"><i id="speech-legend" class="legend bldgs">
-                                </i>Buildings</label>
-                        </div>
-
-                        <!-- <div class="col form-switch">
-                            <input class=" form-check-input" type="checkbox" id="boundary" value="boundary">
-                            <label class="form-check-label" for="boundary"><i id="boundary-legend" class="legend boundary">
-                                </i>CHOP
-                                Boundary</label>
-                        </div> -->
-
-                        <div class="col form-switch">
-                            <input class=" form-check-input" type="checkbox" id="poi-label" value="poi-label" checked>
-                            <label class="form-check-label" for="poi-label"><i id="speech-legend" class="legend poi-label">
-                                </i>Point of Interest</label>
-                        </div>
+                    <div class="col form-switch">
+                        <input class=" form-check-input" type="checkbox" id="boundary" value="boundary" checked>
+                        <label class="form-check-label" for="boundary"><i id="boundary-legend" class="legend boundary">
+                            </i>CHOP
+                            Boundary</label>
                     </div>
-
 
                 </div>
+
+
             </div>
-            <div id="memory-list" class="map-panel grid-container d-none" data-simplebar data-simplebar-auto-hide="false">
-                <!-- <p id="location-title">About this Location</p>
-                <div id="graffiti-container" class=""></div>
-                <div id="poi-container" class=""></div> -->
-                <div id="memory-list-container" class=""></div>
-            </div>
-            <form id="memory-panel" class="map-panel grid-container d-none">
-                <!-- <hr> -->
-                <!-- <p> Use this form to share your memory of the location that you clicked.</p> -->
-                <!-- Message input -->
-                <div class="form-row row ">
-                    <div class="form-outline">
-                        <textarea class="form-control" id="memory-content" rows="4"
-                            placeholder="Share your memories, in-situ experiences, or personal feelings about the location where you just clicked ..."
-                            required></textarea>
-                    </div>
-                </div>
-                <!-- Submit button -->
-
-                <div class="form-row row">
-                    <!-- Name input -->
-                    <div class="form-outline col">
-                        <input type="text" id="contributor" class="form-control" placeholder="Your Name..." required />
-                    </div>
-                    <div class="form-outline col"></div>
-                    <button type="submit" id="memory-submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
         </div>
+
+        <form id="memory-panel" class="map-panel grid-container d-none">
+            <!-- <hr> -->
+            <!-- <p> Use this form to share your memory of the location that you clicked.</p> -->
+
+            <!-- Message input -->
+            <div class="form-row row ">
+                <div class="form-outline">
+                    <textarea class="form-control" id="memory-content" rows="4"
+                        placeholder="Share your memories, in-situ experiences, or personal feelings about the location where you just clicked ..."
+                        required></textarea>
+                </div>
+            </div>
+            <!-- Submit button -->
+
+            <div class="form-row row">
+                <!-- Name input -->
+                <div class="form-outline col">
+                    <input type="text" id="contributor" class="form-control" placeholder="Your Name..." required />
+                </div>
+                <div class="form-outline col"></div>
+                <button type="submit" id="memory-submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+        <div id="memory-list" class="map-panel grid-container d-none" data-simplebar data-simplebar-auto-hide="false">
+            <p id="location-title">About this Location</p>
+            <div id="graffiti-container" class=""></div>
+            <div id="poi-container" class=""></div>
+            <div id="memory-list-container" class=""></div>
+        </div>
+
         <div id="map"></div>
 
         <div id="attribution" class="mx-3" style="word-wrap: break-word;">
