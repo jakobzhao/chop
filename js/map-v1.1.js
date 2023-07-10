@@ -9,11 +9,11 @@ let map = new mapboxgl.Map({
     // style: 'mapbox://styles/mapbox/satellite-v9',
     // zoom: 17, // starting zoom
     // center: [-122.319212, 47.616815], // starting center
-    bounds: [-122.320894, 47.614103, -122.31558990189957, 47.61882983122038],
+    bounds: [-122.320894, 47.61310, -122.31558990189957, 47.61875],
     maxBounds: [-123.9180845532934, 47.04828654073975, -121.14008445949332, 48.71935997846136],
     minZoom: 12,
     maxZoom: 21,
-    pitch: 30,
+    pitch: 20,
     // bearing: 230, // bearing in degrees
     antialias: true,
     logoPosition: 'bottom-right',
@@ -31,7 +31,7 @@ let hoveredStateId2 = null;
 let hid = null;
 
 
-const policeColor = getComputedStyle(document.querySelector('.police')).backgroundColor;
+const policeColor = 'red';
 // const speechColor = getComputedStyle(document.querySelector('.speech')).backgroundColor;
 // const boundaryColor = getComputedStyle(document.querySelector('.boundary')).backgroundColor;
 const memoryColor = getComputedStyle(document.querySelector('.memory')).backgroundColor;
@@ -88,6 +88,30 @@ map.on('load', () => {
             'visibility': 'visible',
         }
     }, 'road-path');
+
+    //==============word cloud========================
+    map.addSource('words', {
+        type: 'geojson',
+        data: 'assets/word_data.geojson'
+    });
+    
+    map.addLayer({
+        id: 'word-cloud',
+        type: 'symbol',
+        source: 'words',
+        layout: {
+            'text-field': ['get', 'word'],
+            'text-size': ['interpolate', ['linear'], ['get', 'frequency'], 0, 12, 1, 36],
+            'text-allow-overlap': true,
+            'text-ignore-placement': true,
+            'visibility': 'none'
+        },
+        paint: {
+            'text-color': ['get', 'hex_color'],
+            'text-halo-color': '#D3D3D3',  // White halo
+            'text-halo-width': 0.75,  // Halo width
+        }
+    });
     //=============outside mask=========================
 
     map.addSource('mask', {
@@ -507,7 +531,7 @@ map.on("click", "graffito", (e) => {
 
 
 // Enumerate ids of the layers.
-const toggleableLayerIds = ['aerial', 'graffito',  'bldgs', 'memory', '3d-police', 'poi-label'];
+const toggleableLayerIds = ['aerial', 'bldgs', 'poi-label', 'memory', 'graffito', 'word-cloud'];
 // Set up the corresponding toggle button for each layer.
 for (const id of toggleableLayerIds) {
 
@@ -520,14 +544,9 @@ for (const id of toggleableLayerIds) {
         if (visibility === 'visible') {
             map.setLayoutProperty(clickedLayer, 'visibility', 'none');
             if (id == "graffito") {
-
                 map.setLayoutProperty("graffito-outline", 'visibility', 'none');
                 map.setLayoutProperty("graffito-label", 'visibility', 'none');
-            }
-            
-
-            if (id == "memory") {
-
+            } else if (id == "memory") {
                 document.getElementById("memory-list").classList.add("d-none");
                 document.getElementById("memory-panel").classList.add("d-none");
                 document.getElementById('memory-list-container').innerHTML = "";
@@ -540,17 +559,18 @@ for (const id of toggleableLayerIds) {
                     hover: false
                 });
                 map.setLayoutProperty("highlighted-memories", 'visibility', 'none');
-
+            } else if (id == "bldgs") {
+                map.setLayoutProperty('3d-police', 'visibility', 'none');
             }
-
         } else {
             map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
             if (id == "graffito") {
                 map.setLayoutProperty("graffito-outline", 'visibility', 'visible');
                 map.setLayoutProperty("graffito-label", 'visibility', 'visible');
-            }
-            if (id == "memory") {
+            } else if (id == "memory") {
                 map.setLayoutProperty("highlighted-memories", 'visibility', 'visible');
+            } else if (id == "bldgs") {
+                map.setLayoutProperty('3d-police', 'visibility', 'visible');
             }
         }
     });

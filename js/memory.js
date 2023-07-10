@@ -75,7 +75,7 @@ function constructMemories(memoryProfile) {
 
     // construct the new memory list
 
-    if (memoryData.length == 0) {// && graffitiIntersected.length == 0 && poiIntersected.length == 0) {
+    if (memoryData.length == 0) {
         // enable memory
         document.getElementById("memory-list").classList.add("d-none");
         document.getElementById("memory-panel").classList.remove("d-none");
@@ -90,41 +90,6 @@ function constructMemories(memoryProfile) {
         document.getElementById("memory-panel").classList.remove("d-none");
         document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
         document.getElementById('memory-submit').addEventListener('click', submitNewReview);
-        // document.getElementById('memory-submit').removeEventListener('submit', submitNewReview);
-        // document.getElementById('memory-submit').addEventListener('submit', submitNewReview);
-
-        // graffitiContainer
-        /*if (graffitiIntersected.length > 0) {
-            let graffitiContainer = document.getElementById('graffiti-container');
-
-            let text = "<span class='graffiti-prompt'> Graffiti </span>";
-            for (let graffitoNum in graffitiIntersected) {
-                text += "<span class='graffito-box'>" + graffitiIntersected[graffitoNum] + "</span>"
-            }
-
-
-            let textDiv = document.createElement('div');
-            // textDiv.classList.add('memory-entry-bottom');
-            textDiv.innerHTML = text;
-            graffitiContainer.append(textDiv);
-        }
-        //poi list
-
-        if (poiIntersected.length > 0) {
-            let poiContainer = document.getElementById('poi-container');
-
-            text = "<span class='poi-prompt'> Landmarks </span>";
-            for (let poiNum in poiIntersected) {
-                text += "<span class='graffito-box'>" + poiIntersected[poiNum] + "</span>"
-            }
-
-
-            textDiv = document.createElement('div');
-            // textDiv.classList.add('memory-entry-bottom');
-            textDiv.innerHTML = text;
-            poiContainer.append(textDiv);
-
-        }*/
         // memory list
 
         let memoryListContainer = document.getElementById('memory-list-container');

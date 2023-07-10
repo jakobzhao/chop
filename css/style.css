@@ -194,6 +194,10 @@ main,
   background-color: #0080ff;
 }
 
+.word-cloud {
+  background-color: limegreen;
+}
+
 
 #memory-panel {
   height: 13.25em;
@@ -315,12 +319,10 @@ hr{
   position: fixed;
   right: 3.5em;
   top: 0.6em;
-  width: 40em;
-
 }
 
 #links-container {
-  display: flex;
+  display: block;
   justify-content: end;
 }
 
