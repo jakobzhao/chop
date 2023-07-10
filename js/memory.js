@@ -145,7 +145,7 @@ function constructMemories(memoryProfile) {
 
 //helper function to submit new review
 function submitNewReview(e) {
- 
+    e.preventDefault();
 
     let contributor = document.getElementById('contributor').value;
     let content = document.getElementById('memory-content').value;
@@ -161,7 +161,7 @@ function submitNewReview(e) {
         makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Your submission did not succeed. Both text fields are required.</p>');
     }
 
-    e.preventDefault();
+    
 };
 
 

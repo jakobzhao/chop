@@ -32,6 +32,7 @@
         </script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="js/simplebar.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.1/mapbox-gl.js"></script>
     <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
     <script src="js/headshot.js"></script>
@@ -154,8 +155,7 @@
                             and more.</li>
                         <li>Read transcriptions of individual graffiti and discover the messages and patterns of speech in the
                             CHOP.</li>
-                        <li>Leave your memories or commentary <span style="color:lightcoral"> by clicking a location within the
-                                CHOP when the <b><i>nearby</i></b> toggle is on.</span> </li>
+                        <li>Leave your memories or see other people's comments <span style="color:lightcoral"> by clicking on the map when the <b><i>comment</i></b> layer is toggled on.</span> </li>
                     </ul>
                     <p>Click <a id="familiarization" href="#">here</a> to familiarize yourself with the functionality of this
                         archive.
@@ -187,15 +187,15 @@
                     </div>
 
                     <div class="layer-controls row align-items-start"
-                        data-intro="Toggling on/off the Police Dept, Buildings, and CHOP Boundary legend patches to turn on/off these map components."
+                        data-intro="Click on the legend patches \(where it says buildings, graffiti, etc.\) to turn on/off these map components."
                         data-step="2">
                         <div class="col form-switch">
                             <input class="form-check-input" type="checkbox" id="memory" value="memory" checked data-intro="
                             <p>When <b>memory</b> option is on, </p>
                             <ul >
                                 <li style='margin-bottom:0.5em'> A user can click on any location on the map, and then two side panels will appear to the left of the map and under the main console on the top left. </li>
-                                <li style='margin-bottom:0.5em'> Then, a user can contribute their own in-situ experiences on the higher panel of the two. Or</li>
-                                <li style='margin-bottom:0.5em'> A user can view details about this location on the lower panel, including nearby graffiti and landmarks, and people's memories.</li>
+                                <li style='margin-bottom:0.5em'> Then, a user can view details about people's memories left at this location on the higher panel.</li>
+                                <li style='margin-bottom:0.5em'> A user can also contribute their own in-situ experiences on the lower panel of the two. </li>
                             </ul>" data-step="4">
                             <label class="form-check-label" for="memory"
                                 title="Click any location of the Chop, and contribute your memory or commentary to this digital archive."><i
@@ -244,7 +244,11 @@
                         <input type="text" id="contributor" class="form-control" placeholder="Your Name..." required />
                     </div>
                     <div class="form-outline col"></div>
-                    <button type="submit" id="memory-submit" class="btn btn-primary">Submit</button>
+                    <div class="form-outline col">
+                        <button type="submit" id="memory-submit" class="btn btn-primary g-recaptcha" 
+                            data-sitekey="6LdeGBEnAAAAADzQPykasdMHahnfXxjVYfsm3XXF" data-callback='submitNewReview'
+                            data-action='comment'>Submit</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -462,8 +466,8 @@
 
     </main>
 
-    <script src="js/map-v1.1.js" defer></script>
-    <script src="js/memory.js" defer></script>
+    <script src="js/map-v1.1.js"></script>
+    <script src="js/memory.js"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J2LSC6TC9H"></script>
     <script>

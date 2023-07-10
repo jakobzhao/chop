@@ -563,3 +563,7 @@ max-width: 40vw;;
   background: rgba(26, 24, 24, 0.0);
   border:2px solid #ffffffc7;
 }
+
+.grecaptcha-badge { 
+  bottom:30px !important; 
+}
