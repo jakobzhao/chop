@@ -35,6 +35,7 @@
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.1/mapbox-gl.js"></script>
     <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
     <script src="js/headshot.js"></script>
     <script src="js/intro.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.4.0/intro.min.js" integrity="sha512-QWPjvFqgUJv5X6Sq5NXmwJQSEzUEBxmCCcgqJd5/5luZnS6llRbshsChUNKrFlZ4bshKZEJxAHDB+WWdMsGvUA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
@@ -54,15 +55,20 @@
                     </div>
                     <div class="modal-body map-window-content">
                         <img src="img/logo.png"></img>
+                        <p> We would like to acknowledge that CHOP as well as the UW Seattle and Bothell stand on the 
+                            lands and waters of coastal salish peoples, Suquamish, Tulalip, and Muckleshoot nations. 
+                            This acknowledgement means that we would think hard about how this project can strive to 
+                            recognize, acknowledge, and confront the historical legacies held on the lands we occupy.
+                        </p>
 
                         <p>This interactive map experience provides a digital record and public commons exploring the
                             geography of the Capitol Hill Organized Protest (CHOP) in Seattle which took place in June
                             2020. The map allows users to:
                         </p>
                         <ul>
-                            <li>Visualize a high resolution aerial map of the CHOP.</li>
+                            <li>Experience an aerial view of the CHOP.</li>
                             <li>Read and explore the messages and street art made throughout the CHOP.</li>
-                            <li>Provide memories or commentary on different locations within the CHOP.</li>
+                            <li>Share and view memories or comments on different locations within the CHOP.</li>
                             <li>Access the map’s open data.</li>
                         </ul>
                         <p>The physical space that was transformed by the CHOP has since been reinstated and returned to
@@ -125,7 +131,7 @@
            </ul>" data-step="6">
             <div id="links-container">
                 <a id="nav-about" href="#">Acknowledgement</a>
-                <a id="nav-statement" href="#">statement</a>
+                <a id="nav-chop" href="#">about CHOP</a>
                 <a id="nav-instruction" href="#">user guide</a>
                 <a id="nav-data" href="#">data & cite us
                     <!-- <sup>TBA</sup> -->
@@ -160,6 +166,7 @@
                     <p>Click <a id="familiarization" href="#">here</a> to familiarize yourself with the functionality of this
                         archive.
                     </p>
+                    <p> Hint: you can hover the cursor over each switch for a tooltip explaining its functionality.</p>
                 </details>
                 <hr>
                 
@@ -175,14 +182,16 @@
                                 </i>Drone Photo</label>
                         </div>
                         <div class="col form-switch">
-                            <input class=" form-check-input" type="checkbox" id="bldgs" value="bldgs" checked>
+                            <input class=" form-check-input" type="checkbox" id="bldgs" value="bldgs" checked
+                                data-intro="Toggling on/off a 3D rendering of buildings in the CHOP area, with the police precinct highlighted red.">
                             <label class="form-check-label" for="bldgs"><i id="speech-legend" class="legend bldgs">
                                 </i>Buildings</label>
                         </div>
                         <div class="col form-switch">
-                            <input class=" form-check-input" type="checkbox" id="poi-label" value="poi-label" checked>
+                            <input class=" form-check-input" type="checkbox" id="poi-label" value="poi-label" checked
+                            data-intro="Toggling on/off labels for locations and points of interests">
                             <label class="form-check-label" for="poi-label"><i id="speech-legend" class="legend poi-label">
-                                </i>Point of Interest</label>
+                                </i>Locations</label>
                         </div>
                     </div>
 
@@ -210,10 +219,12 @@
                                 </i>Graffiti</label>
                         </div>
                         <div class="col form-switch">
-                            <input class=" form-check-input" type="checkbox" id="word-cloud" value="word-cloud">
+                            <input class=" form-check-input" type="checkbox" id="word-cloud" value="word-cloud"
+                                data-intro="Toggle on/off a geo-referencing word cloud generated from the comments on our platform">
                             <label class="form-check-label" for="word-cloud"> <i id="word-cloud-legend" class="legend word-cloud">
                                 </i>Word Cloud</label>
                         </div>
+                        
                     </div>
 
 
@@ -225,7 +236,28 @@
                 <div id="poi-container" class=""></div> -->
                 <div id="memory-list-container" class=""></div>
             </div>
-            <form id="memory-panel" class="map-panel grid-container d-none">
+            <div id="report-panel" class="map-panel grid-container d-none">
+                <div class="form-row row ">
+                    <div class="form-group">
+                        <label for="report-reason">Report Reason:</label>
+                        <select class="form-control" id="report-reason" required>
+                            <option value="">Select a reason...</option>
+                            <option value="offensive_content">Offensive Content</option>
+                            <option value="spam">Spam</option>
+                            <option value="false_information">False Information</option>
+                            <option value="other">Other (Please elaborate)</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="report-content">More information about your report:</label>
+                        <textarea class="form-control" id="report-content" rows="4"
+                            placeholder="This comment is ..."></textarea>
+                        <button type="submit" id="report-submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <form id="memory-panel" class="map-panel grid-container d-none" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 <!-- <hr> -->
                 <!-- <p> Use this form to share your memory of the location that you clicked.</p> -->
                 <!-- Message input -->
@@ -257,7 +289,7 @@
         <div id="attribution" class="mx-3" style="word-wrap: break-word;">
             <p id="logos"><img width="38px" src="img/uw-logo3.png"></img></p>
             <p id="acknowledge">This platform is created by geographers from <a href="https://www.washington.edu/">the
-                    University of Washington. The basemap is made up using <a
+                    University of Washington. The basemap is created using <a
                         href="https://www.openstreetmap.org/">&copy;OpenStreetMap</a>'s data by <a
                         href="https://www.mapbox.com/">&copy;MapBox</a>.
             </p>
@@ -280,6 +312,49 @@
             </div>
         </div>
 
+        <div id="aboutchop" class="modal fade map-window modal-lg">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">About CHOP</h5>
+                    </div>
+                    <div class="modal-body map-window-content">
+                        <p>In the summer of 2020, the United States witnessed a remarkable display of collective action
+                            and dissent on the grounds of Capitol Hill in Seattle, Washington. Known as the Capitol Hill
+                            Organized Protest (CHOP) or the Capitol Hill Autonomous Zone (CHAZ), this unique and
+                            controversial movement aimed to create a self-governed zone, free from police presence and
+                            systemic injustice. The CHOP attracted both widespread attention and divergent opinions,
+                            sparking debates about the limits of protest, the role of law enforcement, and the pursuit
+                            of social change.
+                        </p>
+                        <p>In the wake of George Floyd's killing on May 25, 2020, protests against police brutality
+                            erupted across the United States. In Seattle, demonstrators established the Capitol Hill
+                            Autonomous Zone (CHAZ) on June 8, 2020, following weeks of protests in downtown Seattle
+                            and Capitol Hill, declaring it a self-governed space. The Seattle Police Department vacated
+                            the East Precinct building within the CHAZ on June 9, 2020. The drone photo used in this map
+                            was taken on June 14th, 2020, right in the middle of CHOP’s existence. The area was later
+                            renamed the Capitol Hill Organized Protest (CHOP) on June 20, 2020 to place a greater emphasis
+                            on police reform and community empowerment . Tragically, shootings occurred within the CHOP on
+                            June 29, 2020, resulting in fatalities and injuries. The CHOP was dismantled by an executive
+                            order from Seattle Mayor Jenny Durkan on July 1, 2020, citing public safety concerns.
+                        </p>
+                        <p>Supporters of the CHOP argue that it provided a unique space for peaceful protest, highlighting
+                            the urgency of police reform and amplifying the voices of marginalized communities. They view
+                            it as an innovative experiment in community-led governance and an opportunity to reimagine
+                            public safety. Critics of the CHOP, however, express concerns about the lack of law and order
+                            within the zone, pointing to the shootings and other criminal activities as evidence of its
+                            inherent instability. Additionally, some individuals question the effectiveness of the CHOP,
+                            suggesting that it failed to bring about tangible policy changes or sustainable progress.
+                            They argue that engaging in dialogue and pursuing legislative avenues might have been more
+                            productive in achieving lasting social change.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div id="team" class="modal fade map-window modal-lg">
             <div class="modal-dialog modal-dialog-centered">
@@ -387,6 +462,26 @@
                                 the world.</p>
                         </div>
                         <!-- End-->
+
+                        <!-- Team item-->
+                        <div class="teammember col-xl-12 col-sm-12">
+                            <img src="img/HDSSIPIC.png" class="img-fluid rounded-circle img-thumbnail shadow-sm">
+                            <p class="member-name">2023 Humanities Data Science Summer Institute (HDSSI) Team
+                                <span>
+                                    <a href="jkjung5@uw.edu" class="about-social-link" target="_blank">
+                                        <i class="bi bi-envelope"></i></a>
+                                    <a href="https://www.uwb.edu/ias/faculty-and-staff/jin-kyu-jung"
+                                        class="about-social-link" target="_blank">
+                                        <i class="bi bi-person-circle"></i></a>
+                                </span>
+                            </p>
+                            <p class="team-position">Graduate and undergraduate researchers</p>
+                            <p class="member-bio"> A team of undergraduate researchers from across disciplines at UW: Alex Kirchmeier, Mykenzie Hirata, 
+                                Kiley Foster, Sahil Bains, led by graduate RA Liz Peng and PI Jin-Kyu Jung, who worked on 
+                                improving various aspects of the platform in addition to performing in-depth research around CHOP,
+                                and doing community outreach.</p>
+                        </div>
+                        <!-- End-->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -422,23 +517,6 @@
                             GIS Laboratory. doi: <a href="https://doi.org/10.6069/1DV9-8C36">10.6069/1DV9-8C36</a>
                         </p>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="statement" class="modal fade map-window modal-lg">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Statement</h5>
-                    </div>
-                    <div class="modal-body map-window-content">
-                        <!-- <div class="row text-center"> -->
-
                         <p id="first-para"> Like many others in Seattle and across the US, I felt moved to social action
                             after the death of George Floyd in 2020. As the beginnings of a community emerged through
                             CHOP in Seattle, it seemed important to map this newly redefined community just as any other
@@ -454,7 +532,6 @@
                         <p style="float:right;font-style: italic;"> ———— Dan Koopman, Jan 4th, 2023
                         </p>
 
-                        <!-- End-->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
@@ -462,8 +539,6 @@
                 </div>
             </div>
         </div>
-
-
     </main>
 
     <script src="js/map.js?v=1.2"></script>

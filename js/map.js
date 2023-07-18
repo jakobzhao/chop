@@ -51,8 +51,8 @@ document.getElementById('title').addEventListener('mouseleave', () => {
     document.getElementById('title').style.cursor = '';
 });
 document.getElementById('title').addEventListener('click', () => {
-    map.fitBounds([-122.320894, 47.614103, -122.31558990189957, 47.61882983122038], {
-        pitch: 72,
+    map.fitBounds([-122.320894, 47.61310, -122.31558990189957, 47.61875], {
+        pitch: 20,
     });
 });
 
@@ -181,7 +181,7 @@ map.on('load', () => {
     getHighlights().then(highlights => {
     // Extract the hids into an array
     var hid = highlights.map(highlight => highlight.hid);
-
+    
     map.addLayer({
         'id': 'highlighted-memories',
         'source': 'grid',
@@ -195,7 +195,78 @@ map.on('load', () => {
     }).catch(error => {
         console.error("Error loading highlights:", error);
     });
+    /*
+    var colorScale = chroma.scale(['blue', 'red']).mode('lch');
+    var minDate = new Date(Math.min(...highlights.map(highlight => {
+        var date = new Date(highlight.max);
+        if (isNaN(date)) {
+          console.error("Failed to parse date: " + highlight.max);
+        }
+        return date;
+      })));
+      
+      var maxDate = new Date(Math.max(...highlights.map(highlight => {
+        var date = new Date(highlight.max);
+        if (isNaN(date)) {
+          console.error("Failed to parse date: " + highlight.max);
+        }
+        return date;
+      })));
+      
+      var range = maxDate - minDate;
+      
+      console.log("Min date: " + minDate);
+      console.log("Max date: " + maxDate);
+      console.log("Range: " + range);
+      
+      highlights.forEach((highlight) => {
+            var date = new Date(highlight.max);
+            var normalizedTime = (date - minDate) / range;
+            var color = colorScale(normalizedTime).hex();
+      
+            if (isNaN(normalizedTime)) {
+                console.error("Normalized time is NaN for date: " + highlight.max);
+            }
+            map.addLayer({
+                'id': 'highlight-' + highlight.hid,
+                'source': 'grid',
+                'type': 'fill',
+                'paint': {
+                    'fill-color': color,
+                    'fill-opacity': 0.5
+                },
+                'filter': ['in', 'id', highlight.hid]
+            });
+        });
+    }).catch(error => {
+        console.error("Error loading highlights:", error);
+    });
+    /*
+    var minCount = Math.min(...highlights.map(highlight => Number(highlight.count)));
+    var maxCount = Math.max(...highlights.map(highlight => Number(highlight.count)));
+    var range = maxCount - minCount;
 
+    var colorScale = chroma.scale(['blue', 'red']).mode('lch');
+
+    highlights.forEach((highlight) => {
+        var count = Number(highlight.count);
+        var normalizedCount = (count - minCount) / range;
+        var color = colorScale(normalizedCount).hex();
+
+        map.addLayer({
+            'id': 'highlight-' + highlight.hid,
+            'source': 'grid',
+            'type': 'fill',
+            'paint': {
+                'fill-color': color,
+                'fill-opacity': 0.5
+            },
+            'filter': ['in', 'id', highlight.hid]
+        });
+    });
+    }).catch(error => {
+        console.error("Error loading highlights:", error);
+    }); */
     //=============Police=========================
     map.addLayer({
         'id': '3d-police',

@@ -12,8 +12,8 @@ async function init() {
 
     });
 
-    $("#nav-statement").on("click", function () {
-        $('#statement').modal('show');
+    $("#nav-chop").on("click", function () {
+        $('#aboutchop').modal('show');
 
     });
 
