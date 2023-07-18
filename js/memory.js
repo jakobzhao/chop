@@ -151,14 +151,16 @@ function submitNewReview(e) {
     let content = document.getElementById('memory-content').value;
     let email = "";
 
-    validateContributor = (contributor != "") ? true : false;
+    if (contributor = "") {
+        contributor = "Anonymous";
+    }
     // validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)?true:false;
     validateContent = (content != "") ? true : false;
 
-    if (validateContributor && validateContent) {
+    if (validateContent) {
         addNewReview(e, hid, contributor, email, content);
     } else {
-        makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Your submission did not succeed. Both text fields are required.</p>');
+        makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Your submission did not succeed. Please make sure to have filled out the required field.</p>');
     }
 
     
