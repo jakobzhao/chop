@@ -151,7 +151,7 @@ function submitNewReview(e) {
     let content = document.getElementById('memory-content').value;
     let email = "";
 
-    if (contributor = "") {
+    if (contributor.length == 0) {
         contributor = "Anonymous";
     }
     // validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)?true:false;
