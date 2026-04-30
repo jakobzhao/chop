@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="css/simplebar.css">
     <link rel="stylesheet" href="css/introjs.min.css">
     <link rel="stylesheet" href="css/introjs-dark.css">
-    <link rel="stylesheet" href="css/style.css?v=2.5">
+    <link rel="stylesheet" href="css/style.css?v=2.6">
     <!-- <link rel="stylesheet" href="css/pages.css"> -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -257,13 +257,13 @@
                 </div>
                 <!-- Submit button -->
 
-                <div class="form-row row">
+                <div class="form-row row memory-actions-row">
                     <!-- Name input -->
-                    <div class="form-outline col">
+                    <div class="form-outline">
                         <input type="text" id="contributor" class="form-control" placeholder="Name (optional)">
                     </div>
-                    <div class="form-outline col"></div>
-                    <div class="form-outline col">
+                    <div id="recaptcha-slot" class="form-outline"></div>
+                    <div class="form-outline">
                         <button type="submit" id="memory-submit" class="btn btn-primary g-recaptcha"
                             data-sitekey="6LdeGBEnAAAAADzQPykasdMHahnfXxjVYfsm3XXF" data-callback="submitNewReview"
                             data-action="comment">Submit</button>
@@ -527,7 +527,7 @@
     </main>
 
     <script src="js/map.js?v=2.7"></script>
-    <script src="js/memory.js?v=1.6"></script>
+    <script src="js/memory.js?v=1.7"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J2LSC6TC9H"></script>
     <script>

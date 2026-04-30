@@ -1,47 +1,35 @@
 //memory related functions and variables
 
-function positionRecaptchaBadge() {
+function placeRecaptchaBadge() {
     const badge = document.querySelector('.grecaptcha-badge');
     const memoryPanel = document.getElementById('memory-panel');
-    const memoryList = document.getElementById('memory-list');
+    const recaptchaSlot = document.getElementById('recaptcha-slot');
 
-    if (!badge || !memoryPanel || memoryPanel.classList.contains('d-none')) {
+    if (!badge || !memoryPanel || !recaptchaSlot || memoryPanel.classList.contains('d-none')) {
         return;
     }
 
-    const panelRect = memoryPanel.getBoundingClientRect();
-    const listRect = memoryList && !memoryList.classList.contains('d-none')
-        ? memoryList.getBoundingClientRect()
-        : panelRect;
-    const badgeWidth = badge.offsetWidth || 256;
-    const gap = 12;
-    const viewportPadding = 8;
-    const leftEdge = Math.min(panelRect.left, listRect.left);
-    const rightEdge = Math.max(panelRect.right, listRect.right);
-    const bottomEdge = Math.max(panelRect.bottom, listRect.bottom);
+    if (badge.parentElement !== recaptchaSlot) {
+        recaptchaSlot.appendChild(badge);
+    }
 
-    let left = leftEdge + (((rightEdge - leftEdge) - badgeWidth) / 2);
-    let top = bottomEdge + gap;
-
-    left = Math.max(viewportPadding, Math.min(left, window.innerWidth - badgeWidth - viewportPadding));
-
-    badge.style.setProperty('position', 'fixed', 'important');
-    badge.style.setProperty('left', `${left}px`, 'important');
+    badge.style.setProperty('position', 'static', 'important');
+    badge.style.setProperty('left', 'auto', 'important');
     badge.style.setProperty('right', 'auto', 'important');
-    badge.style.setProperty('top', `${top}px`, 'important');
+    badge.style.setProperty('top', 'auto', 'important');
     badge.style.setProperty('bottom', 'auto', 'important');
     badge.style.setProperty('z-index', '1000', 'important');
 }
 
-function scheduleRecaptchaBadgePosition() {
+function scheduleRecaptchaBadgePlacement() {
     requestAnimationFrame(() => {
-        positionRecaptchaBadge();
-        setTimeout(positionRecaptchaBadge, 250);
+        placeRecaptchaBadge();
+        setTimeout(placeRecaptchaBadge, 250);
     });
 }
 
-window.addEventListener('load', scheduleRecaptchaBadgePosition);
-window.addEventListener('resize', scheduleRecaptchaBadgePosition);
+window.addEventListener('load', scheduleRecaptchaBadgePlacement);
+window.addEventListener('resize', scheduleRecaptchaBadgePlacement);
 
 new MutationObserver((mutations) => {
     if (mutations.some((mutation) => Array.from(mutation.addedNodes).some((node) => {
@@ -50,7 +38,7 @@ new MutationObserver((mutations) => {
             node.querySelector?.('.grecaptcha-badge')
         );
     }))) {
-        scheduleRecaptchaBadgePosition();
+        scheduleRecaptchaBadgePlacement();
     }
 }).observe(document.body, { childList: true, subtree: true });
 
@@ -135,7 +123,7 @@ function constructMemories(memoryProfile) {
         document.getElementById("memory-panel").classList.remove("d-none");
         document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
         document.getElementById('memory-submit').addEventListener('click', submitNewReview);
-        scheduleRecaptchaBadgePosition();
+        scheduleRecaptchaBadgePlacement();
         // document.getElementById('memory-submit').removeEventListener('submit', submitNewReview);
         // document.getElementById('memory-submit').addEventListener('submit', submitNewReview);
         
@@ -145,7 +133,7 @@ function constructMemories(memoryProfile) {
         document.getElementById("memory-panel").classList.remove("d-none");
         document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
         document.getElementById('memory-submit').addEventListener('click', submitNewReview);
-        scheduleRecaptchaBadgePosition();
+        scheduleRecaptchaBadgePlacement();
         // memory list
 
         let memoryListContainer = document.getElementById('memory-list-container');

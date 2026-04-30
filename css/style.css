@@ -256,6 +256,29 @@ main,
   margin-bottom: .8em;
 }
 
+.memory-actions-row {
+  display: grid;
+  grid-template-columns: 8.25rem minmax(12.5rem, 1fr) 6.5rem;
+  align-items: center;
+  column-gap: 0.55rem;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.memory-actions-row > .form-outline {
+  min-width: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#recaptcha-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3rem;
+  overflow: visible;
+}
+
 .iv-tooltip {
   position: relative;
   z-index: 5;
@@ -271,9 +294,9 @@ main,
 
 #memory-submit {
   display: inline-block;
-  margin-left: 0.6em;
+  margin-left: 0;
   width: 6em;
-  margin-right: 1em;
+  margin-right: 0;
 }
 
 
@@ -772,10 +795,8 @@ max-width: 40vw;;
 }
 
 .grecaptcha-badge { 
-  position: fixed !important;
-  left: 20px;
-  right: auto;
-  bottom: auto;
-  top: auto;
+  position: static !important;
+  transform: scale(0.78);
+  transform-origin: center;
   z-index: 1000 !important;
 }
