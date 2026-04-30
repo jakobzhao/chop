@@ -1,5 +1,41 @@
 //memory related functions and variables
 
+function positionRecaptchaBadge() {
+    const badge = document.querySelector('.grecaptcha-badge');
+    const memoryPanel = document.getElementById('memory-panel');
+
+    if (!badge || !memoryPanel || memoryPanel.classList.contains('d-none')) {
+        return;
+    }
+
+    const panelRect = memoryPanel.getBoundingClientRect();
+    const badgeWidth = badge.offsetWidth || 256;
+    const gap = 12;
+    const viewportPadding = 8;
+
+    let left = panelRect.left + ((panelRect.width - badgeWidth) / 2);
+    let top = panelRect.bottom + gap;
+
+    left = Math.max(viewportPadding, Math.min(left, window.innerWidth - badgeWidth - viewportPadding));
+
+    badge.style.position = 'fixed';
+    badge.style.left = `${left}px`;
+    badge.style.right = 'auto';
+    badge.style.top = `${top}px`;
+    badge.style.bottom = 'auto';
+    badge.style.zIndex = '1000';
+}
+
+function scheduleRecaptchaBadgePosition() {
+    requestAnimationFrame(() => {
+        positionRecaptchaBadge();
+        setTimeout(positionRecaptchaBadge, 250);
+    });
+}
+
+window.addEventListener('load', scheduleRecaptchaBadgePosition);
+window.addEventListener('resize', scheduleRecaptchaBadgePosition);
+
 map.on('click', 'memory', async (e) => {
     map.getCanvas().style.cursor = 'pointer';
     const clickedfeatures = e.features;
@@ -81,6 +117,7 @@ function constructMemories(memoryProfile) {
         document.getElementById("memory-panel").classList.remove("d-none");
         document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
         document.getElementById('memory-submit').addEventListener('click', submitNewReview);
+        scheduleRecaptchaBadgePosition();
         // document.getElementById('memory-submit').removeEventListener('submit', submitNewReview);
         // document.getElementById('memory-submit').addEventListener('submit', submitNewReview);
         
@@ -90,6 +127,7 @@ function constructMemories(memoryProfile) {
         document.getElementById("memory-panel").classList.remove("d-none");
         document.getElementById('memory-submit').removeEventListener('click', submitNewReview);
         document.getElementById('memory-submit').addEventListener('click', submitNewReview);
+        scheduleRecaptchaBadgePosition();
         // memory list
 
         let memoryListContainer = document.getElementById('memory-list-container');
