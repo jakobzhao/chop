@@ -452,7 +452,7 @@ hr{
   color: #f3efe9;
 }
 
-a.about-social-link {
+.about-social-link {
   margin-left: 0.5em;
   font-size: 11pt;
   color: var(--c-text-dim);
@@ -461,6 +461,10 @@ a.about-social-link {
 
 a.about-social-link:hover {
   color: var(--c-text);
+}
+
+.about-social-link.is-disabled {
+  opacity: 0.35;
 }
 
 .team-position {
