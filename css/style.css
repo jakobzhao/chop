@@ -150,6 +150,7 @@ main,
   border: 1px solid rgba(255, 255, 255, 0.10);
   box-shadow: 0 10px 32px rgba(0, 0, 0, 0.28);
   border-radius: 8px;
+  -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);
 }
 
@@ -391,6 +392,7 @@ hr{
   width: 30em;
   bottom: 0em;
   left: 0em;
+  overflow-wrap: break-word;
   text-shadow: 2px 2px 4px gray;
   transition: left 1s;
   color: white;
@@ -514,6 +516,21 @@ p a:hover {
   text-decoration-color: rgba(255, 255, 255, 0.7);
 }
 
+.prominent-link {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.citation-hanging {
+  text-indent: -36px;
+  padding-left: 56px;
+}
+
+.statement-signature {
+  float: right;
+  font-style: italic;
+}
+
 /* fundamental libraries */
 input {
   cursor: pointer;
@@ -616,10 +633,16 @@ input {
   list-style-position: outside;
 }
 
+#details {
+  position: relative;
+}
+
 #summary-text {
   font-size: 0.9rem;
   font-weight: 600;
   line-height: 1.1;
+  display: inline-block;
+  padding-right: 4.6rem;
 }
 
 #details p,
@@ -659,6 +682,9 @@ input {
 }
 
 .tour-button {
+  position: absolute;
+  top: -0.44rem;
+  right: 0;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;

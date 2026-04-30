@@ -3,27 +3,27 @@
 
 <head>
     <title>Archiving The CHOP</title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name='robots' content='max-image-preview:large' />
+    <meta name="robots" content="max-image-preview:large">
     <meta name="description" content="This interactive map experience provides a digital record and public commons exploring the
     geography of the Capitol Hill Organized Protest (CHOP) in Seattle which took place in June
-    2020." />
-    <meta property="og:image" content="assets/screenshot.png" />
-    <meta property="og:image:secure_url" content="assets/screenshot.png" />
-    <link rel="icon" type="image/png" href="img/logo.png" />
+    2020.">
+    <meta property="og:image" content="assets/screenshot.png">
+    <meta property="og:image:secure_url" content="assets/screenshot.png">
+    <link rel="icon" type="image/png" href="img/logo.png">
     <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <!-- google font -->
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,800" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,800" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Sorts+Mill+Goudy:ital@0;1&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="css/simplebar.css" />
-    <link rel="stylesheet" href="css/introjs.min.css" />
-    <link rel="stylesheet" href="css/introjs-dark.css" />
+    <link rel="stylesheet" href="css/simplebar.css">
+    <link rel="stylesheet" href="css/introjs.min.css">
+    <link rel="stylesheet" href="css/introjs-dark.css">
     <link rel="stylesheet" href="css/style.css?v=2.3">
     <!-- <link rel="stylesheet" href="css/pages.css"> -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
@@ -34,7 +34,7 @@
     <script src="js/simplebar.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
     <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
-    <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
     <script src="js/headshot.js"></script>
     <script src="js/intro.min.js"></script>
@@ -47,7 +47,7 @@
         <!-- LOADER -->
         <div id="loader"></div>
         <!-- Welcome Panel -->
-        <div id="welcome" class="modal fade map-window modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+        <div id="welcome" class="modal fade map-window modal-lg" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -55,9 +55,9 @@
                     </div>
                     <div class="modal-body map-window-content">
                         <img src="img/logo.png" alt="CHOP Archive logo">
-                        <p> We would like to acknowledge that CHOP as well as the UW Seattle and Bothell stand on the 
-                            lands and waters of coastal salish peoples, Suquamish, Tulalip, and Muckleshoot nations. 
-                            This acknowledgement means that we would think hard about how this project can strive to 
+                        <p> We would like to acknowledge that CHOP as well as the UW Seattle and Bothell stand on the
+                            lands and waters of coastal salish peoples, Suquamish, Tulalip, and Muckleshoot nations.
+                            This acknowledgement means that we would think hard about how this project can strive to
                             recognize, acknowledge, and confront the historical legacies held on the lands we occupy.
                         </p>
 
@@ -98,9 +98,8 @@
                                 resource.</li>
                         </ul>
                         <p>We welcome your contributions and ideas
-                            for improving this web map - please don't hesitate to <a
-                                style="font-weight: 700; text-decoration: underline;"
-                                href="https://forms.gle/gjjWpuBM3A7tppDe9" target="_blank">contact us</a> with any
+                            for improving this web map - please don't hesitate to <a class="prominent-link"
+                                href="https://forms.gle/gjjWpuBM3A7tppDe9" target="_blank" rel="noopener">contact us</a> with any
                             questions or
                             suggestions. Together, we can keep the spirit of CHOP alive and make a positive impact on
                             the
@@ -108,9 +107,9 @@
                     </div>
                     <div class="modal-footer">
                         <div class="form-switch" id="nextTimeSwitcher">
-                            <input class="form-check-input" type="checkbox">
+                            <input class="form-check-input" type="checkbox" id="nextTimeInput" title="Do not show this information again">
                         </div>
-                        <label id="nextTimeLabel">Don't show this info again.</label>
+                        <label id="nextTimeLabel" for="nextTimeInput">Don't show this info again.</label>
 
                         <button id="welcome-close" type="button" class="btn btn-primary py-1"
                             data-bs-dismiss="modal">Close</button>
@@ -118,29 +117,19 @@
                 </div>
             </div>
         </div>
-        <div id="links" data-intro="
-           <ul>
-            <li style='margin-bottom:0.5em'><b>About page</b> provides a brief description of this project. </li>
-            <li style='margin-bottom:0.5em'><b>Context page</b> provides additional context about the CHOP. </li>
-            <li style='margin-bottom:0.5em'><b>Instruction page</b> will walk you through the main functions of this web map. </li>
-            <li style='margin-bottom:0.5em'><b>Statement page</b> shows the intention of the drone pilot who collect the drone imagery. </li>
-            <li style='margin-bottom:0.5em'><b>Data &amp; cite us page</b> describes how to download the drone photo for reuse and to cite this web map. </li>
-            <li style='margin-bottom:0.5em'><b>Team page</b> list all the team members of this project. </li>
-            <li style='margin-bottom:0.5em'>You can share us your comments on this project on the <b>contact us page</b>. </li>
-            <li style='margin-bottom:0.5em'>Share this map with your social media community by clicking on the <b>social media buttons</b>.</li>
-           </ul>" data-step="6">
+        <div id="links" data-intro="Use these links to open project background, guidance, data citation, team information, and contact options." data-step="6">
             <div id="links-container">
                 <a id="nav-about" href="#">Acknowledgement</a>
                 <a id="nav-chop" href="#">about CHOP</a>
                 <a id="nav-instruction" href="#">user guide</a>
-                <a id="nav-data" href="#">data & cite us
+                <a id="nav-data" href="#">data &amp; cite us
                     <!-- <sup>TBA</sup> -->
                 </a>
                 <a id="nav-team" href="#">team</a>
                 <a href="https://forms.gle/gjjWpuBM3A7tppDe9" target="_blank" rel="noopener">contact us</a>
-                <!-- <a href="https://github.com/jakobzhao/chop" class="bi bi-github" target="_blank"
+                <!-- <a href="https://github.com/jakobzhao/chop" class="bi bi-github"
                     aria-current="page"></a> -->
-                <!-- <a href="https://www.facebook.com/sharer/sharer.php?u=https://hgis.uw.edu/chop" target="_blank"
+                <!-- <a href="https://www.facebook.com/sharer/sharer.php?u=https://hgis.uw.edu/chop"
                     class="bi bi-facebook" aria-current="page"></a> -->
                 <!-- <a href="https://twitter.com/intent/tweet?url=https://hgis.uw.edu/chop/&text=Check out this map that provides a digital public commmons exploring the Capitol Hill Organized Protest (CHOP) in Seattle which took place in June 2020."
                     class="bi bi-twitter " aria-current="page"></a> -->
@@ -155,12 +144,12 @@
                 <details id="details">
                     <summary>
                         <span id="summary-text">(click to show instructions)</span>
-                        <button id="map-tour" class="btn tour-button" type="button" aria-pressed="false"
-                            title="Tilt the map and orbit around the CHOP area">
-                            <i class="bi bi-compass"></i>
-                            <span class="tour-label">Tour</span>
-                        </button>
                     </summary>
+                    <button id="map-tour" class="btn tour-button" type="button" aria-pressed="false"
+                        title="Tilt the map and orbit around the CHOP area">
+                        <i class="bi bi-compass"></i>
+                        <span class="tour-label">Tour</span>
+                    </button>
                     <p>This interactive digital archive enables you to</p>
                     <ul>
                         <li>Explore the CHOP from above, seeing all of the detailed street art, graffiti, encampments, barriers,
@@ -175,8 +164,8 @@
                     <p> Hint: you can hover the cursor over each switch for a tooltip explaining its functionality.</p>
                 </details>
                 <hr>
-                
-                
+
+
                 <div class="container">
 
                     <div class="layer-controls row align-items-start">
@@ -255,7 +244,7 @@
                     </div>
                 </div>
             </div>
-            <form id="memory-panel" class="map-panel grid-container d-none" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            <form id="memory-panel" class="map-panel grid-container d-none" data-bs-toggle="collapse" data-bs-target="#collapseExample">
                 <!-- <hr> -->
                 <!-- <p> Use this form to share your memory of the location that you clicked.</p> -->
                 <!-- Message input -->
@@ -271,20 +260,20 @@
                 <div class="form-row row">
                     <!-- Name input -->
                     <div class="form-outline col">
-                        <input type="text" id="contributor" class="form-control" placeholder="Name (optional)"/>
+                        <input type="text" id="contributor" class="form-control" placeholder="Name (optional)">
                     </div>
                     <div class="form-outline col"></div>
                     <div class="form-outline col">
-                        <button type="submit" id="memory-submit" class="btn btn-primary g-recaptcha" 
-                            data-sitekey="6LdeGBEnAAAAADzQPykasdMHahnfXxjVYfsm3XXF" data-callback='submitNewReview'
-                            data-action='comment'>Submit</button>
+                        <button type="submit" id="memory-submit" class="btn btn-primary g-recaptcha"
+                            data-sitekey="6LdeGBEnAAAAADzQPykasdMHahnfXxjVYfsm3XXF" data-callback="submitNewReview"
+                            data-action="comment">Submit</button>
                     </div>
                 </div>
             </form>
         </div>
         <div id="map"></div>
 
-        <div id="attribution" class="mx-3" style="word-wrap: break-word;">
+        <div id="attribution" class="mx-3">
             <p id="logos"><img width="38" src="img/uw-logo3.png" alt="University of Washington logo"></p>
             <p id="acknowledge">This platform is created by geographers from <a href="https://www.washington.edu/">the
                     University of Washington</a>. Imagery © <a href="https://www.esri.com/">Esri</a>, Maxar, Earthstar Geographics, and the GIS User Community. Map rendering by <a href="https://maplibre.org/">MapLibre GL</a>.
@@ -364,10 +353,10 @@
                             <img src="img/zhao.jpg" alt="Bo Zhao, Principal Investigator" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name">Bo Zhao
                                 <span>
-                                    <a href="mailto:zhaobo@uw.edu" class="about-social-link">
+                                    <a href="mailto:zhaobo@uw.edu" class="about-social-link" aria-label="Email Bo Zhao">
                                         <i class="bi bi-envelope"></i></a>
                                     <a href="https://geography.washington.edu/people/bo-zhao" class="about-social-link"
-                                        target="_blank" rel="noopener">
+                                        target="_blank" rel="noopener" aria-label="Bo Zhao profile">
                                         <i class="bi bi-person-circle"></i></a>
                                 </span>
                             </p>
@@ -406,10 +395,10 @@
                             <img src="img/jung.jpg" alt="Jin-Kyu Jung, Co-Principal Investigator" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name">Jin-Kyu Jung
                                 <span>
-                                    <a href="mailto:jkjung5@uw.edu" class="about-social-link">
+                                    <a href="mailto:jkjung5@uw.edu" class="about-social-link" aria-label="Email Jin-Kyu Jung">
                                         <i class="bi bi-envelope"></i></a>
                                     <a href="https://www.uwb.edu/ias/faculty-and-staff/jin-kyu-jung"
-                                        class="about-social-link" target="_blank" rel="noopener">
+                                        class="about-social-link" target="_blank" rel="noopener" aria-label="Jin-Kyu Jung profile">
                                         <i class="bi bi-person-circle"></i></a>
                                 </span>
                             </p>
@@ -425,10 +414,10 @@
                             <img src="img/ca.jpg" alt="Christian Anderson, Co-Principal Investigator" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name"> Christian Anderson
                                 <span>
-                                    <a href="mailto:cmander@uw.edu" class="about-social-link">
+                                    <a href="mailto:cmander@uw.edu" class="about-social-link" aria-label="Email Christian Anderson">
                                         <i class="bi bi-envelope"></i></a>
                                     <a href="https://www.uwb.edu/ias/faculty-and-staff/christian-anderson"
-                                        class="about-social-link" target="_blank" rel="noopener">
+                                        class="about-social-link" target="_blank" rel="noopener" aria-label="Christian Anderson profile">
                                         <i class="bi bi-person-circle"></i></a>
                                 </span>
                             </p>
@@ -445,7 +434,7 @@
                             <img src="img/sun.jpg" alt="Huating Paul Sun, Web cartographer and data scientist" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name">Huating "Paul" Sun
                                 <span>
-                                    <a href="mailto:shuating@uw.edu" class="about-social-link">
+                                    <a href="mailto:shuating@uw.edu" class="about-social-link" aria-label="Email Huating Paul Sun">
                                         <i class="bi bi-envelope"></i></a>
                                     <span class="about-social-link is-disabled" aria-hidden="true">
                                         <i class="bi bi-person-circle"></i></span>
@@ -464,16 +453,16 @@
                             <img src="img/HDSSIPIC.png" alt="2023 HDSSI Team group photo" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name">2023 Humanities Data Science Summer Institute (HDSSI) Team
                                 <span>
-                                    <a href="mailto:jkjung5@uw.edu" class="about-social-link">
+                                    <a href="mailto:jkjung5@uw.edu" class="about-social-link" aria-label="Email HDSSI team contact">
                                         <i class="bi bi-envelope"></i></a>
                                     <a href="https://www.uwb.edu/ias/faculty-and-staff/jin-kyu-jung"
-                                        class="about-social-link" target="_blank" rel="noopener">
+                                        class="about-social-link" target="_blank" rel="noopener" aria-label="HDSSI team contact profile">
                                         <i class="bi bi-person-circle"></i></a>
                                 </span>
                             </p>
                             <p class="team-position">Graduate and undergraduate researchers</p>
-                            <p class="member-bio"> A team of undergraduate researchers from across disciplines at UW: Alex Kirchmeier, Mykenzie Hirata, 
-                                Kiley Foster, Sahil Bains, led by graduate RA Liz Peng and PI Jin-Kyu Jung, who worked on 
+                            <p class="member-bio"> A team of undergraduate researchers from across disciplines at UW: Alex Kirchmeier, Mykenzie Hirata,
+                                Kiley Foster, Sahil Bains, led by graduate RA Liz Peng and PI Jin-Kyu Jung, who worked on
                                 improving various aspects of the platform in addition to performing in-depth research around CHOP,
                                 and doing community outreach.</p>
                         </div>
@@ -496,8 +485,8 @@
                         <p> If you use or mention any of our work in your own projects or writing, we hope you can
                             acknowledge our team and our contributions using the proper citation practices. Please check
                             the citation (in APA format):</p>
-                        <p style="text-indent: -36px; padding-left: 56px;"> Zhao, B., Koopman, D., Jung, J.-K., Sun, H.,
-                            & Anderson, C. (2023). <i>Archiving the Capitol Hill Organized Protest</i>. Humanistic GIS
+                        <p class="citation-hanging"> Zhao, B., Koopman, D., Jung, J.-K., Sun, H.,
+                            &amp; Anderson, C. (2023). <i>Archiving the Capitol Hill Organized Protest</i>. Humanistic GIS
                             Laboratory. doi:
                             <a href="https://doi.org/10.6069/4KHS-3W59">10.6069/4KHS-3W59</a>
                         </p>
@@ -507,7 +496,7 @@
                                 target="_blank" rel="noopener">form</a>. Please refer to this image in your work using the citation
                             below:
                         </p>
-                        <p style="text-indent: -36px; padding-left: 56px;">
+                        <p class="citation-hanging">
                             Koopman, Dan. (2022). <i>Orthoimagery of Capitol Hill Organized Protest [Data set]</i>.
                             Humanistic
                             GIS Laboratory. doi: <a href="https://doi.org/10.6069/1DV9-8C36">10.6069/1DV9-8C36</a>
@@ -525,7 +514,7 @@
                             physical and virtual community in the years that come. </p>
 
 
-                        <p style="float:right;font-style: italic;"> ———— Dan Koopman, Jan 4th, 2023
+                        <p class="statement-signature"> ———— Dan Koopman, Jan 4th, 2023
                         </p>
 
                     </div>
