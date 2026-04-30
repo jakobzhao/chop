@@ -1,5 +1,8 @@
 //memory related functions and variables
 
+let recaptchaBadgeObserver = null;
+let isPlacingRecaptchaBadge = false;
+
 function placeRecaptchaBadge() {
     const badge = document.querySelector('.grecaptcha-badge');
     const memoryPanel = document.getElementById('memory-panel');
@@ -9,22 +12,38 @@ function placeRecaptchaBadge() {
         return;
     }
 
-    if (badge.parentElement !== recaptchaSlot) {
-        recaptchaSlot.appendChild(badge);
+    isPlacingRecaptchaBadge = true;
+    try {
+        if (badge.parentElement !== recaptchaSlot) {
+            recaptchaSlot.appendChild(badge);
+        }
+
+        badge.style.setProperty('position', 'static', 'important');
+        badge.style.setProperty('display', 'block', 'important');
+        badge.style.setProperty('left', 'auto', 'important');
+        badge.style.setProperty('right', 'auto', 'important');
+        badge.style.setProperty('top', 'auto', 'important');
+        badge.style.setProperty('bottom', 'auto', 'important');
+        badge.style.setProperty('z-index', '1000', 'important');
+    } finally {
+        requestAnimationFrame(() => {
+            isPlacingRecaptchaBadge = false;
+        });
     }
 
-    badge.style.setProperty('position', 'static', 'important');
-    badge.style.setProperty('left', 'auto', 'important');
-    badge.style.setProperty('right', 'auto', 'important');
-    badge.style.setProperty('top', 'auto', 'important');
-    badge.style.setProperty('bottom', 'auto', 'important');
-    badge.style.setProperty('z-index', '1000', 'important');
+    if (!recaptchaBadgeObserver) {
+        recaptchaBadgeObserver = new MutationObserver(() => {
+            if (!isPlacingRecaptchaBadge) {
+                scheduleRecaptchaBadgePlacement();
+            }
+        });
+        recaptchaBadgeObserver.observe(badge, { attributes: true, attributeFilter: ['style', 'class'] });
+    }
 }
 
 function scheduleRecaptchaBadgePlacement() {
-    requestAnimationFrame(() => {
-        placeRecaptchaBadge();
-        setTimeout(placeRecaptchaBadge, 250);
+    [0, 100, 250, 500, 1000, 2000].forEach((delay) => {
+        setTimeout(() => requestAnimationFrame(placeRecaptchaBadge), delay);
     });
 }
 

@@ -258,9 +258,9 @@ main,
 
 .memory-actions-row {
   display: grid;
-  grid-template-columns: 8.25rem minmax(12.5rem, 1fr) 6.5rem;
+  grid-template-columns: 8.25rem minmax(9rem, 1fr) 6.5rem;
   align-items: center;
-  column-gap: 0.55rem;
+  column-gap: 0.4rem;
   margin-left: 0;
   margin-right: 0;
 }
@@ -275,7 +275,7 @@ main,
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 3rem;
+  height: 2.5rem;
   overflow: visible;
 }
 
@@ -794,9 +794,11 @@ max-width: 40vw;;
   border:2px solid #ffffffc7;
 }
 
+#recaptcha-slot .grecaptcha-badge,
 .grecaptcha-badge { 
   position: static !important;
-  transform: scale(0.78);
+  display: block !important;
+  transform: scale(0.68);
   transform-origin: center;
   z-index: 1000 !important;
 }
