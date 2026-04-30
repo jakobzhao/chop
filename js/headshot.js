@@ -5,7 +5,7 @@ function drawHeadShot(id) {
     var canvas = document.getElementById(id);
     var w = canvas.width;
     var h = canvas.width;
-    colorArray = [];
+    var colorArray = [];
     
     if (canvas.getContext) {
       var ctx = canvas.getContext('2d');

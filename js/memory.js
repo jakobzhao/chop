@@ -101,18 +101,53 @@ function constructMemories(memoryProfile) {
 
 
 
-        if (memoryData.length > 0) {
-            let i = 0;
-            for (let memory of memoryData) {
+        let i = 0;
+        for (let memory of memoryData) {
                 let memoryDiv = document.createElement('p');
                 let created_at = new Date(memory.created_at);
                 let dt = created_at.toLocaleDateString('en-US', {
-                    timeZone: 'PST'
+                    timeZone: 'America/Los_Angeles'
                 })
                 let tm = created_at.toLocaleTimeString('en-US', {
-                    timeZone: 'PST'
+                    timeZone: 'America/Los_Angeles'
                 })
-                memoryDiv.innerHTML = '<span class="contributor-name">' + memory.reviewer + ' ' + '<canvas id="memory-' + i.toString() + '" height="13px" width="13px"></canvas> </span> <span class="mentioned" >: </span><span class="memory-content">' + memory.content + '    </span> <span class="created_at"> on ' + dt + ' at ' + tm + '</span>';
+
+                let nameSpan = document.createElement('span');
+                nameSpan.className = 'contributor-name';
+                nameSpan.appendChild(document.createTextNode(memory.reviewer + ' '));
+                let canvas = document.createElement('canvas');
+                canvas.id = 'memory-' + i.toString();
+                canvas.height = 13;
+                canvas.width = 13;
+                nameSpan.appendChild(canvas);
+
+                let mentionedSpan = document.createElement('span');
+                mentionedSpan.className = 'mentioned';
+                mentionedSpan.textContent = ': ';
+
+                let contentSpan = document.createElement('span');
+                contentSpan.className = 'memory-content';
+                contentSpan.textContent = memory.content + '    ';
+
+                let dateSpan = document.createElement('span');
+                dateSpan.className = 'created_at';
+                dateSpan.textContent = ' on ' + dt + ' at ' + tm;
+
+                let reportBtn = document.createElement('button');
+                reportBtn.type = 'button';
+                reportBtn.className = 'memory-report-btn btn btn-link p-0 ms-2 align-baseline';
+                reportBtn.title = 'Report this comment';
+                reportBtn.setAttribute('aria-label', 'Report this comment');
+                reportBtn.innerHTML = '<i class="bi bi-flag"></i>';
+                reportBtn.addEventListener('click', () => openReportPanel(memory.vid));
+
+                memoryDiv.appendChild(nameSpan);
+                memoryDiv.appendChild(document.createTextNode(' '));
+                memoryDiv.appendChild(mentionedSpan);
+                memoryDiv.appendChild(contentSpan);
+                memoryDiv.appendChild(document.createTextNode(' '));
+                memoryDiv.appendChild(dateSpan);
+                memoryDiv.appendChild(reportBtn);
                 memoryDiv.classList.add('memory-entry');
 
                 memoryListContainer.append(memoryDiv);
@@ -127,17 +162,9 @@ function constructMemories(memoryProfile) {
                 i++;
             }
 
-            let bottomDiv = document.createElement('div');
-            bottomDiv.classList.add('memory-entry-bottom');
-            memoryListContainer.append(bottomDiv);
-
-        } else {
-
-            let bottomDiv = document.createElement('div');
-            bottomDiv.classList.add('memory-entry-bottom');
-            bottomDiv.innerHTML = "<p><i>No record has been found. Be the first to share your memories, in-situ experiences, or feelings about this location. </i></p>"
-            memoryListContainer.append(bottomDiv);
-        }
+        let bottomDiv = document.createElement('div');
+        bottomDiv.classList.add('memory-entry-bottom');
+        memoryListContainer.append(bottomDiv);
 
     }
 }
@@ -147,17 +174,15 @@ function constructMemories(memoryProfile) {
 function submitNewReview(e) {
     e.preventDefault();
 
-    let contributor = document.getElementById('contributor').value;
-    let content = document.getElementById('memory-content').value;
+    let contributor = document.getElementById('contributor').value.trim();
+    let content = document.getElementById('memory-content').value.trim();
     let email = "";
 
     if (contributor.length == 0) {
         contributor = "Anonymous";
     }
-    // validateEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)?true:false;
-    validateContent = (content != "") ? true : false;
 
-    if (validateContent) {
+    if (content !== "") {
         addNewReview(e, hid, contributor, email, content);
     } else {
         makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Your submission did not succeed. Please make sure to have filled out the required field.</p>');
@@ -187,57 +212,54 @@ async function addNewReview(e, hid, contributor, email, content) {
     }
 
     try {
-        await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
-        // await fetch('http://localhost:3000/api/add-comment', settings);
+        const resp = await fetch('https://chop-rest-api.herokuapp.com/api/add-comment', settings);
+        // const resp = await fetch('http://localhost:3000/api/add-comment', settings);
+        if (!resp.ok) {
+            throw new Error('Submission failed: ' + resp.status + ' ' + resp.statusText);
+        }
         confirmationReview();
     } catch (err) {
-        checkStatus(err);
+        console.error(err);
+        makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Your submission did not succeed. Please try again later.</p>');
+        return;
     }
 
     try {
         let newMemoryData = await getMemories(hid);
-        let feature = null;
-
-        memories = map.queryRenderedFeatures({layers: ['memory']});
-
-        memories.forEach(memory=>{
-            if (hid == memory.properties.id) {
-
-                feature = memory;
-                return true;
-            }
-        })
-
-        const center = turf.center(feature);
-        const buffer = turf.buffer(center, 0.030, {
-            units: 'kilometers'
-        });
+        let memories = map.queryRenderedFeatures({ layers: ['memory'] });
+        let feature = memories.find(memory => hid == memory.properties.id) || null;
 
         let graffitiIntersected = [];
-        graffitoData.features.forEach(graffito => {
-            // if (turf.pointsWithinPolygon(graffito.geometry.coordinates, buffer.geometry.coordinates).features.length > 0 && graffitoData.features[0].properties.Message != undefined){
-            //     graffitiWithin.push(graffitoData.features[0].properties.Message);
-            // }
-            if (turf.intersect(graffito, feature) != null && graffito.properties.Message != undefined) {
-                graffitiIntersected.push(graffito.properties.Message);
-            }
-
-        });
-
         let poiIntersected = [];
-        poiData.features.forEach(poi => {
 
-            if (turf.booleanWithin(poi.geometry, buffer.geometry) && poi.properties.name != null) {
-                poiIntersected.push(poi.properties.name.toUpperCase());
+        if (feature) {
+            const center = turf.center(feature);
+            const buffer = turf.buffer(center, 0.030, {
+                units: 'kilometers'
+            });
+
+            if (graffitoData && graffitoData.features) {
+                graffitoData.features.forEach(graffito => {
+                    if (turf.intersect(graffito, feature) != null && graffito.properties.Message != undefined) {
+                        graffitiIntersected.push(graffito.properties.Message);
+                    }
+                });
             }
 
-        });
+            if (poiData && poiData.features) {
+                poiData.features.forEach(poi => {
+                    if (turf.booleanWithin(poi.geometry, buffer.geometry) && poi.properties.name != null) {
+                        poiIntersected.push(poi.properties.name.toUpperCase());
+                    }
+                });
+            }
+        }
 
         constructMemories([newMemoryData, graffitiIntersected, poiIntersected]);
 
 
     } catch (err) {
-        checkStatus(err);
+        console.error(err);
     }
 
 
@@ -267,7 +289,8 @@ async function getMemories(hid) {
         let memoryData = await getReview.json();
         return memoryData;
     } catch (err) {
-        console.log(err);
+        console.warn('getMemories unavailable (likely CORS on localhost or API down).', err);
+        return [];
     }
 }
 
@@ -281,6 +304,80 @@ async function getHighlights() {
         let highlightData = await getHighlight.json();
         return highlightData;
     } catch (err) {
-        console.log(err);
+        console.warn('getHighlights unavailable (likely CORS on localhost or API down); using static fallback.', err);
+        try {
+            const fallback = await fetch('assets/highlights.json');
+            return fallback.ok ? await fallback.json() : [];
+        } catch (fallbackErr) {
+            console.warn('Static highlights fallback unavailable; proceeding without highlight overlay.', fallbackErr);
+            return [];
+        }
     }
+}
+
+
+// openReportPanel
+// Show the report panel and remember which comment is being reported
+function openReportPanel(vid) {
+    if (vid == null) {
+        console.warn('openReportPanel called without a vid');
+        return;
+    }
+    const panel = document.getElementById('report-panel');
+    const memoryList = document.getElementById('memory-list');
+    const memoryPanel = document.getElementById('memory-panel');
+
+    panel.dataset.vid = String(vid);
+    document.getElementById('report-reason').value = '';
+    document.getElementById('report-content').value = '';
+
+    memoryList.classList.add('d-none');
+    memoryPanel.classList.add('d-none');
+    panel.classList.remove('d-none');
+}
+
+// submitReport
+// Send the flag to the backend and close the panel on success
+async function submitReport(e) {
+    e.preventDefault();
+
+    const panel = document.getElementById('report-panel');
+    const vid = panel.dataset.vid;
+    const reason = document.getElementById('report-reason').value;
+    const extra = document.getElementById('report-content').value.trim();
+
+    if (!vid) {
+        makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Could not identify the comment to report. Please reopen and try again.</p>');
+        return;
+    }
+    if (!reason) {
+        makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Please select a report reason.</p>');
+        return;
+    }
+
+    const details = extra ? `${reason}: ${extra}` : reason;
+    const body = new URLSearchParams();
+    body.append('vid', vid);
+    body.append('details', details);
+
+    try {
+        const resp = await fetch('https://chop-rest-api.herokuapp.com/api/report', {
+            method: 'POST',
+            body
+        });
+        if (!resp.ok) {
+            throw new Error('Report failed: ' + resp.status + ' ' + resp.statusText);
+        }
+        panel.classList.add('d-none');
+        delete panel.dataset.vid;
+        makeAlert('<p style="text-align:center"><i class="bi bi-check-lg text-success"></i></p><p style="text-align:center">Thanks. The comment has been flagged for review.</p>');
+    } catch (err) {
+        console.error(err);
+        makeAlert('<p style="text-align:center"><i class="bi bi-x-lg text-danger"></i></p><p style="text-align:center">Your report did not succeed. Please try again later.</p>');
+    }
+}
+
+const reportSubmitBtn = document.getElementById('report-submit');
+if (reportSubmitBtn) {
+    reportSubmitBtn.addEventListener('click', submitReport);
 }

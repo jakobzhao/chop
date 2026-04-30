@@ -2,6 +2,16 @@ window.addEventListener("load", init);
 let graffitoData = null;
 let poiData = null;
 
+// Bootstrap 5.2 sets aria-hidden on the modal while a descendant still has
+// focus, which trips an a11y warning. Blur the focused element before hide.
+// Attach at document level on capture so it runs regardless of init() timing.
+document.addEventListener('hide.bs.modal', (e) => {
+    const modalEl = e.target;
+    if (modalEl && document.activeElement && modalEl.contains(document.activeElement)) {
+        document.activeElement.blur();
+    }
+}, true);
+
 // init function
 async function init() {
 
@@ -40,11 +50,21 @@ async function init() {
 
     
 
-    let response = await fetch('assets/graffiti.geojson');
-    graffitoData = await response.json();
+    try {
+        let response = await fetch('assets/graffiti.geojson');
+        graffitoData = response.ok ? await response.json() : { features: [] };
+    } catch (err) {
+        console.error('Failed to load graffiti.geojson', err);
+        graffitoData = { features: [] };
+    }
 
-    response = await fetch('assets/poi.geojson');
-    poiData = await response.json();
+    try {
+        let response = await fetch('assets/poi.geojson');
+        poiData = response.ok ? await response.json() : { features: [] };
+    } catch (err) {
+        console.error('Failed to load poi.geojson', err);
+        poiData = { features: [] };
+    }
 
     document.querySelector('#details').addEventListener('toggle', function() {
         let summaryText = document.querySelector('#summary-text');
@@ -72,7 +92,6 @@ function checkStatus(response) {
     if (response.ok) {
         return response;
     } else {
-        console.log("where the error is:" + response)
         throw Error("CHOP: Error in request: " + response.statusText);
     }
 }

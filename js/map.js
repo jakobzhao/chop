@@ -1,27 +1,51 @@
-mapboxgl.accessToken =
-    'pk.eyJ1Ijoiemhhb2JvIiwiYSI6ImNqaW85NzNrdDA3OXczcHQ5aTZvYmtjc2gifQ.ummEQxsRIweCIdv9CRRzOw';
-let map = new mapboxgl.Map({
+// MapLibre GL — basemap is ESRI World Imagery (raster), no API key required.
+// Attribution is provided manually in the page footer.
+const basemapStyle = {
+    version: 8,
+    glyphs: 'https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf',
+    sources: {
+        'esri-imagery': {
+            type: 'raster',
+            tiles: [
+                'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+            ],
+            tileSize: 256,
+            maxzoom: 19,
+            attribution: 'Imagery © Esri, Maxar, Earthstar Geographics, and the GIS User Community'
+        }
+    },
+    layers: [
+        {
+            id: 'esri-imagery',
+            type: 'raster',
+            source: 'esri-imagery'
+        }
+    ]
+};
+
+const initialBounds = [-122.320894, 47.61310, -122.31558990189957, 47.61875];
+const tourCenter = [-122.31824, 47.61596];
+const tourZoom = 17.25;
+const tourPitch = 63;
+const tourDuration = 32000;
+const buildingHeightScale = 2.25;
+const policeHeight = 22;
+
+let map = new maplibregl.Map({
     container: 'map', // container ID
-    style: 'mapbox://styles/mapbox/satellite-streets-v12',
-    // style: 'mapbox://styles/paulsun8b8/cl6lfeqjx004b15npcok6rosl',
-    // style: 'mapbox://styles/mapbox/light-v11',
-    // style: 'mapbox://styles/mapbox/streets-v12',
-    // style: 'mapbox://styles/mapbox/satellite-v9',
-    // zoom: 17, // starting zoom
-    // center: [-122.319212, 47.616815], // starting center
-    bounds: [-122.320894, 47.61310, -122.31558990189957, 47.61875],
+    style: basemapStyle,
+    bounds: initialBounds,
     maxBounds: [-123.9180845532934, 47.04828654073975, -121.14008445949332, 48.71935997846136],
     minZoom: 12,
     maxZoom: 21,
     pitch: 20,
-    // bearing: 230, // bearing in degrees
     antialias: true,
-    logoPosition: 'bottom-right',
     attributionControl: false,
 });
- 
+window.chopMap = map;
+
 // Create a popup, but don't add it to the map yet.
-const popup = new mapboxgl.Popup({
+const popup = new maplibregl.Popup({
     closeButton: false,
     closeOnClick: false
 });
@@ -29,15 +53,19 @@ const popup = new mapboxgl.Popup({
 let hoveredStateId = null;
 let hoveredStateId2 = null;
 let hid = null;
+let tourAnimationFrame = null;
+let tourStartedAt = null;
+let tourStartBearing = 0;
+let tourIsRunning = false;
 
 
-const policeColor = 'red';
+const policeColor = '#260808';   // darker oxblood for the police precinct footprint
 // const speechColor = getComputedStyle(document.querySelector('.speech')).backgroundColor;
 // const boundaryColor = getComputedStyle(document.querySelector('.boundary')).backgroundColor;
 const memoryColor = getComputedStyle(document.querySelector('.memory')).backgroundColor;
 const graffitoColor = getComputedStyle(document.querySelector('.graffito')).backgroundColor;
-const highlightColor = '#8cff32';
-const bldgColor = getComputedStyle(document.querySelector('.bldgs')).backgroundColor;;
+const highlightColor = '#d4a017';   // gold — hover; pops against red, charcoal, and gray bases
+const bldgColor = getComputedStyle(document.querySelector('.bldgs')).backgroundColor;
 const origOpacity = 0.5;
 const hoverOpacity = 0.7;
 
@@ -51,13 +79,27 @@ document.getElementById('title').addEventListener('mouseleave', () => {
     document.getElementById('title').style.cursor = '';
 });
 document.getElementById('title').addEventListener('click', () => {
-    map.fitBounds([-122.320894, 47.61310, -122.31558990189957, 47.61875], {
+    stopTour();
+    map.fitBounds(initialBounds, {
         pitch: 20,
     });
 });
 
+const tourButton = document.getElementById('map-tour');
+if (tourButton) {
+    tourButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        if (tourIsRunning) {
+            stopTour();
+        } else {
+            startTour();
+        }
+    });
+}
 
-map.addControl(new mapboxgl.NavigationControl({
+
+map.addControl(new maplibregl.NavigationControl({
     showCompass: true
     // visualizePitch: true
 }));
@@ -67,7 +109,7 @@ map.addControl(new mapboxgl.NavigationControl({
 map.on('load', () => {
 
     //download a spray icon from fa 6, and edit it at https://editor.method.ac/
-    map.loadImage('https://jakobzhao.github.io/chop/img/spray-can-yl2.png', (error, image) => {
+    map.loadImage('img/spray-can-yl2.png', (error, image) => {
         if (error) throw error;
         if (!map.hasImage('spray')) map.addImage('spray', image);
     });
@@ -87,7 +129,7 @@ map.on('load', () => {
         'layout': {
             'visibility': 'visible',
         }
-    }, 'road-path');
+    });
 
     //==============word cloud========================
     map.addSource('words', {
@@ -101,15 +143,32 @@ map.on('load', () => {
         source: 'words',
         layout: {
             'text-field': ['get', 'word'],
-            'text-size': ['interpolate', ['linear'], ['get', 'frequency'], 0, 12, 1, 36],
-            'text-allow-overlap': true,
-            'text-ignore-placement': true,
+            'text-font': ['literal', ['Noto Sans Bold']],
+            // Size scales with both zoom and word frequency.
+            // At each zoom step the inner expression maps frequency 0→1 to a
+            // pixel range; the outer expression interpolates between zooms.
+            'text-size': [
+                'interpolate', ['linear'], ['zoom'],
+                13, ['interpolate', ['linear'], ['get', 'frequency'], 0, 7,  1, 18],
+                16, ['interpolate', ['linear'], ['get', 'frequency'], 0, 10, 1, 32],
+                18, ['interpolate', ['linear'], ['get', 'frequency'], 0, 14, 1, 48],
+                20, ['interpolate', ['linear'], ['get', 'frequency'], 0, 20, 1, 68],
+                22, ['interpolate', ['linear'], ['get', 'frequency'], 0, 30, 1, 94]
+            ],
+            // Collision detection: drop words that would overlap. Higher-
+            // frequency words win the priority contest (lowest sort-key wins).
+            'text-allow-overlap': false,
+            'text-ignore-placement': false,
+            'symbol-sort-key': ['*', -1, ['get', 'frequency']],
+            'text-padding': 3,
+            'text-letter-spacing': 0.02,
             'visibility': 'none'
         },
         paint: {
-            'text-color': ['get', 'hex_color'],
-            'text-halo-color': '#D3D3D3',  // White halo
-            'text-halo-width': 0.75,  // Halo width
+            'text-color': '#ffe06a',
+            'text-halo-color': 'rgba(0, 0, 0, 0.82)',
+            'text-halo-width': 1.25,
+            'text-halo-blur': 0.5
         }
     });
     //=============outside mask=========================
@@ -131,6 +190,7 @@ map.on('load', () => {
     //=============Buildings=========================
     map.addSource('buildings-source', {
         'type': 'geojson',
+        'generateId': true,
         'data': 'assets/buildings.geojson'
     });
     map.addLayer({
@@ -140,15 +200,20 @@ map.on('load', () => {
         'type': 'fill-extrusion',
         'minzoom': 15,
         'paint': {
-            'fill-extrusion-color': bldgColor,
-            'fill-extrusion-height': ['get', 'eheight'],
+            'fill-extrusion-color': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], false],
+                highlightColor,
+                bldgColor
+            ],
+            'fill-extrusion-height': ['*', ['get', 'eheight'], buildingHeightScale],
             'fill-extrusion-base': 0,
             'fill-extrusion-opacity': 0.8
         },
         'layout': {
             visibility: "visible",
         }
-    }, 'road-label');
+    });
 
 
     //=============Memory=========================
@@ -174,24 +239,108 @@ map.on('load', () => {
         'layout': {
             visibility: "visible",
         }
-    }, 'road-label');
-
-    // =============Highlighted Memories=========================
-    // Call the async function and use the result in a .then() function
-    getHighlights().then(highlights => {
-    // Extract the hids into an array
-    var hid = highlights.map(highlight => highlight.hid);
-    
-    map.addLayer({
-        'id': 'highlighted-memories',
-        'source': 'grid',
-        'type': 'fill', 
-        'paint': {
-            'fill-color': 'purple',
-            'fill-opacity': 0.5 
-        },
-        'filter': ['in', 'id'].concat(hid)
     });
+
+    // =============Highlighted Memories (3D, height ∝ comment count) =========
+    getHighlights().then(async highlights => {
+        const countByHid = new Map();
+        highlights.forEach(h => {
+            const hid = parseInt(h.hid, 10);
+            const count = parseInt(h.count, 10);
+            if (!Number.isNaN(hid) && !Number.isNaN(count)) {
+                countByHid.set(hid, count);
+            }
+        });
+        const heightPerComment = 18;   // metres per comment
+
+        const gridResp = await fetch('assets/grid.geojson');
+        const gridData = await gridResp.json();
+        const highlightedMemoryData = {
+            type: 'FeatureCollection',
+            features: gridData.features
+                .filter(feature => countByHid.has(feature.properties.id))
+                .map(feature => ({
+                    ...feature,
+                    properties: {
+                        ...feature.properties,
+                        comment_count: countByHid.get(feature.properties.id)
+                    }
+                }))
+        };
+
+        if (!map.getSource('highlighted-memory-source')) {
+            map.addSource('highlighted-memory-source', {
+                type: 'geojson',
+                generateId: true,
+                data: highlightedMemoryData
+            });
+        } else {
+            map.getSource('highlighted-memory-source').setData(highlightedMemoryData);
+        }
+
+        if (highlightedMemoryData.features.length === 0) {
+            applyInitialToggleState();
+            return;
+        }
+
+        const heightExpr = [
+            '*',
+            ['coalesce', ['get', 'comment_count'], 0],
+            heightPerComment
+        ];
+
+        map.addLayer({
+            'id': 'highlighted-memories',
+            'source': 'highlighted-memory-source',
+            'type': 'fill-extrusion',
+            'minzoom': 14,
+            'paint': {
+                'fill-extrusion-color': [
+                    'case',
+                    ['boolean', ['feature-state', 'hover'], false],
+                    highlightColor,        // gold when hovered
+                    memoryColor             // red default
+                ],
+                'fill-extrusion-height': heightExpr,
+                'fill-extrusion-base': 0,
+                'fill-extrusion-opacity': 0.75
+            }
+        });
+
+        // Hover state for memory hex pillars
+        let hoveredMemoryId = null;
+
+        map.on('mousemove', 'highlighted-memories', (e) => {
+            if (!e.features || e.features.length === 0) return;
+            map.getCanvas().style.cursor = 'pointer';
+
+            // memory hex takes priority over buildings/police — release any building hover
+            Object.keys(hoveredBuildingIds).forEach(clearBuildingHover);
+
+            const newId = e.features[0].id;
+            if (hoveredMemoryId === newId) return;
+
+            if (hoveredMemoryId !== null) {
+                map.setFeatureState({ source: 'highlighted-memory-source', id: hoveredMemoryId }, { hover: false });
+            }
+            hoveredMemoryId = newId;
+            map.setFeatureState({ source: 'highlighted-memory-source', id: newId }, { hover: true });
+        });
+
+        map.on('mouseleave', 'highlighted-memories', () => {
+            map.getCanvas().style.cursor = '';
+            if (hoveredMemoryId !== null) {
+                map.setFeatureState({ source: 'highlighted-memory-source', id: hoveredMemoryId }, { hover: false });
+                hoveredMemoryId = null;
+            }
+        });
+
+        // Push every text/symbol layer above the new 3D pillars so labels are
+        // never occluded by buildings, the police precinct, or memory bars.
+        liftLabelsToTop();
+
+        // Sync the new highlighted-memories visibility to the Comments toggle.
+        applyInitialToggleState();
     }).catch(error => {
         console.error("Error loading highlights:", error);
     });
@@ -275,15 +424,20 @@ map.on('load', () => {
         'type': 'fill-extrusion',
         'minzoom': 15,
         'paint': {
-            'fill-extrusion-color': policeColor,
-            'fill-extrusion-height': 30,
+            'fill-extrusion-color': [
+                'case',
+                ['boolean', ['feature-state', 'hover'], false],
+                highlightColor,
+                policeColor
+            ],
+            'fill-extrusion-height': policeHeight,
             'fill-extrusion-base': 0,
-            'fill-extrusion-opacity': origOpacity
+            'fill-extrusion-opacity': 0.86
         },
         'layout': {
             visibility: "visible",
         }
-    }, 'road-label');
+    });
 
     //==============Boundary========================
     //map.addSource('chop-boundary', {
@@ -304,7 +458,7 @@ map.on('load', () => {
     //    'layout': {
     //        visibility: "none",
     //    }
-    //}, 'road-label');
+    //});
 
     //==============Speech Area========================
     // map.addSource('speech-area', {
@@ -325,9 +479,9 @@ map.on('load', () => {
     //     'layout': {
     //         visibility: "visible",
     //     }
-    // }, 'road-label');
+    // });
 
-    map.setLayoutProperty('poi-label', 'visibility', 'visible'); 
+    // poi-label was a Mapbox vector style layer — not present on the ESRI raster basemap.
 
     //==============graffito========================
 
@@ -354,7 +508,7 @@ map.on('load', () => {
             'visibility': 'visible',
             'text-font': [
                 'literal',
-                ['DIN Pro Medium', 'Arial Unicode MS Regular']
+                ['Noto Sans Regular']
             ],
             'icon-image': 'spray', // reference the image
             'icon-padding':7,
@@ -372,7 +526,7 @@ map.on('load', () => {
 
 
         }
-    }, 'road-label');
+    });
 
     map.addLayer({
         'id': 'graffito',
@@ -413,15 +567,35 @@ map.on('load', () => {
     });
 
 
-    hiddenLayers = ["transit-label", 'road-label', 'road-secondary-tertiary-case', 'road-street-case', 'road-street', 'road-primary-case', 'road-secondary-tertiary', 'road-minor-case']
-
-    hiddenLayers.forEach((layer) => {
-        map.setLayoutProperty(
-            layer,
-            'visibility',
-            'none'
-        );
+    // ============= POI labels (Locations toggle) =========================
+    map.addSource('poi', {
+        type: 'geojson',
+        data: 'assets/poi.geojson'
     });
+    map.addLayer({
+        id: 'poi-label',
+        type: 'symbol',
+        source: 'poi',
+        layout: {
+            'text-field': ['get', 'name'],
+            'text-font': ['literal', ['Noto Sans Regular']],
+            'text-size': 12,
+            'text-anchor': 'top',
+            'text-offset': [0, 0.4],
+            'text-padding': 4,
+            'text-allow-overlap': false,
+            'visibility': 'visible'
+        },
+        paint: {
+            'text-color': '#e3eaf0',
+            'text-halo-color': 'rgba(0, 0, 0, 0.85)',
+            'text-halo-width': 1.5,
+            'text-halo-blur': 0.5
+        }
+    });
+
+    // Mapbox vector-style label/road layers were hidden here. ESRI raster
+    // basemap has none of those layers, so nothing to hide.
 
 
 
@@ -445,88 +619,132 @@ map.on('load', () => {
 
     $('#loader').fadeOut("slow");
 
-
+    // All synchronously-added layers exist at this point. Push labels above
+    // the 3D extrusions, then sync each layer's visibility to its checkbox.
+    liftLabelsToTop();
+    applyInitialToggleState();
 });
 
-const highlightedLayerIds = ["3d-buildings", '3d-police']
+const highlightedLayerIds = ["bldgs", '3d-police'];
+
+// Track currently hovered feature id per layer so we can clear it on mouseleave/move
+const hoveredBuildingIds = {};
+
+function clearBuildingHover(layerId) {
+    if (hoveredBuildingIds[layerId] != null) {
+        map.setFeatureState(
+            { source: 'buildings-source', id: hoveredBuildingIds[layerId] },
+            { hover: false }
+        );
+        hoveredBuildingIds[layerId] = null;
+    }
+}
+
+function setTourButtonState(isRunning) {
+    if (!tourButton) return;
+    tourButton.classList.toggle('active', isRunning);
+    tourButton.setAttribute('aria-pressed', isRunning ? 'true' : 'false');
+    tourButton.querySelector('.tour-label').textContent = isRunning ? 'Stop tour' : 'Tour';
+}
+
+function startTour() {
+    if (tourIsRunning) return;
+    tourIsRunning = true;
+    tourStartedAt = null;
+    tourStartBearing = map.getBearing();
+    setTourButtonState(true);
+
+    map.easeTo({
+        center: tourCenter,
+        zoom: tourZoom,
+        pitch: tourPitch,
+        bearing: tourStartBearing,
+        duration: 1600,
+        easing: t => t
+    });
+
+    const animateTour = (timestamp) => {
+        if (tourStartedAt === null) tourStartedAt = timestamp;
+        const progress = (timestamp - tourStartedAt) / tourDuration;
+        const bearing = tourStartBearing + (progress * 360);
+
+        map.jumpTo({
+            center: tourCenter,
+            zoom: tourZoom,
+            pitch: tourPitch,
+            bearing
+        });
+
+        tourAnimationFrame = requestAnimationFrame(animateTour);
+    };
+
+    setTimeout(() => {
+        if (tourAnimationFrame === null && tourIsRunning) {
+            tourAnimationFrame = requestAnimationFrame(animateTour);
+        }
+    }, 1650);
+}
+
+function stopTour() {
+    if (tourAnimationFrame) {
+        cancelAnimationFrame(tourAnimationFrame);
+    }
+    tourAnimationFrame = null;
+    tourStartedAt = null;
+    tourIsRunning = false;
+    setTourButtonState(false);
+    map.easeTo({
+        pitch: 35,
+        duration: 800
+    });
+}
 
 highlightedLayerIds.forEach((layerId) => {
 
+    map.on('mousemove', layerId, (e) => {
+        if (!e.features || e.features.length === 0) return;
 
-    map.on('mouseenter', layerId, (e) => {
-        map.getCanvas().style.cursor = 'pointer';
-        e.preventDefault();
-        let hoveredFeatures = map.queryRenderedFeatures(e.point);
-        let topHoveredLayerIds = {};
-        for (let i = 0; i < hoveredFeatures.length; i++) {
-            highlightedLayerIds.forEach((highlightedLayerId) => {
-                if (hoveredFeatures[i].layer.id == highlightedLayerId) {
-                    topHoveredLayerIds[highlightedLayerId] = Object.keys(topHoveredLayerIds).length;
-                }
+        // Memory hex pillars take priority — bail (and release any current
+        // building hover) if a memory hex is also rendered at this point.
+        if (map.getLayer('highlighted-memories')) {
+            const memFeatures = map.queryRenderedFeatures(e.point, {
+                layers: ['highlighted-memories']
             });
+            if (memFeatures.length > 0) {
+                clearBuildingHover(layerId);
+                return;
+            }
         }
 
-        if (topHoveredLayerIds[layerId] == 0) {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', highlightColor);
-            map.setPaintProperty(layerId, 'fill-extrusion-opacity', hoverOpacity);
-
-        }
-
-    });
-    // // Change it back to a pointer when it leaves.
-    map.on('mouseleave', layerId, (e) => {
         map.getCanvas().style.cursor = 'pointer';
-        e.preventDefault();
-        map.setPaintProperty(layerId, 'fill-extrusion-opacity', origOpacity);
-        popup.remove();
 
-        if (layerId == "3d-buildings") {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', bldgColor);
-        // } else if (layerId == "boundary") {
-        //    map.setPaintProperty(layerId, 'fill-extrusion-color', boundaryColor);
+        const newId = e.features[0].id;
+        if (hoveredBuildingIds[layerId] === newId) return;
 
-        } else if (layerId == "3d-police") {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', policeColor);
-
-        }
-
+        clearBuildingHover(layerId);
+        hoveredBuildingIds[layerId] = newId;
+        map.setFeatureState(
+            { source: 'buildings-source', id: newId },
+            { hover: true }
+        );
     });
 
+    map.on('mouseleave', layerId, () => {
+        map.getCanvas().style.cursor = '';
+        clearBuildingHover(layerId);
+        popup.remove();
+    });
 
     map.on('click', layerId, (e) => {
+        if (!e.features || e.features.length === 0) return;
 
-        map.getCanvas().style.cursor = 'pointer';
-        e.preventDefault();
-        let hoveredFeatures = map.queryRenderedFeatures(e.point);
-        let topHoveredLayerIds = {};
-        for (let i = 0; i < hoveredFeatures.length; i++) {
-            highlightedLayerIds.forEach((highlightedLayerId) => {
-                if (hoveredFeatures[i].layer.id == highlightedLayerId) {
-                    topHoveredLayerIds[highlightedLayerId] = Object.keys(topHoveredLayerIds).length;
-                }
-            });
+        if (layerId === '3d-police') {
+            const popupDiv = document.createElement('div');
+            popupDiv.className = 'desc';
+            popupDiv.textContent = "Seattle's City Department of Police";
+            popup.setLngLat(e.lngLat).setDOMContent(popupDiv).addTo(map);
         }
-
-        if (topHoveredLayerIds[layerId] == 0) {
-            map.setPaintProperty(layerId, 'fill-extrusion-color', highlightColor);
-            map.setPaintProperty(layerId, 'fill-extrusion-opacity', hoverOpacity);
-
-
-            let description = "";
-
-            if (layerId == "speech") {
-                description = "Speech Area";
-            //} else if (layerId == "boundary") {
-            //    description = "CHOP Boundary";
-            } else if (layerId == "3d-police") {
-                description = "Seattle's City Department of Police";
-            }
-
-            popup.setLngLat(e.lngLat).setHTML("<div class='desc'>" + description +"</div>").addTo(map);
-        }
-
     });
-
 
 });
 
@@ -593,7 +811,10 @@ map.on("click", "graffito", (e) => {
         if (message == undefined) {
             message = "This graffito is unclear. Further investigation is needed."
         }
-        new mapboxgl.Popup().setLngLat(e.lngLat).setHTML(`<div class='desc'>${message}</div>`).addTo(map);
+        const graffitoDiv = document.createElement('div');
+        graffitoDiv.className = 'desc';
+        graffitoDiv.textContent = message;
+        new maplibregl.Popup().setLngLat(e.lngLat).setDOMContent(graffitoDiv).addTo(map);
     }
 
 
@@ -601,57 +822,67 @@ map.on("click", "graffito", (e) => {
 
 
 
-// Enumerate ids of the layers.
-const toggleableLayerIds = ['aerial', 'bldgs', 'poi-label', 'memory', 'graffito', 'word-cloud'];
-// Set up the corresponding toggle button for each layer.
-for (const id of toggleableLayerIds) {
+// Layer toggles — each checkbox controls its own layer (and any sibling layers
+// that move together: graffito ↔ outline+label, memory ↔ highlighted-memories,
+// bldgs ↔ 3d-police).
 
-    // Show or hide layer when the toggle is clicked.
-    document.getElementById(id).addEventListener("change", function (e) {
-        const clickedLayer = id;
-        e.preventDefault();
-        e.stopPropagation();
-        const visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-        if (visibility === 'visible') {
-            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-            if (id == "graffito") {
-                map.setLayoutProperty("graffito-outline", 'visibility', 'none');
-                map.setLayoutProperty("graffito-label", 'visibility', 'none');
-            } else if (id == "memory") {
-                document.getElementById("memory-list").classList.add("d-none");
-                document.getElementById("memory-panel").classList.add("d-none");
-                document.getElementById('memory-list-container').innerHTML = "";
-                document.getElementById('contributor').value = "";
-                document.getElementById('memory-content').value = "";
-                map.setFeatureState({
-                    source: 'grid',
-                    id: hoveredStateId2
-                }, {
-                    hover: false
-                });
-                map.setLayoutProperty("highlighted-memories", 'visibility', 'none');
-            } else if (id == "bldgs") {
-                map.setLayoutProperty('3d-police', 'visibility', 'none');
-            }
-        } else {
-            map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-            if (id == "graffito") {
-                map.setLayoutProperty("graffito-outline", 'visibility', 'visible');
-                map.setLayoutProperty("graffito-label", 'visibility', 'visible');
-            } else if (id == "memory") {
-                map.setLayoutProperty("highlighted-memories", 'visibility', 'visible');
-            } else if (id == "bldgs") {
-                map.setLayoutProperty('3d-police', 'visibility', 'visible');
+// Push every text/icon (symbol) layer to the top of the render stack so labels
+// and graffiti spray icons are never occluded by 3D buildings, the police
+// precinct, or memory pillars. moveLayer() with no `before` argument moves the
+// layer to the very end of the order (= drawn last = on top).
+function liftLabelsToTop() {
+    ['graffito-label', 'poi-label', 'word-cloud'].forEach(id => {
+        if (map.getLayer(id)) map.moveLayer(id);
+    });
+}
+
+const toggleableLayerIds = ['aerial', 'bldgs', 'poi-label', 'memory', 'graffito', 'word-cloud'];
+
+for (const id of toggleableLayerIds) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+
+    el.addEventListener('change', () => {
+        const vis = el.checked ? 'visible' : 'none';
+        if (map.getLayer(id)) map.setLayoutProperty(id, 'visibility', vis);
+
+        // Sibling layers that move with the toggle.
+        if (id === 'bldgs' && map.getLayer('3d-police')) {
+            map.setLayoutProperty('3d-police', 'visibility', vis);
+        } else if (id === 'graffito') {
+            if (map.getLayer('graffito-outline')) map.setLayoutProperty('graffito-outline', 'visibility', vis);
+            if (map.getLayer('graffito-label'))   map.setLayoutProperty('graffito-label',   'visibility', vis);
+        } else if (id === 'memory') {
+            if (map.getLayer('highlighted-memories')) map.setLayoutProperty('highlighted-memories', 'visibility', vis);
+            // Hiding Comments → close the side panels and clear hover state.
+            if (!el.checked) {
+                document.getElementById('memory-list')?.classList.add('d-none');
+                document.getElementById('memory-panel')?.classList.add('d-none');
+                document.getElementById('memory-list-container').innerHTML = '';
+                if (typeof hoveredStateId2 !== 'undefined' && hoveredStateId2 !== null) {
+                    map.setFeatureState({ source: 'grid', id: hoveredStateId2 }, { hover: false });
+                }
             }
         }
     });
+}
 
-    document.getElementById(id).addEventListener("mouseenter", function (e) {
-        document.body.style.cursor = 'pointer';
-    });
-
-    document.getElementById(id).addEventListener("mouseleave", function (e) {
-        document.body.style.cursor = '';
-    });
-
+// Apply each checkbox's initial state to the map after load. Defined here as
+// a callable so the load handler and the async highlights handler can both
+// invoke it and reach a consistent state.
+function applyInitialToggleState() {
+    for (const id of toggleableLayerIds) {
+        const el = document.getElementById(id);
+        if (!el || !map.getLayer(id)) continue;
+        const vis = el.checked ? 'visible' : 'none';
+        map.setLayoutProperty(id, 'visibility', vis);
+        if (id === 'bldgs' && map.getLayer('3d-police')) {
+            map.setLayoutProperty('3d-police', 'visibility', vis);
+        } else if (id === 'graffito') {
+            if (map.getLayer('graffito-outline')) map.setLayoutProperty('graffito-outline', 'visibility', vis);
+            if (map.getLayer('graffito-label'))   map.setLayoutProperty('graffito-label',   'visibility', vis);
+        } else if (id === 'memory' && map.getLayer('highlighted-memories')) {
+            map.setLayoutProperty('highlighted-memories', 'visibility', vis);
+        }
+    }
 }

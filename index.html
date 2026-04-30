@@ -12,7 +12,7 @@
     <meta property="og:image" content="assets/screenshot.png" />
     <meta property="og:image:secure_url" content="assets/screenshot.png" />
     <link rel="icon" type="image/png" href="img/logo.png" />
-    <link href="https://api.mapbox.com/mapbox-gl-js/v2.11.1/mapbox-gl.css" rel="stylesheet">
+    <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="css/simplebar.css" />
     <link rel="stylesheet" href="css/introjs.min.css" />
     <link rel="stylesheet" href="css/introjs-dark.css" />
-    <link rel="stylesheet" href="css/style.css?v=1.1">
+    <link rel="stylesheet" href="css/style.css?v=2.3">
     <!-- <link rel="stylesheet" href="css/pages.css"> -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -33,13 +33,13 @@
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="js/simplebar.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js"></script>
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.11.1/mapbox-gl.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
     <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
     <script src="js/headshot.js"></script>
     <script src="js/intro.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/3.4.0/intro.min.js" integrity="sha512-QWPjvFqgUJv5X6Sq5NXmwJQSEzUEBxmCCcgqJd5/5luZnS6llRbshsChUNKrFlZ4bshKZEJxAHDB+WWdMsGvUA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-    <script src="js/main.js" defer></script>
+    <script src="js/main.js?v=1.3" defer></script>
 </head>
 
 <body>
@@ -54,7 +54,7 @@
                         <h5 class="modal-title">Acknowledgement</h5>
                     </div>
                     <div class="modal-body map-window-content">
-                        <img src="img/logo.png"></img>
+                        <img src="img/logo.png" alt="CHOP Archive logo">
                         <p> We would like to acknowledge that CHOP as well as the UW Seattle and Bothell stand on the 
                             lands and waters of coastal salish peoples, Suquamish, Tulalip, and Muckleshoot nations. 
                             This acknowledgement means that we would think hard about how this project can strive to 
@@ -80,17 +80,17 @@
                             request you to take a moment and review the following usage notes:
                         </p>
                         <ul>
-                            <li><b style="color:lightcoral">Content Warning</b>: Please be advised that some graffiti on
+                            <li><b>Content Warning</b>: Please be advised that some graffiti on
                                 this website may contain
                                 inappropriate or offensive language. If you are uncomfortable viewing this content, we
                                 recommend browsing with a parent or guardian, or refraining from continuing to browse
                                 this website.</li>
-                            <li><b style="color:lightcoral">Non-Retaliation</b>: This website and its contents are not
+                            <li><b>Non-Retaliation</b>: This website and its contents are not
                                 to be used by any group
                                 for retaliation or any other purpose that seeks to incriminate any participants in the
                                 CHOP.
                             </li>
-                            <li><b style="color:lightcoral">Community Standards</b>: In providing this interactive map
+                            <li><b>Community Standards</b>: In providing this interactive map
                                 where folks are able to
                                 share their memories and perspectives on the CHOP, we expect the contributions to be
                                 authentic and civil. We ask that contributors refrain from leaving any content that is
@@ -148,12 +148,18 @@
         </div>
         <div id="sidebar">
             <div id="info" class="d-flex grid-container flex-column map-panel">
-                <h5 id="title" data-intro="click on here to get back to the original map position." data-step="1"> Archiving
-                    the CHOP <i style="font-size: 10pt; left:-0.3em; bottom: 1em; position:relative"> Beta</i>
+                <h5 id="title" data-intro="click on here to get back to the original map position." data-step="1">
+                    <span>Archiving the CHOP</span>
+                    <span class="title-beta">Beta</span>
                 </h5>
                 <details id="details">
                     <summary>
                         <span id="summary-text">(click to show instructions)</span>
+                        <button id="map-tour" class="btn tour-button" type="button" aria-pressed="false"
+                            title="Tilt the map and orbit around the CHOP area">
+                            <i class="bi bi-compass"></i>
+                            <span class="tour-label">Tour</span>
+                        </button>
                     </summary>
                     <p>This interactive digital archive enables you to</p>
                     <ul>
@@ -161,7 +167,7 @@
                             and more.</li>
                         <li>Read transcriptions of individual graffiti and discover the messages and patterns of speech in the
                             CHOP.</li>
-                        <li>Leave your memories or see other people's comments <span style="color:lightcoral"> by clicking on the map when the <b><i>comment</i></b> layer is toggled on.</span> </li>
+                        <li>Leave your memories or see other people's comments <span>by clicking on the map when the <b><i>comment</i></b> layer is toggled on.</span> </li>
                     </ul>
                     <p>Click <a id="familiarization" href="#">here</a> to familiarize yourself with the functionality of this
                         archive.
@@ -200,33 +206,25 @@
                         data-step="2">
                         <div class="col form-switch">
                             <input class="form-check-input" type="checkbox" id="memory" value="memory" checked data-intro="
-                            <p>When <b>memory</b> option is on, </p>
-                            <ul >
-                                <li style='margin-bottom:0.5em'> A user can click on any location on the map, and then two side panels will appear to the left of the map and under the main console on the top left. </li>
-                                <li style='margin-bottom:0.5em'> Then, a user can view details about people's memories left at this location on the higher panel.</li>
-                                <li style='margin-bottom:0.5em'> A user can also contribute their own in-situ experiences on the lower panel of the two. </li>
-                            </ul>" data-step="4">
+                            <p>When <b>Comments</b> is on, click any hexagon to read or contribute memories.</p>" data-step="4">
                             <label class="form-check-label" for="memory"
                                 title="Click any location of the Chop, and contribute your memory or commentary to this digital archive."><i
                                     id="memory-legend" class="legend memory">
-                                </i><span style="color:lightcoral; font-weight: 700;">Comments</span></label>
+                                </i><b>Comments</b></label>
                         </div>
                         <div class="col form-switch">
                             <input class="form-check-input" type="checkbox" id="graffito" value="graffito" checked
-                                data-intro="
-                            <p>When <b>graffiti</b> option is on, all graffiti on the map will be labelled and highlighted in yellow.</p>" data-step="5">
+                                data-intro="<p>When <b>Graffiti</b> is on, every transcribed graffito is highlighted with its message.</p>" data-step="5">
                             <label class="form-check-label" for="graffito"><i id="graffito-legend" class="legend graffito">
                                 </i>Graffiti</label>
                         </div>
                         <div class="col form-switch">
-                            <input class=" form-check-input" type="checkbox" id="word-cloud" value="word-cloud"
-                                data-intro="Toggle on/off a geo-referencing word cloud generated from the comments on our platform">
+                            <input class="form-check-input" type="checkbox" id="word-cloud" value="word-cloud"
+                                data-intro="Toggle a geo-referenced word cloud generated from the comments on this platform.">
                             <label class="form-check-label" for="word-cloud"> <i id="word-cloud-legend" class="legend word-cloud">
                                 </i>Word Cloud</label>
                         </div>
-                        
                     </div>
-
 
                 </div>
             </div>
@@ -287,11 +285,9 @@
         <div id="map"></div>
 
         <div id="attribution" class="mx-3" style="word-wrap: break-word;">
-            <p id="logos"><img width="38px" src="img/uw-logo3.png"></img></p>
+            <p id="logos"><img width="38px" src="img/uw-logo3.png" alt="University of Washington logo"></p>
             <p id="acknowledge">This platform is created by geographers from <a href="https://www.washington.edu/">the
-                    University of Washington. The basemap is created using <a
-                        href="https://www.openstreetmap.org/">&copy;OpenStreetMap</a>'s data by <a
-                        href="https://www.mapbox.com/">&copy;MapBox</a>.
+                    University of Washington. Imagery © <a href="https://www.esri.com/">Esri</a>, Maxar, Earthstar Geographics, and the GIS User Community. Map rendering by <a href="https://maplibre.org/">MapLibre GL</a>.
             </p>
         </div>
 
@@ -365,7 +361,7 @@
                     <div class="modal-body map-window-content">
                         <!-- Team item-->
                         <div class="teammember col-xl-12 col-sm-12">
-                            <img src="img/zhao.jpg" class="img-fluid rounded-circle img-thumbnail shadow-sm">
+                            <img src="img/zhao.jpg" alt="Bo Zhao, Principal Investigator" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name">Bo Zhao
                                 <span>
                                     <a href="zhaobo@uw.edu" class="about-social-link" target="_blank">
@@ -386,7 +382,7 @@
 
                         <!-- Team item-->
                         <div class="teammember col-xl-12 col-sm-12">
-                            <img src="img/koopman_headshot.jpg"
+                            <img src="img/koopman_headshot.jpg" alt="Dan Koopman, Geographer and Aerial Imagery Expert"
                                 class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name">Dan Koopman
                                 <span>
@@ -407,7 +403,7 @@
                         <!-- Team item-->
 
                         <div class="teammember col-xl-12 col-sm-12">
-                            <img src="img/jung.jpg" class="img-fluid rounded-circle img-thumbnail shadow-sm">
+                            <img src="img/jung.jpg" alt="Jin-Kyu Jung, Co-Principal Investigator" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name">Jin-Kyu Jung
                                 <span>
                                     <a href="jkjung5@uw.edu" class="about-social-link" target="_blank">
@@ -426,7 +422,7 @@
 
                         <!-- Team item-->
                         <div class="teammember col-xl-12 col-sm-12">
-                            <img src="img/ca.jpg" class="img-fluid rounded-circle img-thumbnail shadow-sm">
+                            <img src="img/ca.jpg" alt="Christian Anderson, Co-Principal Investigator" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name"> Christian Anderson
                                 <span>
                                     <a href="cmander@uw.edu" class="about-social-link" target="_blank">
@@ -446,7 +442,7 @@
 
                         <!-- Team item-->
                         <div class="teammember col-xl-12 col-sm-12">
-                            <img src="img/sun.jpg" class="img-fluid rounded-circle img-thumbnail shadow-sm">
+                            <img src="img/sun.jpg" alt="Huating Paul Sun, Web cartographer and data scientist" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name">Huating "Paul" Sun
                                 <span>
                                     <a href="shuating@uw.edu" class="about-social-link" target="_blank">
@@ -465,7 +461,7 @@
 
                         <!-- Team item-->
                         <div class="teammember col-xl-12 col-sm-12">
-                            <img src="img/HDSSIPIC.png" class="img-fluid rounded-circle img-thumbnail shadow-sm">
+                            <img src="img/HDSSIPIC.png" alt="2023 HDSSI Team group photo" class="img-fluid rounded-circle img-thumbnail shadow-sm">
                             <p class="member-name">2023 Humanities Data Science Summer Institute (HDSSI) Team
                                 <span>
                                     <a href="jkjung5@uw.edu" class="about-social-link" target="_blank">
@@ -541,8 +537,8 @@
         </div>
     </main>
 
-    <script src="js/map.js?v=1.2"></script>
-    <script src="js/memory.js"></script>
+    <script src="js/map.js?v=2.7"></script>
+    <script src="js/memory.js?v=1.4"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-J2LSC6TC9H"></script>
     <script>
