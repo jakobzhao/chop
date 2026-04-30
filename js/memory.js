@@ -3,27 +3,34 @@
 function positionRecaptchaBadge() {
     const badge = document.querySelector('.grecaptcha-badge');
     const memoryPanel = document.getElementById('memory-panel');
+    const memoryList = document.getElementById('memory-list');
 
     if (!badge || !memoryPanel || memoryPanel.classList.contains('d-none')) {
         return;
     }
 
     const panelRect = memoryPanel.getBoundingClientRect();
+    const listRect = memoryList && !memoryList.classList.contains('d-none')
+        ? memoryList.getBoundingClientRect()
+        : panelRect;
     const badgeWidth = badge.offsetWidth || 256;
     const gap = 12;
     const viewportPadding = 8;
+    const leftEdge = Math.min(panelRect.left, listRect.left);
+    const rightEdge = Math.max(panelRect.right, listRect.right);
+    const bottomEdge = Math.max(panelRect.bottom, listRect.bottom);
 
-    let left = panelRect.left + ((panelRect.width - badgeWidth) / 2);
-    let top = panelRect.bottom + gap;
+    let left = leftEdge + (((rightEdge - leftEdge) - badgeWidth) / 2);
+    let top = bottomEdge + gap;
 
     left = Math.max(viewportPadding, Math.min(left, window.innerWidth - badgeWidth - viewportPadding));
 
-    badge.style.position = 'fixed';
-    badge.style.left = `${left}px`;
-    badge.style.right = 'auto';
-    badge.style.top = `${top}px`;
-    badge.style.bottom = 'auto';
-    badge.style.zIndex = '1000';
+    badge.style.setProperty('position', 'fixed', 'important');
+    badge.style.setProperty('left', `${left}px`, 'important');
+    badge.style.setProperty('right', 'auto', 'important');
+    badge.style.setProperty('top', `${top}px`, 'important');
+    badge.style.setProperty('bottom', 'auto', 'important');
+    badge.style.setProperty('z-index', '1000', 'important');
 }
 
 function scheduleRecaptchaBadgePosition() {
@@ -35,6 +42,17 @@ function scheduleRecaptchaBadgePosition() {
 
 window.addEventListener('load', scheduleRecaptchaBadgePosition);
 window.addEventListener('resize', scheduleRecaptchaBadgePosition);
+
+new MutationObserver((mutations) => {
+    if (mutations.some((mutation) => Array.from(mutation.addedNodes).some((node) => {
+        return node.nodeType === Node.ELEMENT_NODE && (
+            node.classList?.contains('grecaptcha-badge') ||
+            node.querySelector?.('.grecaptcha-badge')
+        );
+    }))) {
+        scheduleRecaptchaBadgePosition();
+    }
+}).observe(document.body, { childList: true, subtree: true });
 
 map.on('click', 'memory', async (e) => {
     map.getCanvas().style.cursor = 'pointer';
